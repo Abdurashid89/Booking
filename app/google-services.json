@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "603323214593",
+    "project_id": "stadion-11480",
+    "storage_bucket": "stadion-11480.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:603323214593:android:88feff2006e3bc466e0900",
+        "android_client_info": {
+          "package_name": "uz.koinot.stadion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "603323214593-t745f3h2iabnkrog5dqa3vjbni65os9s.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "uz.koinot.stadion",
+            "certificate_hash": "36eeb717eab6ae4b09159f95e9da064b6242bd45"
+          }
+        },
+        {
+          "client_id": "603323214593-jeggn9bfp65vg34bej00443tpg8nqt9t.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA-uYXRk7FxBdZmCfNHFht2IvidnaNqyk0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "603323214593-jeggn9bfp65vg34bej00443tpg8nqt9t.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,75 @@
+package uz.koinot.stadion.utils
+
+import android.app.NotificationChannel
+import android.app.NotificationManager
+import android.app.PendingIntent
+import android.app.PendingIntent.FLAG_ONE_SHOT
+import android.content.Context
+import android.content.Intent
+import android.graphics.BitmapFactory
+import android.graphics.Color
+import android.media.RingtoneManager
+import android.os.Build
+import androidx.annotation.RequiresApi
+import androidx.core.app.NotificationCompat
+import com.google.firebase.messaging.FirebaseMessagingService
+import com.google.firebase.messaging.RemoteMessage
+import uz.koinot.stadion.MainActivity
+import uz.koinot.stadion.R
+import kotlin.random.Random
+
+private const val CHANNEL_ID = "channelId"
+private const val CHANNEL_NAME = "channelName"
+
+class FirebaseService : FirebaseMessagingService() {
+
+    override fun onNewToken(newToken: String) {
+        super.onNewToken(newToken)
+
+    }
+
+
+    override fun onMessageReceived(message: RemoteMessage) {
+        super.onMessageReceived(message)
+
+        val intent = Intent(this,MainActivity::class.java)
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+        intent.putExtra("koinot","main")
+        intent.putExtra("id",message.data["id"]?.toInt() ?: 0)
+        val requestCode: Int = (0..10).random()
+        val pendingIntent = PendingIntent.getActivity(this,requestCode,intent,FLAG_ONE_SHOT)
+        val bigStyle = NotificationCompat.BigTextStyle()
+        bigStyle.setBigContentTitle(message.data["title"] ?: "Stadium").bigText(message.data["message"] ?: "New Order")
+
+        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+            .setContentTitle(message.data["title"] ?: "Stadium")
+            .setContentText(message.data["message"] ?: "Sizga yangi zakaz")
+            .setSmallIcon(R.drawable.ic_baseline_notifications_active)
+            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+            .setPriority(NotificationCompat.PRIORITY_HIGH)
+            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+            .setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.ic_baseline_notifications_active))
+            .setStyle(bigStyle)
+            .setAutoCancel(true)
+            .setContentIntent(pendingIntent)
+            .build()
+
+        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+            createNotificationChannel(manager)
+            val notificationId = Random.nextInt()
+        manager.notify(notificationId,notification)
+
+
+    }
+
+    @RequiresApi(Build.VERSION_CODES.O)
+    private fun createNotificationChannel(manager: NotificationManager) {
+        val channel = NotificationChannel(CHANNEL_ID, CHANNEL_NAME,NotificationManager.IMPORTANCE_HIGH).apply {
+            description = "koinot"
+            lightColor = Color.RED
+            enableLights(true)
+        }
+        manager.createNotificationChannel(channel)
+    }
+}

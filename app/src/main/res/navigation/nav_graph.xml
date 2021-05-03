@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    app:startDestination="@id/homeFragment">
+
+    <fragment
+        android:id="@+id/homeFragment"
+        android:name="uz.koinot.stadion.ui.screens.HomeFragment"
+        android:label="fragment_home"
+        tools:layout="@layout/fragment_home" />
+    <fragment
+        android:id="@+id/activeOrderFragment"
+        android:name="uz.koinot.stadion.ui.screens.ActiveOrderFragment"
+        android:label="fragment_active_order"
+        tools:layout="@layout/fragment_active_order" />
+    <fragment
+        android:id="@+id/archiveOrderkFragment"
+        android:name="uz.koinot.stadion.ui.screens.ArchiveOrderFragment"
+        android:label="fragment_archive_orderk"
+        tools:layout="@layout/fragment_archive_orderk" />
+    <fragment
+        android:id="@+id/oderFragment"
+        android:name="uz.koinot.stadion.ui.screens.OderFragment"
+        android:label="fragment_oder"
+        tools:layout="@layout/fragment_oder" />
+</navigation>
