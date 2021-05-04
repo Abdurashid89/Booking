@@ -1,4 +1,4 @@
-package uz.koinot.stadion.ui.screens
+package uz.koinot.stadion.ui.screens.home
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -13,7 +13,6 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.OrderAdapter
-import uz.koinot.stadion.adapter.StadiumAdapter
 import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.databinding.FragmentOderBinding
 import uz.koinot.stadion.utils.CONSTANTS
@@ -25,7 +24,7 @@ import uz.koinot.stadion.utils.showMessage
 @AndroidEntryPoint
 class OderFragment : Fragment(R.layout.fragment_oder) {
 
-    private val viewModel:OrderViewModel by viewModels()
+    private val viewModel: OrderViewModel by viewModels()
     private var _bn: FragmentOderBinding? = null
     private val bn get() = _bn!!
     private val adapter = OrderAdapter()

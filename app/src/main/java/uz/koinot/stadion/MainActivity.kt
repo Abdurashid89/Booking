@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity() {
         _bn = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bn.root)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-        navController = findNavController(R.id.nav_host_fragment_container)
+//        navController = findNavController(R.id.nav_host_fragment_container)
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
 
@@ -37,35 +37,35 @@ class MainActivity : AppCompatActivity() {
             Log.e("AAA","subscribe: ${task.isSuccessful}")
         }
 
-        navController.addOnDestinationChangedListener { controller, destination, arguments ->
-            when(destination.id){
-                R.id.homeFragment -> bn.bottomNav.selectedItemId = R.id.homeFragment
-                R.id.activeOrderFragment -> bn.bottomNav.selectedItemId = R.id.activeOrderFragment
-                R.id.archiveOrderkFragment -> bn.bottomNav.selectedItemId = R.id.archiveOrderkFragment
-            }
-        }
+//        navController.addOnDestinationChangedListener { controller, destination, arguments ->
+//            when(destination.id){
+//                R.id.homeFragment -> bn.bottomNav.selectedItemId = R.id.homeFragment
+//                R.id.activeOrderFragment -> bn.bottomNav.selectedItemId = R.id.activeOrderFragment
+//                R.id.archiveOrderkFragment -> bn.bottomNav.selectedItemId = R.id.archiveOrderkFragment
+//            }
+//        }
 
 
-        bn.bottomNav.setOnNavigationItemSelectedListener{
-            when(it.itemId){
-                R.id.homeFragment ->{
-                    if (navController.currentDestination?.id != R.id.homeFragment)
-                    navController.navigate(R.id.homeFragment)
-                }
-                R.id.activeOrderFragment ->{
-                    if (navController.currentDestination?.id != R.id.activeOrderFragment)
-                    navController.navigate(R.id.activeOrderFragment)
-                }
-                R.id.archiveOrderkFragment ->{
-                    if (navController.currentDestination?.id != R.id.archiveOrderkFragment)
-                    navController.navigate(R.id.archiveOrderkFragment)
-                }
-               else ->{
-                   navController.navigate(R.id.homeFragment)
-               }
-            }
-           false
-        }
+//        bn.bottomNav.setOnNavigationItemSelectedListener{
+//            when(it.itemId){
+//                R.id.homeFragment ->{
+//                    if (navController.currentDestination?.id != R.id.homeFragment)
+//                    navController.navigate(R.id.homeFragment)
+//                }
+//                R.id.activeOrderFragment ->{
+//                    if (navController.currentDestination?.id != R.id.activeOrderFragment)
+//                    navController.navigate(R.id.activeOrderFragment)
+//                }
+//                R.id.archiveOrderkFragment ->{
+//                    if (navController.currentDestination?.id != R.id.archiveOrderkFragment)
+//                    navController.navigate(R.id.archiveOrderkFragment)
+//                }
+//               else ->{
+//                   navController.navigate(R.id.homeFragment)
+//               }
+//            }
+//           false
+//        }
     }
 
     override fun onDestroy() {

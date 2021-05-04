@@ -1,5 +1,6 @@
 package uz.koinot.stadion.adapter
 
+import android.annotation.SuppressLint
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import androidx.core.view.isVisible
@@ -25,6 +26,7 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
     override fun getItemCount() = list.size
 
     inner class VHolder(val view: ItemOrderBinding): RecyclerView.ViewHolder(view.root){
+        @SuppressLint("SetTextI18n")
         fun bind(d: Order){
             view.apply {
                userName.text = "${d.user.firstName} ${d.user.lastName}"

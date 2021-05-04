@@ -28,4 +28,7 @@ interface ApiService {
     @GET("koinot/stadium/cancelOrder/{number}")
     suspend fun reject(@Path("number") number:Int):ResponseObject<Any>
 
+    @GET("koinot/stadiumDash/graph/{number}")
+    suspend fun graph(@Path("number") number:Int):ResponseList<Dashboard>
+
 }

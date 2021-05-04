@@ -6,9 +6,9 @@
         android:title="@string/home" />
 
     <item
-        android:id="@+id/activeOrderFragment"
+        android:id="@+id/dashboard"
         android:icon="@drawable/ic_baseline_notifications_active"
-        android:title="@string/active" />
+        android:title="@string/dashboard" />
 
     <item
         android:id="@+id/archiveOrderkFragment"
