@@ -28,21 +28,20 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
     private var _bn: FragmentOderBinding? = null
     private val bn get() = _bn!!
     private val adapter = OrderAdapter()
-    private lateinit var stadium:Stadium
+    private  var stadiumId:Int = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val arg = arguments?.getString(CONSTANTS.STADION,"")
-        stadium = Gson().fromJson(arg, object : TypeToken<Stadium>() {}.type)
+        stadiumId = arguments?.getInt(CONSTANTS.STADION_ID,0)!!
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentOderBinding.bind(view)
 
-        bn.nameStadium.text = stadium.name
+//        bn.nameStadium.text = stadiumId.name
         bn.rvOrders.adapter = adapter
         bn.rvOrders.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.getOder(stadium.id)
+        viewModel.getOder(stadiumId)
 
         collects()
 
@@ -104,7 +103,7 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
                 when(it){
                     is UiStateObject.SUCCESS ->{
                         showMessage("Muvaffaqiyatli")
-                        viewModel.getOder(stadium.id)
+                        viewModel.getOder(stadiumId)
                     }
                     is UiStateObject.ERROR ->{
                         showMessage("Xatolik")
@@ -121,7 +120,7 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
                 when(it){
                     is UiStateObject.SUCCESS ->{
                         showMessage("Muvaffaqiyatli")
-                        viewModel.getOder(stadium.id)
+                        viewModel.getOder(stadiumId)
                     }
                     is UiStateObject.ERROR ->{
                         showMessage("Xatolik")

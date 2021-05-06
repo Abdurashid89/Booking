@@ -14,4 +14,5 @@ class MainRepository @Inject constructor(
     suspend fun accept(orderId:Int) = api.accept(orderId)
     suspend fun reject(orderId:Int) = api.reject(orderId)
     suspend fun dashboard(stadiumId:Int) = api.graph(stadiumId)
+    suspend fun token(token:String) = api.token(token)
 }

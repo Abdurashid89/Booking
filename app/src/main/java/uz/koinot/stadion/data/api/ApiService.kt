@@ -31,4 +31,7 @@ interface ApiService {
     @GET("koinot/stadiumDash/graph/{number}")
     suspend fun graph(@Path("number") number:Int):ResponseList<Dashboard>
 
+    @GET("koinot/auth/firebase/{token}")
+    suspend fun token(@Path("token") token:String):ResponseList<Any>
+
 }

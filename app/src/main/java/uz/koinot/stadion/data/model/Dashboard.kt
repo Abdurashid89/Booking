@@ -2,5 +2,6 @@ package uz.koinot.stadion.data.model
 
 data class Dashboard(
     var day:String,
-    var benefit:Double
+    var benefit:Float,
+    var count:Int
 )

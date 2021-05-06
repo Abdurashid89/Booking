@@ -6,13 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.viewModels
+import androidx.navigation.NavController
+import androidx.navigation.fragment.findNavController
 import com.google.android.material.tabs.TabLayoutMediator
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.PagerAdapter
+import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.databinding.FragmentDashboardBinding
 import uz.koinot.stadion.databinding.FragmentPagerBinding
 import uz.koinot.stadion.ui.screens.dashboard.DashboardViewModel
+import uz.koinot.stadion.utils.CONSTANTS
 
 
 @AndroidEntryPoint
@@ -21,14 +27,35 @@ class PagerFragment : Fragment(R.layout.fragment_pager) {
     private var _bn: FragmentPagerBinding? = null
     val bn get() = _bn!!
     private lateinit var adapter : PagerAdapter
+    private lateinit var stadium:Stadium
+    private lateinit var navController:NavController
+
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        val arg = arguments?.getString(CONSTANTS.STADION,"")
+        stadium = Gson().fromJson(arg, object : TypeToken<Stadium>() {}.type)
+        navController = findNavController()
+    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentPagerBinding.bind(view)
-        adapter = PagerAdapter(this)
+
+        bn.toolbar.apply {
+            title = stadium.name
+            setNavigationOnClickListener {
+                navController.navigateUp()
+            }
+        }
+        adapter = PagerAdapter(this,stadium.id)
         bn.viewPager.adapter = adapter
 
-        TabLayoutMediator(bn.tabLayout,bn.viewPager){tab, pager->
-            
+        TabLayoutMediator(bn.tabLayout,bn.viewPager){tab, position->
+            if(position == 0){
+                tab.text = "Orders"
+            }else if(position == 1){
+                tab.text = "Archive"
+            }
         }.attach()
 
     }

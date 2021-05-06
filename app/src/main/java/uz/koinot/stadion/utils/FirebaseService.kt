@@ -13,10 +13,15 @@ import android.os.Build
 import android.util.Log
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
+import androidx.lifecycle.lifecycleScope
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import uz.koinot.stadion.MainActivity
 import uz.koinot.stadion.R
+import uz.koinot.stadion.data.api.ApiService
+import javax.inject.Inject
 import kotlin.random.Random
 
 private const val CHANNEL_ID = "channelId"
@@ -24,9 +29,26 @@ private const val CHANNEL_NAME = "channelName"
 
 class FirebaseService : FirebaseMessagingService() {
 
+    @Inject
+    lateinit var api: ApiService
+
     override fun onNewToken(newToken: String) {
         super.onNewToken(newToken)
-        Log.d("AAA","newToken: $newToken")
+
+        GlobalScope.launch {
+            try {
+                val res = api.token(newToken)
+                if(res.success == 200){
+                    Log.e("AAA","newToken success: $newToken")
+                }else{
+                    Log.e("AAA","newToken error: $newToken")
+                }
+            }catch (e:Exception){
+                Log.e("AAA","newToken error catch: $newToken")
+                e.printStackTrace()
+            }
+        }
+        Log.e("AAA","newToken: $newToken")
     }
 
 

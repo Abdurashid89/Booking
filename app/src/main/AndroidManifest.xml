@@ -19,6 +19,16 @@
         android:theme="@style/Theme.Stadion"
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
+
+
+
+        <meta-data
+            android:name="firebase_messaging_auto_init_enabled"
+            android:value="false" />
+        <meta-data
+            android:name="firebase_analytics_collection_enabled"
+            android:value="false" />
+
         <activity android:name=".SplashActivity">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

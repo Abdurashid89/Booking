@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.screens.dashboard.DashboardFragment">
 
-    <!-- TODO: Update blank fragment layout -->
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:text="Active Fragment" />
+    <ir.farshid_roohi.linegraph.LineChart
+        android:layout_width="match_parent"
+        android:id="@+id/lineChart"
+        app:chart_line_color="#32FFFFFF"
+        app:chart_bg_color="#FF2B4A83"
+        android:layout_height="250dp"/>
 
 </FrameLayout>

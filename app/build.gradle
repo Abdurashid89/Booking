@@ -97,4 +97,5 @@ dependencies {
     implementation "com.google.dagger:hilt-android:$hilt_version"
     kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
 
+    implementation 'ir.farshid_roohi:linegraph:0.1.1'
 }

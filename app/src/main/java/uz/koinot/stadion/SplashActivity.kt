@@ -29,7 +29,7 @@ class SplashActivity : AppCompatActivity() {
         if(!storage.hasAccount){
             MainScope().launch {
                 delay(1500)
-                startActivity(Intent(this@SplashActivity,AuthActivity::class.java))
+                startActivity(Intent(this@SplashActivity,MainActivity::class.java))
                 finish()
             }
 

@@ -37,7 +37,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
         collects()
 
         adapter.setOnClickListener {
-            findNavController().navigate(R.id.oderFragment, bundleOf(CONSTANTS.STADION to Gson().toJson(it)),Utils.navOptions())
+            findNavController().navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to Gson().toJson(it)),Utils.navOptions())
         }
     }
 

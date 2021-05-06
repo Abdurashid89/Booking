@@ -1,23 +1,33 @@
 package uz.koinot.stadion
 
+import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
 import androidx.navigation.findNavController
+import com.google.android.gms.tasks.OnCompleteListener
 import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.ktx.Firebase
+import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.android.AndroidEntryPoint
+import uz.koinot.stadion.data.api.ApiService
 import uz.koinot.stadion.databinding.ActivityMainBinding
+import uz.koinot.stadion.utils.showMessage
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
 //    7 277 22 71
+
+    @Inject
+    lateinit var api:ApiService
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private var _bn: ActivityMainBinding? = null
@@ -32,10 +42,35 @@ class MainActivity : AppCompatActivity() {
 //        navController = findNavController(R.id.nav_host_fragment_container)
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
+            mFirebaseAnalytics.setAnalyticsCollectionEnabled(true)
 
-        Firebase.messaging.subscribeToTopic("koinot2").addOnCompleteListener {task->
+        Firebase.messaging.subscribeToTopic("koinot").addOnCompleteListener {task->
             Log.e("AAA","subscribe: ${task.isSuccessful}")
+//            Log.e("AAA","subscribe: ${task.result}")
         }
+        Firebase.messaging.isAutoInitEnabled = true
+
+        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener{task ->
+            if(!task.isSuccessful) return@OnCompleteListener
+
+            lifecycleScope.launchWhenCreated {
+                try {
+                    val res = api.token(task.result.toString())
+                    if(res.success == 200){
+                        showMessage(res.message)
+                    }else{
+                        showMessage(
+                            res.message
+                        )
+                    }
+                }catch (e:Exception){
+                    showMessage(e.localizedMessage)
+                        e.printStackTrace()
+                }
+            }
+            Log.e("AAA","token is: "+task.result.toString())
+        })
+
 
 //        navController.addOnDestinationChangedListener { controller, destination, arguments ->
 //            when(destination.id){
