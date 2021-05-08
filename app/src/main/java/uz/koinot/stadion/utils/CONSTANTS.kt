@@ -2,8 +2,9 @@ package uz.koinot.stadion.utils
 
 object CONSTANTS {
 
-    const val BASE_URL = "https://2ad3c0d5d784.ngrok.io/"
+    const val BASE_URL = "http://104.236.3.227:1002"
     const val TOKEN = "token"
+    const val FIREBASE_TOKEN = "firebaseToken"
     const val HAS_ACCOUNT = "has_account"
     const val STADION = "stadium"
     const val STADION_ID = "stadium_id"

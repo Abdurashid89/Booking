@@ -6,7 +6,6 @@ import android.view.ViewGroup
 import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import uz.koinot.stadion.data.model.Order
-import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.databinding.ItemOrderBinding
 import uz.koinot.stadion.utils.SingleBlock
 
@@ -29,12 +28,12 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
         @SuppressLint("SetTextI18n")
         fun bind(d: Order){
             view.apply {
-               userName.text = "${d.user.firstName} ${d.user.lastName}"
+               userName.text = "${d.firstName} ${d.lastName}"
                startDate.text = d.startDate
                endDate.text = d.endDate
                day.text = d.time
-               phone1.text = d.user.phoneNumber
-               phone2.text = d.user.originalPhoneNumber
+               phone1.text = d.phoneNumber
+               phone2.text = d.originalPhoneNumber
 
                 btnAccept.setOnClickListener {
                     acceptListener?.invoke(d)

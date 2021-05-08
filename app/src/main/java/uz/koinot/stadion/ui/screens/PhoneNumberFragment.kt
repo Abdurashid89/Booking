@@ -3,6 +3,7 @@ package uz.koinot.stadion.ui.screens
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
@@ -39,10 +40,9 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
             val number = bn.inputPhoneNumber.text.toString().trim()
             val password = bn.inputPassword.text.toString().trim()
             if (number.length == 13 && password.isNotEmpty()) {
-                GlobalScope.launch {
+                lifecycleScope.launchWhenCreated {
                     try {
                         val res = api.auth(Register(number, password))
-                        MainScope().launch {
                             if (res.statusCodeValue == 200) {
                                 storage.accessToken = res.body.accessToken
                                 customLog("success")
@@ -55,12 +55,10 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
                                 customLog("error")
                                 showMessage(res.statusCode)
                             }
-                        }
+
                     } catch (e: Exception) {
-                        MainScope().launch {
                             customLog(e.userMessage())
                             showMessage(e.userMessage())
-                        }
                     }
 
                 }

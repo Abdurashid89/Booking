@@ -1,6 +1,6 @@
 package uz.koinot.stadion.data.model
 
-data class Register (
+data class Login(
     var phoneNumber:String,
     var password:String
 )

@@ -24,6 +24,16 @@
 
     </com.google.android.material.textfield.TextInputLayout>
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:id="@+id/sent_again"
+        android:layout_marginTop="24dp"
+        android:clickable="true"
+        android:focusable="true"
+        android:background="?selectableItemBackground"
+        android:text="Sent again"
+        android:layout_height="wrap_content"/>
+
     <Button
         android:id="@+id/btn_verification"
         android:layout_width="match_parent"

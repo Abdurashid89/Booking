@@ -1,5 +1,7 @@
 package uz.koinot.stadion.ui.screens.home
 
+import android.app.AlertDialog
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -12,12 +14,15 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import uz.koinot.stadion.AuthActivity
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.StadiumAdapter
+import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.FragmentHomeBinding
 import uz.koinot.stadion.utils.CONSTANTS
 import uz.koinot.stadion.utils.UiStateList
 import uz.koinot.stadion.utils.Utils
+import javax.inject.Inject
 
 @AndroidEntryPoint
 class HomeFragment : Fragment(R.layout.fragment_home) {
@@ -26,6 +31,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     private var _bn: FragmentHomeBinding? = null
     private val bn get() = _bn!!
     private val adapter = StadiumAdapter()
+
+    @Inject
+    lateinit var storage: LocalStorage
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -38,6 +46,20 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
 
         adapter.setOnClickListener {
             findNavController().navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to Gson().toJson(it)),Utils.navOptions())
+        }
+
+        bn.logOut.setOnClickListener {
+            val dialog = AlertDialog.Builder(requireContext())
+            dialog.setTitle("Exit")
+            dialog.setMessage("Do you want to exit!")
+            dialog.setNegativeButton("No",{dialog, which -> dialog.dismiss() })
+            dialog.setPositiveButton("Yes",{dialog, which ->
+                storage.hasAccount = false
+                requireActivity().startActivity(Intent(requireContext(),AuthActivity::class.java))
+                requireActivity().finish()
+            })
+            dialog.show()
+
         }
     }
 

@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import uz.koinot.stadion.data.model.Dashboard
+import uz.koinot.stadion.data.model.Order
 import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.repository.MainRepository
 import uz.koinot.stadion.utils.UiStateList
@@ -35,4 +36,46 @@ class DashboardViewModel @Inject constructor(
             e.printStackTrace()
         }
     }
+
+    private var _archiveAllFlow = MutableStateFlow<UiStateList<Order>>(UiStateList.EMPTY)
+    val archiveAllFlow: StateFlow<UiStateList<Order>> get() = _archiveAllFlow
+
+    fun archiveAll(number:Int) = viewModelScope.launch {
+        _archiveAllFlow.value = UiStateList.LOADING
+        try {
+            val res = repository.archiveAll(number)
+            if(res.success == 200){
+                _archiveAllFlow.value = UiStateList.SUCCESS(res.objectKoinot)
+            }else{
+                _archiveAllFlow.value = UiStateList.ERROR(res.message)
+            }
+        }catch (e:Exception){
+            _archiveAllFlow.value = UiStateList.ERROR(e.localizedMessage)
+            e.printStackTrace()
+        }
+    }
+
+    private var _afterCreateFlow = MutableStateFlow<UiStateList<Order>>(UiStateList.EMPTY)
+    val afterCreateFlow: StateFlow<UiStateList<Order>> get() = _afterCreateFlow
+
+    fun afterCreateFlow(number:Int,time:String) = viewModelScope.launch {
+        _afterCreateFlow.value = UiStateList.LOADING
+        try {
+            val res = repository.archiveAfterCreateTime(number,time)
+            if(res.success == 200){
+                _afterCreateFlow.value = UiStateList.SUCCESS(res.objectKoinot)
+            }else{
+                _afterCreateFlow.value = UiStateList.ERROR(res.message)
+            }
+        }catch (e:Exception){
+            _afterCreateFlow.value = UiStateList.ERROR(e.localizedMessage)
+            e.printStackTrace()
+        }
+    }
+
+    suspend fun setAllOrder(list: List<Order>) = repository.setAllOrder(list)
+    suspend fun getAllOrder() = repository.getAllOrder()
+    suspend fun removeAllOrder() = repository.removeAllOrder()
+
+
 }

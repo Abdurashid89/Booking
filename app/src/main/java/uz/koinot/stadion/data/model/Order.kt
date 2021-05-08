@@ -1,8 +1,17 @@
 package uz.koinot.stadion.data.model
 
+import androidx.room.Entity
+import androidx.room.PrimaryKey
+
+@Entity(tableName = "order")
 data class Order(
+    @PrimaryKey(autoGenerate = false)
     var id:Int,
-    var user: User,
+    var phoneNumber:String,
+    var originalPhoneNumber:String,
+    var firstName:String,
+    var lastName:String,
+    var language:String,
     var latitude:Double,
     var longitude:Double,
     var sum:Double,

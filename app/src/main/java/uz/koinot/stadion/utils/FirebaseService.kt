@@ -16,8 +16,11 @@ import androidx.core.app.NotificationCompat
 import androidx.lifecycle.lifecycleScope
 import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
+import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.launch
+import retrofit2.Retrofit
+import retrofit2.converter.gson.GsonConverterFactory
 import uz.koinot.stadion.MainActivity
 import uz.koinot.stadion.R
 import uz.koinot.stadion.data.api.ApiService
@@ -29,15 +32,17 @@ private const val CHANNEL_NAME = "channelName"
 
 class FirebaseService : FirebaseMessagingService() {
 
-    @Inject
-    lateinit var api: ApiService
 
     override fun onNewToken(newToken: String) {
         super.onNewToken(newToken)
 
         GlobalScope.launch {
             try {
-                val res = api.token(newToken)
+                val res = Retrofit.Builder()
+                    .baseUrl(CONSTANTS.BASE_URL)
+                    .addConverterFactory(GsonConverterFactory.create())
+                    .build()
+                    .create(ApiService::class.java).token(newToken)
                 if(res.success == 200){
                     Log.e("AAA","newToken success: $newToken")
                 }else{

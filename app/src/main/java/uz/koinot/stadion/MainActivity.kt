@@ -17,6 +17,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.android.AndroidEntryPoint
 import uz.koinot.stadion.data.api.ApiService
+import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.ActivityMainBinding
 import uz.koinot.stadion.utils.showMessage
 import javax.inject.Inject
@@ -28,6 +29,9 @@ class MainActivity : AppCompatActivity() {
 
     @Inject
     lateinit var api:ApiService
+
+    @Inject
+    lateinit var storage: LocalStorage
 
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private var _bn: ActivityMainBinding? = null
@@ -50,26 +54,32 @@ class MainActivity : AppCompatActivity() {
         }
         Firebase.messaging.isAutoInitEnabled = true
 
-        FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener{task ->
-            if(!task.isSuccessful) return@OnCompleteListener
+        if(storage.firebaseToken.isEmpty()){
+            FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener{task ->
+                if(!task.isSuccessful) return@OnCompleteListener
 
-            lifecycleScope.launchWhenCreated {
-                try {
-                    val res = api.token(task.result.toString())
-                    if(res.success == 200){
-                        showMessage(res.message)
-                    }else{
-                        showMessage(
-                            res.message
-                        )
-                    }
-                }catch (e:Exception){
-                    showMessage(e.localizedMessage)
+                storage.firebaseToken = task.result.toString()
+
+                lifecycleScope.launchWhenCreated {
+                    try {
+                        val res = api.token(task.result.toString())
+                        if(res.success == 200){
+                            showMessage(res.message)
+                        }else{
+                            showMessage(
+                                res.message
+                            )
+                        }
+                    }catch (e:Exception){
+                        showMessage(e.localizedMessage)
                         e.printStackTrace()
+                    }
                 }
-            }
-            Log.e("AAA","token is: "+task.result.toString())
-        })
+                Log.e("AAA","token is: "+task.result.toString())
+            })
+        }
+
+
 
 
 //        navController.addOnDestinationChangedListener { controller, destination, arguments ->

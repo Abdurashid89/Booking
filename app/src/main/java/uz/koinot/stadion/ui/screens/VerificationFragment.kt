@@ -25,6 +25,8 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
     @Inject
     lateinit var storage: LocalStorage
 
+    private var time = 0
+
 
     private var _bn: FragmentVerificationBinding? = null
     val bn get() = _bn!!
@@ -56,6 +58,11 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
                         }
                     }
                 }
+
+            }
+        }
+        bn.sentAgain.setOnClickListener {
+            if(time + 3000 < System.currentTimeMillis()){
 
             }
         }

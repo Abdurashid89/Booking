@@ -32,7 +32,12 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        stadiumId = arguments?.getInt(CONSTANTS.STADION_ID,0)!!
+        try {
+            stadiumId = arguments?.getInt(CONSTANTS.STADION_ID,0)!!
+        }catch (e:Exception){
+
+        }
+
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -102,7 +107,7 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
             viewModel.acceptFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
-                        showMessage("Muvaffaqiyatli")
+//                        showMessage("Muvaffaqiyatli")
                         viewModel.getOder(stadiumId)
                     }
                     is UiStateObject.ERROR ->{
@@ -119,7 +124,7 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
             viewModel.rejectFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
-                        showMessage("Muvaffaqiyatli")
+//                        showMessage("Muvaffaqiyatli")
                         viewModel.getOder(stadiumId)
                     }
                     is UiStateObject.ERROR ->{
