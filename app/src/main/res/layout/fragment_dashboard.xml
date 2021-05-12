@@ -7,41 +7,47 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.screens.dashboard.DashboardFragment">
 
-    <androidx.constraintlayout.widget.ConstraintLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:orientation="vertical"
         android:layout_height="match_parent">
-
-        <ir.farshid_roohi.linegraph.LineChart
+        <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:id="@+id/lineChart"
-            android:visibility="gone"
-            app:layout_constraintTop_toTopOf="parent"
-            app:chart_line_color="#32FFFFFF"
-            app:chart_bg_color="#FF2B4A83"
-            android:layout_height="300dp"/>
+            android:orientation="vertical"
+            android:layout_height="match_parent">
 
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            app:layout_constraintTop_toBottomOf="@id/lineChart"
-            android:id="@+id/rv_orders"
-            android:visibility="gone"
-            android:layout_marginTop="24dp"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_height="wrap_content"/>
+            <ir.farshid_roohi.linegraph.LineChart
+                android:layout_width="match_parent"
+                android:id="@+id/lineChart"
+                android:visibility="gone"
+                app:layout_constraintTop_toTopOf="parent"
+                app:chart_line_color="#32FFFFFF"
+                app:chart_bg_color="#FF2B4A83"
+                android:layout_height="300dp"/>
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:id="@+id/nothing"
-            android:text="Arxiv bo'sh"
-            android:textSize="24sp"
-            android:textColor="@color/black"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            android:layout_height="wrap_content"/>
+            <androidx.recyclerview.widget.RecyclerView
+                android:layout_width="match_parent"
+                app:layout_constraintTop_toBottomOf="@id/lineChart"
+                android:id="@+id/rv_orders"
+                android:visibility="visible"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+                android:layout_height="wrap_content"/>
 
-    </androidx.constraintlayout.widget.ConstraintLayout>
+            <TextView
+                android:layout_width="wrap_content"
+                android:id="@+id/nothing"
+                android:text="Arxiv bo'sh"
+                android:textSize="24sp"
+                android:visibility="gone"
+                android:textColor="@color/black"
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                android:layout_height="wrap_content"/>
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+    </androidx.core.widget.NestedScrollView>
+
+
 
 </LinearLayout>

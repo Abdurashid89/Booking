@@ -3,6 +3,7 @@ package uz.koinot.stadion
 import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import androidx.appcompat.app.AppCompatDelegate
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -26,10 +27,12 @@ class SplashActivity : AppCompatActivity() {
         _bn = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(bn.root)
 
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
+
         if(!storage.hasAccount){
             MainScope().launch {
                 delay(1500)
-                startActivity(Intent(this@SplashActivity,AuthActivity::class.java))
+                startActivity(Intent(this@SplashActivity,MainActivity::class.java))
                 finish()
             }
 

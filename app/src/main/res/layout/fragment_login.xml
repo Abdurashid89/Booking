@@ -33,7 +33,7 @@
             android:imeOptions="actionNext"
             android:inputType="phone"
             android:maxLength="13"
-            android:text="+998949125150">
+            android:text="+998977772109">
 
         </com.google.android.material.textfield.TextInputEditText>
 

@@ -59,6 +59,9 @@ class FirebaseService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
+        if(message.data["natificationType"] == CONSTANTS.ORDER){
+
+        }
 
         val intent = Intent(this,MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)

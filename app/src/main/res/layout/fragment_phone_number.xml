@@ -21,7 +21,7 @@
             android:imeOptions="actionNext"
             android:inputType="phone"
             android:id="@+id/inputPhoneNumber"
-            android:text="+998949125150"
+            android:text="+998977772109"
             android:layout_height="match_parent">
 
         </com.google.android.material.textfield.TextInputEditText>

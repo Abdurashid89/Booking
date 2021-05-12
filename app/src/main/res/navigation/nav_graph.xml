@@ -13,12 +13,10 @@
         <action
             android:id="@+id/action_homeFragment_to_pagerFragment"
             app:destination="@id/pagerFragment" />
+        <action
+            android:id="@+id/action_homeFragment_to_createStadiumFragment"
+            app:destination="@id/createStadiumFragment" />
     </fragment>
-    <fragment
-        android:id="@+id/activeOrderFragment"
-        android:name="uz.koinot.stadion.ui.screens.dashboard.DashboardFragment"
-        android:label="fragment_active_order"
-        tools:layout="@layout/fragment_dashboard" />
     <fragment
         android:id="@+id/archiveOrderkFragment"
         android:name="uz.koinot.stadion.ui.screens.ArchiveOrderFragment"
@@ -41,4 +39,9 @@
             android:id="@+id/action_pagerFragment_to_archiveOrderkFragment"
             app:destination="@id/archiveOrderkFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/createStadiumFragment"
+        android:name="uz.koinot.stadion.ui.screens.home.CreateStadiumFragment"
+        android:label="fragment_create_stadium"
+        tools:layout="@layout/fragment_create_stadium" />
 </navigation>

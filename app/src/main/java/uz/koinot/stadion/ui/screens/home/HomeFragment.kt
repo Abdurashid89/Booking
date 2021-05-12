@@ -9,8 +9,10 @@ import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -25,27 +27,46 @@ import uz.koinot.stadion.utils.Utils
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(R.layout.fragment_home) {
+class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefreshListener {
 
     private val viewModel: HomeViewModel by viewModels()
     private var _bn: FragmentHomeBinding? = null
     private val bn get() = _bn!!
     private val adapter = StadiumAdapter()
+    private lateinit var navController: NavController
 
     @Inject
     lateinit var storage: LocalStorage
 
 
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        navController = findNavController()
+
+        viewModel.getAllStadium()
+
+        lifecycleScope.launchWhenCreated {
+            viewModel.stadiumFlow.collect {
+                when(it){
+                    is UiStateList.SUCCESS ->{
+                        it.data?.let { it1 -> adapter.submitList(it1) }
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentHomeBinding.bind(view)
+        bn.swipeRefresh.setOnRefreshListener(this)
 
         bn.homeRv.adapter = adapter
         bn.homeRv.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.getAllStadium()
         collects()
 
         adapter.setOnClickListener {
-            findNavController().navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to Gson().toJson(it)),Utils.navOptions())
+            navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to Gson().toJson(it)),Utils.navOptions())
         }
 
         bn.logOut.setOnClickListener {
@@ -53,13 +74,17 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             dialog.setTitle("Exit")
             dialog.setMessage("Do you want to exit!")
             dialog.setNegativeButton("No",{dialog, which -> dialog.dismiss() })
-            dialog.setPositiveButton("Yes",{dialog, which ->
+            dialog.setPositiveButton("Yes") { dialog, which ->
                 storage.hasAccount = false
                 requireActivity().startActivity(Intent(requireContext(),AuthActivity::class.java))
                 requireActivity().finish()
-            })
+            }
             dialog.show()
 
+        }
+
+        bn.addStadium.setOnClickListener {
+            navController.navigate(R.id.createStadiumFragment,null,Utils.navOptions())
         }
     }
 
@@ -68,9 +93,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
             viewModel.stadiumFlow.collect {
                 when(it){
                     is UiStateList.SUCCESS ->{
+                        bn.swipeRefresh.isRefreshing = false
                         if(it.data != null && it.data.isNotEmpty()){
                             bn.apply {
-                                adapter.submitList(it.data)
                                 progress.isVisible = false
                                 textNotStadium.isVisible = false
                                 homeRv.isVisible = true
@@ -86,6 +111,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                     is UiStateList.ERROR ->{
                         bn.apply {
+                            swipeRefresh.isRefreshing = false
                             progress.isVisible = false
                             textNotStadium.isVisible = true
                             homeRv.isVisible = false
@@ -93,6 +119,7 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
                     }
                     is UiStateList.LOADING ->{
                         bn.apply {
+                            swipeRefresh.isRefreshing = false
                             progress.isVisible = true
                             textNotStadium.isVisible = false
                             homeRv.isVisible = false
@@ -107,5 +134,9 @@ class HomeFragment : Fragment(R.layout.fragment_home) {
     override fun onDestroy() {
         super.onDestroy()
         _bn = null
+    }
+
+    override fun onRefresh() {
+        viewModel.getAllStadium()
     }
 }

@@ -10,7 +10,7 @@ import uz.koinot.stadion.databinding.ItemOrderBinding
 import uz.koinot.stadion.utils.SingleBlock
 import uz.koinot.stadion.utils.toMoneyFormat
 
-class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
+class DashboardOrderAdapter: RecyclerView.Adapter<DashboardOrderAdapter.VHolder>() {
 
     private var listener : SingleBlock<Order>? = null
     private var acceptListener : SingleBlock<Order>? = null
@@ -29,14 +29,15 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
         @SuppressLint("SetTextI18n")
         fun bind(d: Order){
             view.apply {
+                layoutAccept.isVisible = false
 
-               userName.text = "${if(d.firstName != null)d.firstName else ""} ${if(d.lastName != null) d.lastName else ""}"
-               startDate.text = d.startDate
-               endDate.text = d.endDate
-               day.text = d.time
-               sum.text = d.sum.toMoneyFormat()
-               phone1.text = d.phoneNumber
-               phone2.text = d.originalPhoneNumber
+                userName.text = "${if(d.firstName != null)d.firstName else ""} ${if(d.lastName != null) d.lastName else ""}"
+                startDate.text = d.startDate
+                endDate.text = d.endDate
+                day.text = d.time
+                sum.text = d.sum.toMoneyFormat()
+                phone1.text = d.phoneNumber
+                phone2.text = d.originalPhoneNumber
 
                 btnAccept.setOnClickListener {
                     acceptListener?.invoke(d)
@@ -45,7 +46,7 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
                     rejectListener?.invoke(d)
                 }
 
-                layoutAccept.isVisible = !d.active
+
 
             }
 

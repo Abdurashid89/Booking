@@ -14,6 +14,7 @@ import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import uz.koinot.stadion.R
+import uz.koinot.stadion.adapter.DashboardOrderAdapter
 import uz.koinot.stadion.adapter.OrderAdapter
 import uz.koinot.stadion.data.model.Dashboard
 import uz.koinot.stadion.data.model.Order
@@ -29,7 +30,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     val bn get() = _bn!!
     private val viewModel: DashboardViewModel by viewModels()
     private var stadiumId = 0
-    private val adapter = OrderAdapter()
+    private val adapter = DashboardOrderAdapter()
     private var ordersList = ArrayList<Order>()
 
 
@@ -42,43 +43,48 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentDashboardBinding.bind(view)
 
+        bn.rvOrders.adapter = adapter
         viewModel.getDashboard(stadiumId)
 
+        viewModel.archiveAll(stadiumId)
         collects()
 
-        bn.rvOrders.apply {
-            adapter = adapter
-        }
 
     }
 
     private fun collects() {
-        GlobalScope.launch {
-            val orders = viewModel.getAllOrder()
-            if (orders.isNotEmpty()) {
-                viewModel.afterCreateFlow(stadiumId, orders[0].startDate)
-                    ordersList.addAll(orders)
-            } else {
-                viewModel.archiveAll(stadiumId)
-            }
-
-        }
+//        GlobalScope.launch {
+//            val orders = viewModel.getAllOrder()
+//            if (orders.isNotEmpty()) {
+//                viewModel.afterCreateFlow(stadiumId, orders[0].startDate)
+//                    ordersList.addAll(orders)
+//            } else {
+//                viewModel.archiveAll(stadiumId)
+//            }
+//
+//        }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.archiveAllFlow.collect {
                 when (it) {
                     is UiStateList.SUCCESS -> {
                         bn.rvOrders.isVisible = true
-                        GlobalScope.launch {
-                            viewModel.setAllOrder(it.data!!)
+                        if (it.data != null && it.data.isNotEmpty()){
+                            adapter.submitList(it.data)
+                            bn.nothing.visibility = View.GONE
+                        }else{
+                            bn.nothing.visibility = View.VISIBLE
                         }
-                        it.data?.let { it1 -> adapter.submitList(it1) }
+//                        GlobalScope.launch {
+//                            viewModel.setAllOrder(it.data!!)
+//                        }
                     }
                     is UiStateList.ERROR -> {
                         bn.rvOrders.isVisible = false
                         showMessage("Xatolik")
                     }
                     is UiStateList.LOADING -> {
+                        bn.nothing.visibility = View.GONE
                         bn.rvOrders.isVisible = false
                     }
                     else -> Unit

@@ -36,6 +36,7 @@
                 app:tabMode="fixed" />
         </LinearLayout>
 
+
         <androidx.viewpager2.widget.ViewPager2
             android:id="@+id/viewPager"
             android:layout_weight="1"

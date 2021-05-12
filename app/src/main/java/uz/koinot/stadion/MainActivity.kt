@@ -25,7 +25,6 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
-//    7 277 22 71
 
     @Inject
     lateinit var api:ApiService
@@ -54,7 +53,7 @@ class MainActivity : AppCompatActivity() {
         }
         Firebase.messaging.isAutoInitEnabled = true
 
-        if(storage.firebaseToken.isEmpty()){
+        if(!storage.firebaseToken.isEmpty()){
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener{task ->
                 if(!task.isSuccessful) return@OnCompleteListener
 
@@ -63,13 +62,13 @@ class MainActivity : AppCompatActivity() {
                 lifecycleScope.launchWhenCreated {
                     try {
                         val res = api.token(task.result.toString())
-                        if(res.success == 200){
-                            showMessage(res.message)
-                        }else{
-                            showMessage(
-                                res.message
-                            )
-                        }
+//                        if(res.success == 200){
+////                            showMessage(res.message)
+//                        }else{
+////                            showMessage(
+////                                res.message
+////                            )
+//                        }
                     }catch (e:Exception){
                         showMessage(e.localizedMessage)
                         e.printStackTrace()

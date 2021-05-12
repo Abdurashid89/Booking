@@ -20,7 +20,9 @@
         android:usesCleartextTraffic="true"
         tools:targetApi="m">
 
-
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="@string/mapKey"/>
 
         <meta-data
             android:name="firebase_messaging_auto_init_enabled"
