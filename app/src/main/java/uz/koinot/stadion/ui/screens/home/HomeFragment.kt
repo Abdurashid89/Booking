@@ -69,6 +69,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
             navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to Gson().toJson(it)),Utils.navOptions())
         }
 
+        adapter.setOnImageClickListener { stadium, position ->
+            val dialog = ImageDialog(stadium.photos,position)
+            dialog.show(childFragmentManager,"image")
+        }
         bn.logOut.setOnClickListener {
             val dialog = AlertDialog.Builder(requireContext())
             dialog.setTitle("Exit")
@@ -84,7 +88,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
         }
 
         bn.addStadium.setOnClickListener {
-            navController.navigate(R.id.createStadiumFragment,null,Utils.navOptions())
+            navController.navigate(R.id.mapFragment2,null,Utils.navOptions())
         }
     }
 

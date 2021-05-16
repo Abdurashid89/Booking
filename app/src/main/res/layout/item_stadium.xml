@@ -2,38 +2,58 @@
 <com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_marginBottom="12dp"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_marginTop="12dp"
+    android:layout_marginHorizontal="8dp"
     android:layout_height="wrap_content"
     app:cardCornerRadius="16dp">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="wrap_content">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="vertical"
+        android:orientation="horizontal"
         android:padding="16dp">
 
         <TextView
             android:id="@+id/stdName"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="2"
             android:layout_height="wrap_content"
             android:text="Stadion Name" />
 
         <TextView
             android:id="@+id/verifyCount"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
-            android:text="Verified Count"
+            android:gravity="center"
+            android:text="8"
             android:textColor="@color/teal_700" />
 
         <TextView
             android:id="@+id/notVerifyCount"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
+            android:layout_weight="1"
             android:layout_height="wrap_content"
             android:layout_gravity="end"
-            android:text="Not Verified Count"
+            android:text="2"
+            android:gravity="end"
             android:textColor="@color/purple_200" />
     </LinearLayout>
-
+    <androidx.recyclerview.widget.RecyclerView
+        android:layout_width="match_parent"
+        android:id="@+id/rv_images"
+        android:layout_marginEnd="2dp"
+        tools:listitem="@layout/rv_image"
+        tools:itemCount="5"
+        app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
+        android:orientation="horizontal"
+        android:layout_height="wrap_content"/>
+    </LinearLayout>
 
 </com.google.android.material.card.MaterialCardView>

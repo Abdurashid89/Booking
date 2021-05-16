@@ -4,5 +4,6 @@ data class Stadium(
     var name: String,
     var id:Int,
     var countVerify:Int,
-    var countNotVerify:Int
+    var countNotVerify:Int,
+    var photos:List<Photos>
     )

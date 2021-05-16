@@ -14,14 +14,9 @@
             android:id="@+id/action_homeFragment_to_pagerFragment"
             app:destination="@id/pagerFragment" />
         <action
-            android:id="@+id/action_homeFragment_to_createStadiumFragment"
-            app:destination="@id/createStadiumFragment" />
+            android:id="@+id/action_homeFragment_to_mapFragment2"
+            app:destination="@id/mapFragment2" />
     </fragment>
-    <fragment
-        android:id="@+id/archiveOrderkFragment"
-        android:name="uz.koinot.stadion.ui.screens.ArchiveOrderFragment"
-        android:label="fragment_archive_orderk"
-        tools:layout="@layout/fragment_archive_orderk" />
     <fragment
         android:id="@+id/oderFragment"
         android:name="uz.koinot.stadion.ui.screens.home.OderFragment"
@@ -44,4 +39,13 @@
         android:name="uz.koinot.stadion.ui.screens.home.CreateStadiumFragment"
         android:label="fragment_create_stadium"
         tools:layout="@layout/fragment_create_stadium" />
+    <fragment
+        android:id="@+id/mapFragment2"
+        android:name="uz.koinot.stadion.ui.screens.home.MapFragment"
+        android:label="fragment_map"
+        tools:layout="@layout/fragment_map" >
+        <action
+            android:id="@+id/action_mapFragment2_to_createStadiumFragment"
+            app:destination="@id/createStadiumFragment" />
+    </fragment>
 </navigation>
