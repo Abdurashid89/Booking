@@ -40,7 +40,7 @@
                 android:id="@+id/location"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Phone Number"
+                android:hint="Adress Stadium"
                 android:clickable="false"
                 android:focusable="false"
                 android:imeOptions="actionNext"
@@ -105,9 +105,14 @@
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
+                android:id="@+id/rv_images"
+                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
+                app:spanCount="3"
+                android:orientation="vertical"
                 android:layout_height="wrap_content"/>
             <com.google.android.material.card.MaterialCardView
                 android:layout_width="120dp"
+                android:id="@+id/add_image"
                 android:layout_marginTop="16dp"
                 app:cardCornerRadius="16dp"
                 android:layout_marginBottom="16dp"
@@ -143,12 +148,12 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/price_night"
+                android:id="@+id/priceNight"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Price Night"
                 android:imeOptions="actionNext"
-                android:inputType="text">
+                android:inputType="number">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -175,20 +180,38 @@
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/sizeStadium"
+                android:id="@+id/widthStadium"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Size Stadium"
+                android:hint="Width Stadium"
                 android:imeOptions="actionNext"
-                android:inputType="text">
+                android:inputType="number">
 
             </com.google.android.material.textfield.TextInputEditText>
+
+        </com.google.android.material.textfield.TextInputLayout>
+        <com.google.android.material.textfield.TextInputLayout
+            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/heightStadium"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:hint="Height Stadium"
+                android:imeOptions="actionDone"
+                android:inputType="number">
+
+            </com.google.android.material.textfield.TextInputEditText>
+
 
         </com.google.android.material.textfield.TextInputLayout>
 
         <com.google.android.material.button.MaterialButton
             android:layout_width="match_parent"
             android:layout_marginTop="24dp"
+            android:id="@+id/btn_add_stadium"
             android:text="Add Stadium"
             android:textAllCaps="false"
             android:layout_height="match_parent"/>

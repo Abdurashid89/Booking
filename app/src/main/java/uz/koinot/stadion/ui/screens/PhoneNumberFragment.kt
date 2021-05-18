@@ -28,6 +28,7 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
 
     @Inject
     lateinit var storage: LocalStorage
+    private var number = ""
 
     private var _bn: FragmentPhoneNumberBinding? = null
     val bn get() = _bn!!
@@ -37,7 +38,7 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
         _bn = FragmentPhoneNumberBinding.bind(view)
 
         bn.btnPhoneNumber.setOnClickListener {
-            val number = bn.inputPhoneNumber.text.toString().trim()
+            number = bn.inputPhoneNumber.text.toString().trim()
             val password = bn.inputPassword.text.toString().trim()
             if (number.length == 13 && password.isNotEmpty()) {
                 lifecycleScope.launchWhenCreated {
@@ -46,6 +47,7 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
                             if (res.statusCodeValue == 200) {
                                 storage.accessToken = res.body.accessToken
                                 customLog("success")
+                                storage.phoneNumber = number
                                 findNavController().navigate(
                                     R.id.verificationFragment,
                                     null,

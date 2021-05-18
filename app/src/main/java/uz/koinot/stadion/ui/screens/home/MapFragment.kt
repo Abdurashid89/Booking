@@ -25,10 +25,7 @@ import com.google.gson.Gson
 import uz.koinot.stadion.R
 import uz.koinot.stadion.databinding.FragmentHomeBinding
 import uz.koinot.stadion.databinding.FragmentMapBinding
-import uz.koinot.stadion.utils.CONSTANTS
-import uz.koinot.stadion.utils.GPSTracker
-import uz.koinot.stadion.utils.Utils
-import uz.koinot.stadion.utils.checkPermission
+import uz.koinot.stadion.utils.*
 
 class MapFragment : Fragment(R.layout.fragment_map) {
 
@@ -38,6 +35,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private var location:LatLng? = null
     private var marker: Marker? = null
     private lateinit var tracker:GPSTracker
+    private var adress = ""
 
     override fun onCreateView(
         inflater: LayoutInflater,
@@ -59,26 +57,46 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                             .draggable(true)
                             .icon(BitmapDescriptorFactory.defaultMarker())
                     )
+                    bn.button.text = getCompleteAddressString(tracker.getLatitude(),tracker.getLongitude())
+                    location =  LatLng(
+                        tracker.getLatitude(),
+                        tracker.getLongitude()
+                    )
                     mMap?.animateCamera(
                         CameraUpdateFactory.newLatLngZoom(
-                            LatLng(
-                                tracker.getLatitude(),
-                                tracker.getLongitude()
-                            ), 13f
+                           location, 13f
                         )
                     )
+
+
+                    mMap?.setOnMapClickListener { latLng ->
+                        location = latLng
+                        adress = getCompleteAddressString(latLng.latitude,latLng.longitude).toString()
+                        bn.button.text = adress
+                        marker?.apply {
+                            position = location
+                            title = adress
+                        }
+//                        marker = mMap?.addMarker(MarkerOptions().position(latLng).title(adress).icon(BitmapDescriptorFactory.defaultMarker()))
+                    }
+                    mMap?.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener{
+                        override fun onMarkerDragStart(p0: Marker) {}
+                        override fun onMarkerDrag(p0: Marker) {}
+                        override fun onMarkerDragEnd(marker: Marker) {
+                            adress = getCompleteAddressString(marker.position.latitude,marker.position.longitude).toString()
+                            location = LatLng(marker.position.latitude,marker.position.longitude)
+                            bn.button.text = adress
+                        }
+                    })
+
+
                 }else{
                     createLocationRequest()
                 }
 
             }
         }
-        mMap?.setOnMapClickListener { latLng ->
-            location = latLng
-            marker?.apply {
-                position = latLng
-            }
-        }
+
 
         return bn.root
     }
@@ -86,9 +104,14 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         bn.btnChooseLocation.setOnClickListener {
-            Toast.makeText(requireContext(), "choose", Toast.LENGTH_SHORT).show()
             if(location != null){
-                findNavController().navigate(R.id.createStadiumFragment, bundleOf(CONSTANTS.LOCATION to Gson().toJson(location)),Utils.navOptions())
+                findNavController().navigate(R.id.createStadiumFragment,
+                    bundleOf(
+                        CONSTANTS.LOCATION to Gson().toJson(location),
+                        CONSTANTS.ADRESS to adress)
+                    ,Utils.navOptions())
+            }else{
+                Toast.makeText(requireContext(), "Please choose stadium location", Toast.LENGTH_SHORT).show()
             }
         }
 

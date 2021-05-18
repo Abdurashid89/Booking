@@ -12,10 +12,12 @@
         <TextView
             android:layout_width="wrap_content"
             android:text="Choose Location"
+            android:textColor="@color/black"
+            android:textStyle="bold"
             android:layout_gravity="start|center"
             android:layout_marginStart="16dp"
             android:layout_height="wrap_content"/>
-        <Button
+        <com.google.android.material.button.MaterialButton
             android:layout_width="wrap_content"
             android:text="Choose"
             android:textAllCaps="false"
@@ -25,11 +27,23 @@
             android:layout_height="wrap_content"/>
 
     </FrameLayout>
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+        <fragment
+            android:layout_width="match_parent"
+            android:id="@+id/mapFragment"
+            android:name="com.google.android.gms.maps.SupportMapFragment"
+            android:layout_height="match_parent" />
+        <com.google.android.material.button.MaterialButton
+            android:layout_width="match_parent"
+            android:layout_gravity="bottom"
+            android:id="@+id/button"
+            android:textAllCaps="false"
+            android:layout_height="wrap_content"/>
+    </FrameLayout>
 
-  <fragment
-      android:layout_width="match_parent"
-      android:id="@+id/mapFragment"
-      android:name="com.google.android.gms.maps.SupportMapFragment"
-      android:layout_height="match_parent" />
+
 
 </LinearLayout>

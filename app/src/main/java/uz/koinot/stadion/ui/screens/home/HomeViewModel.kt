@@ -27,7 +27,7 @@ class HomeViewModel @Inject constructor(
             if(res.success == 200){
                 _stadiumFlow.value = UiStateList.SUCCESS(res.objectKoinot)
             }else{
-                _stadiumFlow.value = UiStateList.ERROR(res.message)
+                _stadiumFlow.value = UiStateList.ERROR(res.message,true,res.success)
             }
         }catch (e:Exception){
             _stadiumFlow.value = UiStateList.ERROR(e.localizedMessage)

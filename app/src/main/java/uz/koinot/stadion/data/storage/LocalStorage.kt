@@ -19,6 +19,10 @@ class LocalStorage @Inject constructor(@ApplicationContext context: Context){
         set(value) = sharedPref.edit().putString(CONSTANTS.FIREBASE_TOKEN,value).apply()
         get() = sharedPref.getString(CONSTANTS.FIREBASE_TOKEN,"")!!
 
+    var phoneNumber:String
+        set(value) = sharedPref.edit().putString(CONSTANTS.PHONE_NUMBER,value).apply()
+        get() = sharedPref.getString(CONSTANTS.PHONE_NUMBER,"")!!
+
     var hasAccount:Boolean
     set(value) = sharedPref.edit().putBoolean(CONSTANTS.HAS_ACCOUNT,value).apply()
     get() = sharedPref.getBoolean(CONSTANTS.HAS_ACCOUNT,false)

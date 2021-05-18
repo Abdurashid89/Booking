@@ -1,5 +1,6 @@
 package uz.koinot.stadion.data.api
 
+import okhttp3.MultipartBody
 import retrofit2.http.*
 import retrofit2.http.Body
 import uz.koinot.stadion.data.model.*
@@ -43,6 +44,17 @@ interface ApiService {
         @Path("number") number: Int,
         @Query("time") time: String
     ):ResponseList<Order>
+
+    @Multipart
+    @POST("koinot/stadium/uploadPhotoFile/{id}")
+    suspend fun uploadPhoto(
+        @Path("id") id:Int,
+        @Part image: MultipartBody.Part
+        ): ResponseObject<Any>
+
+
+    @POST("koinot/stadium/saveOrEdit")
+    suspend fun createStadium(@Body data:CreateStadium):ResponseObject<Any>
 
 
 

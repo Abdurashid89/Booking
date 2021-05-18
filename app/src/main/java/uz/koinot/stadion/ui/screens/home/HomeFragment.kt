@@ -115,9 +115,16 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
                     }
                     is UiStateList.ERROR ->{
                         bn.apply {
+                            textNotStadium.isVisible = true
+                            if(it.fromServer)
+                                textNotStadium.text = it.message
+//                            if(it.code == 400)
+//                                storage.hasAccount = false
+//                            requireActivity().startActivity(Intent(requireContext(),AuthActivity::class.java))
+//                            requireActivity().finish()
+
                             swipeRefresh.isRefreshing = false
                             progress.isVisible = false
-                            textNotStadium.isVisible = true
                             homeRv.isVisible = false
                         }
                     }

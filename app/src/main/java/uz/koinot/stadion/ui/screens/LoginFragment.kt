@@ -28,6 +28,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
     @Inject
     lateinit var storage: LocalStorage
+    private var number = ""
 
     private var _bn: FragmentLoginBinding? = null
     val bn get() = _bn!!
@@ -38,7 +39,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
         bn.apply {
             btnLogin.setOnClickListener {
-                val number = inputPhoneNumber.text.toString().trim()
+                number = inputPhoneNumber.text.toString().trim()
                 val password = inputPassword.text.toString().trim()
                 if(number.length == 13 && password.length > 2){
                     viewModel.login(Login(number,password))
@@ -59,6 +60,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 when(it){
                     is UiStateObject.SUCCESS ->{
                         storage.hasAccount = true
+                        storage.phoneNumber = number
                         requireActivity().startActivity(Intent(requireContext(),MainActivity::class.java))
                         requireActivity().finish()
                     }
