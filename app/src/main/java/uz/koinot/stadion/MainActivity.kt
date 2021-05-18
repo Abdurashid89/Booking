@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.util.Log
 import android.view.View
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.os.bundleOf
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.Navigation
@@ -15,10 +16,14 @@ import com.google.firebase.analytics.FirebaseAnalytics
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
+import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import uz.koinot.stadion.data.api.ApiService
+import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.ActivityMainBinding
+import uz.koinot.stadion.utils.CONSTANTS
+import uz.koinot.stadion.utils.Utils
 import uz.koinot.stadion.utils.showMessage
 import javax.inject.Inject
 
@@ -79,6 +84,13 @@ class MainActivity : AppCompatActivity() {
         }
 
 
+        val text = intent.getStringExtra("koinot")
+        val id = intent.getIntExtra("id",0)
+        if(text == "main"){
+            navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to Gson().toJson(Stadium("stadium",id,0,0,
+                emptyList()))),
+                Utils.navOptions())
+        }
 
 
 //        navController.addOnDestinationChangedListener { controller, destination, arguments ->
