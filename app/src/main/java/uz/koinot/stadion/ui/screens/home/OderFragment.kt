@@ -3,9 +3,11 @@ package uz.koinot.stadion.ui.screens.home
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
@@ -15,10 +17,7 @@ import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.OrderAdapter
 import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.databinding.FragmentOderBinding
-import uz.koinot.stadion.utils.CONSTANTS
-import uz.koinot.stadion.utils.UiStateList
-import uz.koinot.stadion.utils.UiStateObject
-import uz.koinot.stadion.utils.showMessage
+import uz.koinot.stadion.utils.*
 
 
 @AndroidEntryPoint
@@ -32,6 +31,7 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        if(arguments != null)
         stadiumId = arguments?.getInt(CONSTANTS.STADION_ID,0)!!
 
     }
@@ -44,8 +44,8 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
         bn.rvOrders.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getOder(stadiumId)
         bn.btnAddOrder.setOnClickListener {
-            showMessage("Tez orada ishlab qolishi mumkin")
-
+//            showMessage("Tez orada ishlab qolishi mumkin")
+            findNavController().navigate(R.id.createOrderFragment, bundleOf(CONSTANTS.STADION_ID to stadiumId),Utils.navOptions())
         }
 
         collects()

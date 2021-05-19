@@ -25,11 +25,11 @@ class LoginViewModel @Inject constructor(
         _loginFlow.value = UiStateObject.LOADING
         try {
             val res = repository.login(data)
-            if (res.statusCodeValue == 200) {
-                storage.accessToken = res.body.accessToken
-                _loginFlow.value = UiStateObject.SUCCESS(res.statusCode)
+            if (res.success == 200) {
+                storage.accessToken = res.objectKoinot!!.accessToken
+                _loginFlow.value = UiStateObject.SUCCESS(res.message)
             } else {
-                _loginFlow.value = UiStateObject.ERROR(res.statusCode)
+                _loginFlow.value = UiStateObject.ERROR(res.message,true)
             }
         } catch (e: Exception) {
             _loginFlow.value = UiStateObject.ERROR(e.localizedMessage)

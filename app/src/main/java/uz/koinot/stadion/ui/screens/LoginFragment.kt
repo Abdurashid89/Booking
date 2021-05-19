@@ -70,6 +70,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                     is UiStateObject.LOADING ->{
                         showMessage("Loading")
                     }
+                    else -> Unit
                 }
             }
         }

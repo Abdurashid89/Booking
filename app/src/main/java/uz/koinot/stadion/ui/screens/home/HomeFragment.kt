@@ -118,10 +118,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
                             textNotStadium.isVisible = true
                             if(it.fromServer)
                                 textNotStadium.text = it.message
-//                            if(it.code == 400)
-//                                storage.hasAccount = false
-//                            requireActivity().startActivity(Intent(requireContext(),AuthActivity::class.java))
-//                            requireActivity().finish()
+                            if(it.code == 400)
+                                storage.hasAccount = false
+                            requireActivity().startActivity(Intent(requireContext(),AuthActivity::class.java))
+                            requireActivity().finish()
 
                             swipeRefresh.isRefreshing = false
                             progress.isVisible = false

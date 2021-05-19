@@ -8,10 +8,10 @@ import uz.koinot.stadion.data.model.*
 interface ApiService {
 
     @POST("koinot/auth/register")
-    suspend fun auth(@Body data:Register):ResponseRegister
+    suspend fun auth(@Body data:Register):ResponseObject<TokenBody>
 
     @POST("koinot/auth/login")
-    suspend fun login(@Body data:Login):ResponseRegister
+    suspend fun login(@Body data:Login):ResponseObject<TokenBody>
 
 
     @POST("koinot/auth/verify/{number}")
@@ -61,6 +61,9 @@ interface ApiService {
 
     @GET("koinot/order/searchNumber/{number}")
     suspend fun search(@Path("number") number: Int):ResponseList<SearchUser>
+
+    @GET("koinot/order/searchNumber")
+    suspend fun getNewStadiumId():ResponseObject<Int>
 
 
 }

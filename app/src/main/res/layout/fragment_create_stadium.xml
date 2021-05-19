@@ -10,9 +10,19 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:orientation="vertical"
-        android:padding="16dp"
         android:layout_height="match_parent">
 
+        <com.google.android.material.appbar.MaterialToolbar
+            android:layout_width="match_parent"
+            app:title="Create Stadium"
+            android:id="@+id/toolbar"
+            app:navigationIcon="@drawable/ic_baseline_arrow_back"
+            android:layout_height="wrap_content"/>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="vertical"
+            android:padding="16dp"
+            android:layout_height="match_parent">
 
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
@@ -24,6 +34,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Phone Number"
+                android:drawableStart="@drawable/ic_baseline_phone_android"
+                android:drawablePadding="12dp"
                 android:imeOptions="actionNext"
                 android:inputType="phone"
                 android:maxLength="13">
@@ -34,6 +46,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
+            android:layout_marginTop="12dp"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -52,6 +65,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
+            android:layout_marginTop="12dp"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -68,6 +82,8 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
+            android:layout_marginTop="12dp"
+            android:id="@+id/layoutTimeOpen"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -75,6 +91,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Time Open"
+                android:clickable="false"
+                android:focusable="false"
                 android:imeOptions="actionNext"
                 android:inputType="time">
 
@@ -84,6 +102,8 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
+            android:id="@+id/layoutTimeClose"
+            android:layout_marginTop="12dp"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -91,6 +111,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:hint="Time Close"
+                android:clickable="false"
+                android:focusable="false"
                 android:imeOptions="actionNext"
                 android:inputType="time">
 
@@ -101,6 +123,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
+            android:layout_marginTop="12dp"
             android:layout_height="wrap_content">
 
             <androidx.recyclerview.widget.RecyclerView
@@ -118,6 +141,7 @@
                 android:layout_marginBottom="16dp"
                 app:cardBackgroundColor="@color/teal_200"
                 android:layout_height="120dp">
+
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_gravity="center"
@@ -129,6 +153,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
+            android:layout_marginTop="12dp"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -145,6 +170,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
+            android:layout_marginTop="12dp"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -161,12 +187,15 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
+            android:id="@+id/layoutStartNightTime"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/whenStartNightTime"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:clickable="false"
+                android:focusable="false"
                 android:hint="When start night time?"
                 android:imeOptions="actionNext"
                 android:inputType="text">
@@ -177,6 +206,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
+            android:layout_marginTop="12dp"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -193,6 +223,7 @@
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
+            android:layout_marginTop="12dp"
             android:layout_height="wrap_content">
 
             <com.google.android.material.textfield.TextInputEditText
@@ -217,7 +248,7 @@
             android:layout_height="match_parent"/>
 
     </LinearLayout>
-
+    </LinearLayout>
 
 
 </androidx.core.widget.NestedScrollView>

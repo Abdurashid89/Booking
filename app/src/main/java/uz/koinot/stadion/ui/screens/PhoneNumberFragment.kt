@@ -37,15 +37,19 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentPhoneNumberBinding.bind(view)
 
-        bn.btnPhoneNumber.setOnClickListener {
-            number = bn.inputPhoneNumber.text.toString().trim()
-            val password = bn.inputPassword.text.toString().trim()
-            if (number.length == 13 && password.isNotEmpty()) {
-                lifecycleScope.launchWhenCreated {
-                    try {
-                        val res = api.auth(Register(number, password))
-                            if (res.statusCodeValue == 200) {
-                                storage.accessToken = res.body.accessToken
+        bn.apply {
+            toolbar.setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
+            btnPhoneNumber.setOnClickListener {
+                number = bn.inputPhoneNumber.text.toString().trim()
+                val password = bn.inputPassword.text.toString().trim()
+                if (number.length == 13 && password.isNotEmpty()) {
+                    lifecycleScope.launchWhenCreated {
+                        try {
+                            val res = api.auth(Register(number, password))
+                            if (res.success == 200) {
+                                storage.accessToken = res.objectKoinot!!.accessToken
                                 customLog("success")
                                 storage.phoneNumber = number
                                 findNavController().navigate(
@@ -55,19 +59,21 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
                                 )
                             } else {
                                 customLog("error")
-                                showMessage(res.statusCode)
+                                showMessage(res.message)
                             }
 
-                    } catch (e: Exception) {
+                        } catch (e: Exception) {
                             customLog(e.userMessage())
                             showMessage(e.userMessage())
-                    }
+                        }
 
+                    }
+                } else {
+                    showMessage("Iltimos malumotlarni to'ldiring")
                 }
-            } else {
-                showMessage("Iltimos malumotlarni to'ldiring")
             }
         }
+
 
     }
 

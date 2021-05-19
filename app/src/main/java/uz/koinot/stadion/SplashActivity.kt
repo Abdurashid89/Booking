@@ -29,20 +29,14 @@ class SplashActivity : AppCompatActivity() {
 
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        if(!storage.hasAccount){
-            MainScope().launch {
-                delay(1500)
-                startActivity(Intent(this@SplashActivity,MainActivity::class.java))
-                finish()
+        MainScope().launch {
+            delay(1500)
+            if (!storage.hasAccount) {
+                startActivity(Intent(this@SplashActivity, AuthActivity::class.java))
+            } else {
+                startActivity(Intent(this@SplashActivity, MainActivity::class.java))
             }
-
-        }else{
-            MainScope().launch {
-                delay(1500)
-                startActivity(Intent(this@SplashActivity,MainActivity::class.java))
-                finish()
-            }
-
+            finish()
         }
     }
 

@@ -21,7 +21,11 @@
         android:id="@+id/oderFragment"
         android:name="uz.koinot.stadion.ui.screens.home.OderFragment"
         android:label="fragment_oder"
-        tools:layout="@layout/fragment_oder" />
+        tools:layout="@layout/fragment_oder" >
+        <action
+            android:id="@+id/action_oderFragment_to_createOrderFragment"
+            app:destination="@id/createOrderFragment" />
+    </fragment>
     <fragment
         android:id="@+id/pagerFragment"
         android:name="uz.koinot.stadion.ui.screens.PagerFragment"
@@ -48,4 +52,9 @@
             android:id="@+id/action_mapFragment2_to_createStadiumFragment"
             app:destination="@id/createStadiumFragment" />
     </fragment>
+    <fragment
+        android:id="@+id/createOrderFragment"
+        android:name="uz.koinot.stadion.ui.screens.home.CreateOrderFragment"
+        android:label="fragment_create_order"
+        tools:layout="@layout/fragment_create_order" />
 </navigation>

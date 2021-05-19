@@ -63,4 +63,22 @@ class CreateStadiumViewModel @Inject constructor(
             e.printStackTrace()
         }
     }
+
+    private var _newStadiumIdFlow = MutableStateFlow<UiStateObject<Int>>(UiStateObject.EMPTY)
+    val newStadiumIdFlow: StateFlow<UiStateObject<Int>> get() = _newStadiumIdFlow
+
+    fun newStadiumId() = viewModelScope.launch {
+        _newStadiumIdFlow.value = UiStateObject.LOADING
+        try {
+            val res = repository.getNewStadiumId()
+            if(res.success == 200){
+                _newStadiumIdFlow.value = UiStateObject.SUCCESS(res.objectKoinot!!)
+            }else{
+                _newStadiumIdFlow.value = UiStateObject.ERROR(res.message,true)
+            }
+        }catch (e:Exception){
+            _newStadiumIdFlow.value = UiStateObject.ERROR(e.localizedMessage)
+            e.printStackTrace()
+        }
+    }
 }

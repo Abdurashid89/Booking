@@ -127,6 +127,13 @@ dependencies {
     implementation 'com.google.android.libraries.places:places:2.4.0'
 
 
+    /**
+     * Material DateTime Picker - Select a time/date in style
+     * */
+    implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
+
+
+
     // ImagePicker
 //    implementation 'com.github.dhaval2404:imagepicker:2.0'
 //    implementation 'com.github.florent37:inline-activity-result-kotlin:1.0.4'

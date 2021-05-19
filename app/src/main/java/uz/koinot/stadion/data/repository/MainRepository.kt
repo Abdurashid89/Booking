@@ -2,6 +2,7 @@ package uz.koinot.stadion.data.repository
 
 import okhttp3.MultipartBody
 import uz.koinot.stadion.data.api.ApiService
+import uz.koinot.stadion.data.model.CreateOrder
 import uz.koinot.stadion.data.model.CreateStadium
 import uz.koinot.stadion.data.model.Login
 import uz.koinot.stadion.data.model.Order
@@ -26,6 +27,9 @@ class MainRepository @Inject constructor(
     suspend fun login(data:Login) = api.login(data)
     suspend fun attachment(id:Int,image: MultipartBody.Part) = api.uploadPhoto(id,image)
     suspend fun createStadium(data: CreateStadium) = api.createStadium(data)
+    suspend fun createOrder(data: CreateOrder) = api.createOrder(data)
+    suspend fun searchUser(data: Int) = api.search(data)
+    suspend fun getNewStadiumId() = api.getNewStadiumId()
 
 
 
