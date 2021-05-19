@@ -32,11 +32,7 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        try {
-            stadiumId = arguments?.getInt(CONSTANTS.STADION_ID,0)!!
-        }catch (e:Exception){
-
-        }
+        stadiumId = arguments?.getInt(CONSTANTS.STADION_ID,0)!!
 
     }
 
