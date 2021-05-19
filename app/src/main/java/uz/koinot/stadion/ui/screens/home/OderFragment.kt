@@ -47,6 +47,10 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
         bn.rvOrders.adapter = adapter
         bn.rvOrders.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getOder(stadiumId)
+        bn.btnAddOrder.setOnClickListener {
+            showMessage("Tez orada ishlab qolishi mumkin")
+
+        }
 
         collects()
 

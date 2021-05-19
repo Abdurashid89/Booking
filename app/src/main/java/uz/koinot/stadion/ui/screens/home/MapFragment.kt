@@ -57,7 +57,8 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                             .draggable(true)
                             .icon(BitmapDescriptorFactory.defaultMarker())
                     )
-                    bn.button.text = getCompleteAddressString(tracker.getLatitude(),tracker.getLongitude())
+                    adress = getCompleteAddressString(tracker.getLatitude(),tracker.getLongitude()).toString()
+                    bn.button.text = adress
                     location =  LatLng(
                         tracker.getLatitude(),
                         tracker.getLongitude()

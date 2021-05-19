@@ -45,8 +45,8 @@ class CreateStadiumViewModel @Inject constructor(
         }
     }
 
-    private var _createStadiumFlow = MutableStateFlow<UiStateObject<Boolean>>(UiStateObject.EMPTY)
-    val createStadiumFlow: StateFlow<UiStateObject<Boolean>> get() = _createStadiumFlow
+    private var _createStadiumFlow = MutableStateFlow<UiStateObject<Int>>(UiStateObject.EMPTY)
+    val createStadiumFlow: StateFlow<UiStateObject<Int>> get() = _createStadiumFlow
 
     fun createStadium(data: CreateStadium) = viewModelScope.launch {
         _createStadiumFlow.value = UiStateObject.LOADING
@@ -54,7 +54,7 @@ class CreateStadiumViewModel @Inject constructor(
             val res = repository.createStadium(data)
 
             if(res.success == 200){
-                _createStadiumFlow.value = UiStateObject.SUCCESS(true)
+                _createStadiumFlow.value = UiStateObject.SUCCESS(res.objectKoinot!!)
             }else{
                 _createStadiumFlow.value = UiStateObject.ERROR(res.message,true)
             }

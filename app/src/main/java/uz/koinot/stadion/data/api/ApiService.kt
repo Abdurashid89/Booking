@@ -54,9 +54,13 @@ interface ApiService {
 
 
     @POST("koinot/stadium/saveOrEdit")
-    suspend fun createStadium(@Body data:CreateStadium):ResponseObject<Any>
+    suspend fun createStadium(@Body data:CreateStadium):ResponseObject<Int>
 
+    @POST("koinot/order/adminCreateOrder")
+    suspend fun createOrder(@Body data:CreateOrder):ResponseObject<Any>
 
+    @GET("koinot/order/searchNumber/{number}")
+    suspend fun search(@Path("number") number: Int):ResponseList<SearchUser>
 
 
 }

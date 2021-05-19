@@ -128,6 +128,6 @@ dependencies {
 
 
     // ImagePicker
-    implementation 'com.github.dhaval2404:imagepicker:1.8'
-    implementation 'com.github.florent37:inline-activity-result-kotlin:1.0.4'
+//    implementation 'com.github.dhaval2404:imagepicker:2.0'
+//    implementation 'com.github.florent37:inline-activity-result-kotlin:1.0.4'
 }
