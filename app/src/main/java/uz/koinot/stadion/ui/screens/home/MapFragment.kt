@@ -51,6 +51,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                 tracker = GPSTracker(requireContext())
                 if(tracker.canGetLocation()){
                     tracker.getLocation()
+                    marker?.remove()
                     marker = mMap?.addMarker(
                         MarkerOptions().title("My Location")
                             .position(LatLng(tracker.getLatitude(),tracker.getLongitude()))

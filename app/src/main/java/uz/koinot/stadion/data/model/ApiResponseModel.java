@@ -11,26 +11,26 @@ import java.util.TimeZone;
 
 public class ApiResponseModel {
 
-    private double getPriceStadium(Stadium stadium, Date start, Date end){
-        DecimalFormat df = new DecimalFormat("#.##");
-        df.setRoundingMode(RoundingMode.CEILING);
-        SimpleDateFormat h = new SimpleDateFormat("HH");
-        SimpleDateFormat m = new SimpleDateFormat("mm");
-        int st= (Integer.parseInt(h.format(start))*60)+Integer.parseInt(m.format(start));
-        int et= (Integer.parseInt(h.format(end))*60)+Integer.parseInt(m.format(end));
-        int ss= (Integer.parseInt(h.format(stadium.getChange_price_time()))*60)+Integer.parseInt(m.format(stadium.getChange_price_time()));
-        double price_day_time = stadium.getPrice_day_time()/60;
-        double price_night_time = stadium.getPrice_night_time()/60;
-        double better=getBetter(start,end);
-        if (st<ss&&et<ss){
-            return Double.parseDouble(df.format( price_day_time*better));
-        }else if (st>ss&&et>ss){
-            return Double.parseDouble(df.format( price_night_time*better));
-        }else {
-            return  Double.parseDouble(df.format(getBetter(start,stadium.getChange_price_time())*price_day_time + getBetter(stadium.getChange_price_time(),end)*price_night_time));
-        }
-
-    }
+//    private double getPriceStadium(Stadium stadium, Date start, Date end){
+//        DecimalFormat df = new DecimalFormat("#.##");
+//        df.setRoundingMode(RoundingMode.CEILING);
+//        SimpleDateFormat h = new SimpleDateFormat("HH");
+//        SimpleDateFormat m = new SimpleDateFormat("mm");
+//        int st= (Integer.parseInt(h.format(start))*60)+Integer.parseInt(m.format(start));
+//        int et= (Integer.parseInt(h.format(end))*60)+Integer.parseInt(m.format(end));
+//        int ss= (Integer.parseInt(h.format(stadium.getChange_price_time()))*60)+Integer.parseInt(m.format(stadium.getChange_price_time()));
+//        double price_day_time = stadium.getPrice_day_time()/60;
+//        double price_night_time = stadium.getPrice_night_time()/60;
+//        double better=getBetter(start,end);
+//        if (st<ss&&et<ss){
+//            return Double.parseDouble(df.format( price_day_time*better));
+//        }else if (st>ss&&et>ss){
+//            return Double.parseDouble(df.format( price_night_time*better));
+//        }else {
+////            return  Double.parseDouble(df.format(getBetter(start,stadium.getChange_price_time())*price_day_time + getBetter(stadium.getChange_price_time(),end)*price_night_time));
+//        }
+//
+//    }
 
     private double getBetter(Date start,Date end){
         Calendar s=getDate();

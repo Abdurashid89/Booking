@@ -80,17 +80,20 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
         _bn = FragmentCreateStadiumBinding.bind(view)
 
         bn.apply {
-            layoutTimeOpen.setOnClickListener {
+            toolbar.setNavigationOnClickListener {
+                findNavController().navigateUp()
+            }
+            timeOpen.setOnClickListener {
                 TimePickerDialog.newInstance({ _, hourOfDay, minute, _ ->
                     timeOpen.setText("$hourOfDay:$minute")
                 }, true).show(childFragmentManager, "qqqq")
             }
-            layoutTimeClose.setOnClickListener {
+            timeClose.setOnClickListener {
                 TimePickerDialog.newInstance({ _, hourOfDay, minute, _ ->
                     timeClose.setText("$hourOfDay:$minute")
                 }, true).show(childFragmentManager, "zzz")
             }
-            layoutStartNightTime.setOnClickListener {
+            whenStartNightTime.setOnClickListener {
                 TimePickerDialog.newInstance({ _, hourOfDay, minute, _ ->
                     whenStartNightTime.setText("$hourOfDay:$minute")
                 }, true).show(childFragmentManager, "mmm")
@@ -171,9 +174,8 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
             viewModel.createStadiumFlow.collect {
                 when (it) {
                     is UiStateObject.SUCCESS -> {
-                        stadiumId = it.data
                         showMessage("Successfully created")
-                        findNavController().navigateUp()
+                        findNavController().popBackStack(R.id.homeFragment,false)
                     }
                     is UiStateObject.ERROR -> {
                         showMessage("Error not created")

@@ -1,5 +1,6 @@
 package uz.koinot.stadion.ui.screens
 
+import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -32,8 +33,10 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
     val bn get() = _bn!!
 
 
+    @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentVerificationBinding.bind(view)
+        bn.txNumber.text = bn.txNumber.text.toString()+storage.phoneNumber.substring(9,storage.phoneNumber.length)
 
         bn.btnVerification.setOnClickListener {
             val number = bn.inputVerificationNumber.text.toString().trim()

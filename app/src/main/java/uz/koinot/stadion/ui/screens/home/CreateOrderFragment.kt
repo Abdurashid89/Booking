@@ -63,26 +63,26 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
                 inputFirstName.setText(it.firstName)
                 inputLastName.setText(it.lastName)
             }
-            dayLayout.setOnClickListener {
+            inputDay.setOnClickListener {
                 val dialog = DatePickerDialog.newInstance{ _, year, monthOfYear, dayOfMonth ->
                     inputDay.setText("$year-$monthOfYear-$dayOfMonth")
                 }
                 dialog.minDate = Calendar.getInstance()
-                    dialog.show(childFragmentManager,"BBB")
+                    dialog.show(parentFragmentManager,"BBB")
 
             }
-            startTimeLayout.setOnClickListener {
+            inputStartDate.setOnClickListener {
                 TimePickerDialog.newInstance({ _, hourOfDay, minute, _ ->
                     inputStartDate.setText("$hourOfDay:$minute")
-                },true).show(childFragmentManager,"aaa")
+                },true).show(parentFragmentManager,"aaa")
             }
-            endTimeLayout.setOnClickListener {
+            inputEndDate.setOnClickListener {
                 TimePickerDialog.newInstance({ _, hourOfDay, minute, _ ->
                     inputEndDate.setText("$hourOfDay:$minute")
-                },true).show(childFragmentManager,"ttt")
+                },true).show(parentFragmentManager,"ttt")
             }
             inputPhoneNumber.addTextChangedListener { text ->
-                if(text.toString().length > 3 && text.toString() != currentPhoneNumber){
+                if(text.toString().length > 4 && text.toString() != currentPhoneNumber){
                     viewModel.searchUser(text.toString().toInt())
                     currentPhoneNumber = text.toString()
                 }

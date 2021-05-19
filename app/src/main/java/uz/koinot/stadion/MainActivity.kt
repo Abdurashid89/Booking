@@ -87,8 +87,7 @@ class MainActivity : AppCompatActivity() {
         val text = intent.getStringExtra("koinot")
         val id = intent.getIntExtra("id",0)
         if(text == "main"){
-            navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to Gson().toJson(Stadium("stadium",id,0,0,
-                emptyList()))),
+            navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to Gson().toJson(Stadium())),
                 Utils.navOptions())
         }
 
