@@ -12,10 +12,12 @@ import javax.inject.Inject
 
 class MainRepository @Inject constructor(
     private val api:ApiService,
-    private val storage:LocalStorage,
     private val orderDao: OrderDao
-
 ) {
+
+    fun setAllOrder(list: List<Order>) = orderDao.setAllOrder(list)
+    fun getAllOrder() = orderDao.getAllOrders()
+    fun removeAllOrder() = orderDao.removeAllOrders()
 
     suspend fun getStadium() = api.getStadium()
     suspend fun getOder(orderId:Int) = api.stadiumOrder(orderId)
@@ -25,7 +27,7 @@ class MainRepository @Inject constructor(
     suspend fun archiveAll(number:Int) = api.archiveAll(number)
     suspend fun archiveAfterCreateTime(number: Int,time:String) = api.archiveAfterCreateTime(number,time)
     suspend fun login(data:Login) = api.login(data)
-    suspend fun attachment(id:Int,image: MultipartBody.Part) = api.uploadPhoto(id,image)
+    suspend fun attachment(id:Int,image: MultipartBody.Part) = api.uploadPhoto(id, listOf(image))
     suspend fun createStadium(data: CreateStadium) = api.createStadium(data)
     suspend fun createOrder(data: CreateOrder) = api.createOrder(data)
     suspend fun searchUser(data: Int) = api.search(data)
@@ -33,7 +35,5 @@ class MainRepository @Inject constructor(
 
 
 
-    suspend fun setAllOrder(list: List<Order>) = orderDao.setAllOrder(list)
-    suspend fun getAllOrder() = orderDao.getAllOrders()
-    suspend fun removeAllOrder() = orderDao.removeAllOrders()
+
 }

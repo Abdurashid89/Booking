@@ -24,4 +24,13 @@ fun Exception.userMessage(): String{
 fun Fragment.customLog(message: Any){
     Log.e("AAA",message.toString())
 }
+
+fun Int.getString():String{
+    return if (this.toString().length == 1) "0$this" else this.toString()
+}
+fun String.getTimeStamp():String{
+    return "2021-05-16T$this:15.050000"
+}
+
+
 typealias SingleBlock<T> = (T) -> Unit

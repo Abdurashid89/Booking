@@ -124,36 +124,6 @@
 
         </com.google.android.material.textfield.TextInputLayout>
 
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:orientation="vertical"
-            android:layout_marginTop="12dp"
-            android:layout_height="wrap_content">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
-                android:id="@+id/rv_images"
-                app:layoutManager="androidx.recyclerview.widget.GridLayoutManager"
-                app:spanCount="3"
-                android:orientation="vertical"
-                android:layout_height="wrap_content"/>
-            <com.google.android.material.card.MaterialCardView
-                android:layout_width="120dp"
-                android:id="@+id/add_image"
-                android:layout_marginTop="16dp"
-                app:cardCornerRadius="16dp"
-                android:layout_marginBottom="16dp"
-                app:cardBackgroundColor="@color/teal_200"
-                android:layout_height="120dp">
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_gravity="center"
-                    android:src="@drawable/ic_baseline_add"
-                    android:layout_height="wrap_content"/>
-            </com.google.android.material.card.MaterialCardView>
-        </LinearLayout>
-
         <com.google.android.material.textfield.TextInputLayout
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
             android:layout_width="match_parent"
@@ -166,7 +136,7 @@
                 android:layout_height="match_parent"
                 android:hint="Price Day"
                 android:imeOptions="actionNext"
-                android:inputType="text">
+                android:inputType="number">
 
             </com.google.android.material.textfield.TextInputEditText>
 
@@ -193,6 +163,7 @@
             android:layout_width="match_parent"
             android:clickable="true"
             android:focusable="true"
+            android:layout_marginTop="12dp"
             android:id="@+id/layoutStartNightTime"
             android:layout_height="wrap_content">
 

@@ -21,10 +21,7 @@ import uz.koinot.stadion.adapter.UserAdapter
 import uz.koinot.stadion.data.model.CreateOrder
 import uz.koinot.stadion.databinding.FragmentCreateOrderBinding
 import uz.koinot.stadion.databinding.FragmentOderBinding
-import uz.koinot.stadion.utils.CONSTANTS
-import uz.koinot.stadion.utils.UiStateList
-import uz.koinot.stadion.utils.UiStateObject
-import uz.koinot.stadion.utils.showMessage
+import uz.koinot.stadion.utils.*
 import java.util.*
 
 
@@ -65,7 +62,7 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
             }
             inputDay.setOnClickListener {
                 val dialog = DatePickerDialog.newInstance{ _, year, monthOfYear, dayOfMonth ->
-                    inputDay.setText("$year-$monthOfYear-$dayOfMonth")
+                    inputDay.setText("${year.getString()}-${monthOfYear.getString()}-${dayOfMonth.getString()}")
                 }
                 dialog.minDate = Calendar.getInstance()
                     dialog.show(parentFragmentManager,"BBB")
@@ -73,12 +70,12 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
             }
             inputStartDate.setOnClickListener {
                 TimePickerDialog.newInstance({ _, hourOfDay, minute, _ ->
-                    inputStartDate.setText("$hourOfDay:$minute")
+                    inputStartDate.setText("${hourOfDay.getString()}:${minute.getString()}")
                 },true).show(parentFragmentManager,"aaa")
             }
             inputEndDate.setOnClickListener {
                 TimePickerDialog.newInstance({ _, hourOfDay, minute, _ ->
-                    inputEndDate.setText("$hourOfDay:$minute")
+                    inputEndDate.setText("${hourOfDay.getString()}:${minute.getString()}")
                 },true).show(parentFragmentManager,"ttt")
             }
             inputPhoneNumber.addTextChangedListener { text ->

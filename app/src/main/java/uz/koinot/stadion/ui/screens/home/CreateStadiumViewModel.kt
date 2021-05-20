@@ -1,5 +1,6 @@
 package uz.koinot.stadion.ui.screens.home
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -12,10 +13,12 @@ import okhttp3.RequestBody.Companion.asRequestBody
 import uz.koinot.stadion.data.model.CreateStadium
 import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.repository.MainRepository
+import uz.koinot.stadion.utils.PathUtil
 import uz.koinot.stadion.utils.UiStateList
 import uz.koinot.stadion.utils.UiStateObject
 import java.io.File
 import javax.inject.Inject
+import kotlin.random.Random
 
 @HiltViewModel
 class CreateStadiumViewModel @Inject constructor(
@@ -25,25 +28,28 @@ class CreateStadiumViewModel @Inject constructor(
     private var _imageFlow = MutableStateFlow<UiStateObject<Boolean>>(UiStateObject.EMPTY)
     val imageFlow: StateFlow<UiStateObject<Boolean>> get() = _imageFlow
 
-    fun uploadImage(id:Int,path:String) = viewModelScope.launch {
-        _imageFlow.value = UiStateObject.LOADING
-        try {
-            val file = File(path)
-            val requestFile = file.asRequestBody("image/png".toMediaTypeOrNull())
-            val image = MultipartBody.Part.createFormData("image",file.name,requestFile)
-
-            val res = repository.attachment(id, image)
-
-            if(res.success == 200){
-                _imageFlow.value = UiStateObject.SUCCESS(true)
-            }else{
-                _imageFlow.value = UiStateObject.ERROR(res.message,true)
-            }
-        }catch (e:Exception){
-            _imageFlow.value = UiStateObject.ERROR(e.localizedMessage)
-            e.printStackTrace()
-        }
-    }
+//    fun uploadImage(id:Int,list:List<String>) = viewModelScope.launch {
+//        _imageFlow.value = UiStateObject.LOADING
+//        try {
+//            val ls = ArrayList<MultipartBody.Part>()
+//            list.forEach {
+//                val file = File(it)
+//                val requestFile = file.asRequestBody("image/png".toMediaTypeOrNull())
+//                val image = MultipartBody.Part.createFormData("image${Random.nextInt()}",file.name,requestFile)
+//                ls.add(image)
+//            }
+//
+//            val res = repository.attachment(id, ls)
+//            if(res.success == 200){
+//                _imageFlow.value = UiStateObject.SUCCESS(true)
+//            }else{
+//                _imageFlow.value = UiStateObject.ERROR(res.message,true)
+//            }
+//        }catch (e:Exception){
+//            _imageFlow.value = UiStateObject.ERROR(e.localizedMessage)
+//            e.printStackTrace()
+//        }
+//    }
 
     private var _createStadiumFlow = MutableStateFlow<UiStateObject<Int>>(UiStateObject.EMPTY)
     val createStadiumFlow: StateFlow<UiStateObject<Int>> get() = _createStadiumFlow
@@ -53,13 +59,13 @@ class CreateStadiumViewModel @Inject constructor(
         try {
             val res = repository.createStadium(data)
 
-            if(res.success == 200){
+            if(res.success == 200 && res.objectKoinot != null){
                 _createStadiumFlow.value = UiStateObject.SUCCESS(res.objectKoinot!!)
             }else{
                 _createStadiumFlow.value = UiStateObject.ERROR(res.message,true)
             }
         }catch (e:Exception){
-            _createStadiumFlow.value = UiStateObject.ERROR(e.localizedMessage)
+            _createStadiumFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
             e.printStackTrace()
         }
     }

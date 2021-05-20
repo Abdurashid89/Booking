@@ -41,6 +41,7 @@ class AttachmentAdapter: RecyclerView.Adapter<AttachmentAdapter.VHolder>() {
         notifyDataSetChanged()
     }
 
+    fun getList() = list
     fun submitList(ls: List<Uri>){
         list.clear()
         list.addAll(ls)

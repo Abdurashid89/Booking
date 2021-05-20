@@ -1,5 +1,6 @@
 package uz.koinot.stadion.ui.screens.home
 
+import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
@@ -19,11 +20,10 @@ import kotlinx.coroutines.flow.collect
 import uz.koinot.stadion.AuthActivity
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.StadiumAdapter
+import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.FragmentHomeBinding
-import uz.koinot.stadion.utils.CONSTANTS
-import uz.koinot.stadion.utils.UiStateList
-import uz.koinot.stadion.utils.Utils
+import uz.koinot.stadion.utils.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -33,6 +33,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
     private var _bn: FragmentHomeBinding? = null
     private val bn get() = _bn!!
     private val adapter = StadiumAdapter()
+    private var stadiumId = 0
     private lateinit var navController: NavController
 
     @Inject
@@ -69,6 +70,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
             navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to Gson().toJson(it)),Utils.navOptions())
         }
 
+        adapter.setOnLongClickListener {
+            navController.navigate(R.id.createStadiumFragment, bundleOf(CONSTANTS.STADIUM_TYPE  to CONSTANTS.EDIT_STADIUM,CONSTANTS.STADIUM_DATA to Gson().toJson(it)),Utils.navOptions())
+        }
+
+        adapter.setOnAddImageClickListener {
+            addImage(it)
+        }
+
         adapter.setOnImageClickListener { stadium, position ->
             val dialog = ImageDialog(stadium.photos,position)
             dialog.show(childFragmentManager,"image")
@@ -89,6 +98,15 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
 
         bn.addStadium.setOnClickListener {
             navController.navigate(R.id.mapFragment2,null,Utils.navOptions())
+        }
+    }
+
+    private fun addImage(it: Stadium) {
+        stadiumId = it.id
+        if (adapter.itemCount < 10) {
+            val intent = Intent(Intent.ACTION_PICK)
+            intent.type = "image/*"
+            startActivityForResult(intent, 1)
         }
     }
 
@@ -139,6 +157,30 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
                     else -> Unit
                 }
             }
+        }
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.imageFlow.collect {
+                when(it){
+                    is UiStateObject.SUCCESS ->{
+                      viewModel.getAllStadium()
+                    }
+                    is UiStateObject.ERROR ->{
+                     showMessage("Error")
+                    }
+                    is UiStateObject.LOADING ->{
+
+                    }
+                    else -> Unit
+                }
+            }
+        }
+    }
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        super.onActivityResult(requestCode, resultCode, data)
+        if (resultCode == Activity.RESULT_OK) {
+            val uri = data?.data ?: return
+            val path = PathUtil.getPath(requireContext(),uri)
+            viewModel.uploadImage(stadiumId, path)
         }
     }
 

@@ -1,6 +1,7 @@
 package uz.koinot.stadion.adapter
 
 import android.view.LayoutInflater
+import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import android.widget.LinearLayout
@@ -17,6 +18,8 @@ import uz.koinot.stadion.utils.Utils
 class StadiumAdapter: RecyclerView.Adapter<StadiumAdapter.VHolder>() {
 
     private var listener : SingleBlock<Stadium>? = null
+    private var listenerAddImage : SingleBlock<Stadium>? = null
+    private var longClickListener : SingleBlock<Stadium>? = null
     private var imageListener : ((Stadium,Int)->Unit)? = null
     private val list = ArrayList<Stadium>()
 
@@ -39,9 +42,19 @@ class StadiumAdapter: RecyclerView.Adapter<StadiumAdapter.VHolder>() {
                adapter.setOnClickListener { stadium, pos ->
                    imageListener?.invoke(stadium,pos)
                }
+               if (list.size >= 10){
+                   addImage.visibility = View.GONE
+               }
+               addImage.setOnClickListener {
+                   listenerAddImage?.invoke(d)
+               }
            }
             itemView.setOnClickListener {
                 listener?.invoke(d)
+            }
+            itemView.setOnLongClickListener {
+                longClickListener?.invoke(d)
+                true
             }
         }
     }
@@ -56,7 +69,15 @@ class StadiumAdapter: RecyclerView.Adapter<StadiumAdapter.VHolder>() {
         listener = block
     }
 
+    fun setOnLongClickListener(block:SingleBlock<Stadium>){
+        longClickListener = block
+    }
+
     fun setOnImageClickListener(block:(Stadium,Int) -> Unit){
         imageListener = block
+    }
+
+    fun setOnAddImageClickListener(block:(Stadium) -> Unit){
+        listenerAddImage = block
     }
 }

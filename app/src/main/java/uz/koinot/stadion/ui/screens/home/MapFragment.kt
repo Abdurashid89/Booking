@@ -109,8 +109,10 @@ class MapFragment : Fragment(R.layout.fragment_map) {
             if(location != null){
                 findNavController().navigate(R.id.createStadiumFragment,
                     bundleOf(
-                        CONSTANTS.LOCATION to Gson().toJson(location),
-                        CONSTANTS.ADRESS to adress)
+                        CONSTANTS.STADIUM_TYPE to CONSTANTS.NEW_STADIUM,
+                        CONSTANTS.ADRESS to adress,
+                        CONSTANTS.LOCATION to Gson().toJson(location)
+                    )
                     ,Utils.navOptions())
             }else{
                 Toast.makeText(requireContext(), "Please choose stadium location", Toast.LENGTH_SHORT).show()

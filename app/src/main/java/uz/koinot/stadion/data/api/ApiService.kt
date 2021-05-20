@@ -46,10 +46,10 @@ interface ApiService {
     ):ResponseList<Order>
 
     @Multipart
-    @POST("koinot/stadium/uploadPhotoFile/{id}")
+    @POST("koinot/stadium/uploadPhotoFileList/{id}")
     suspend fun uploadPhoto(
         @Path("id") id:Int,
-        @Part image: MultipartBody.Part
+        @Part image: List<MultipartBody.Part>
         ): ResponseObject<Any>
 
 
