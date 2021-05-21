@@ -30,7 +30,7 @@ class MainRepository @Inject constructor(
     suspend fun attachment(id:Int,image: MultipartBody.Part) = api.uploadPhoto(id, listOf(image))
     suspend fun createStadium(data: CreateStadium) = api.createStadium(data)
     suspend fun createOrder(data: CreateOrder) = api.createOrder(data)
-    suspend fun searchUser(data: Int) = api.search(data)
+    suspend fun searchUser(data: String) = api.search(data)
     suspend fun getNewStadiumId() = api.getNewStadiumId()
 
 

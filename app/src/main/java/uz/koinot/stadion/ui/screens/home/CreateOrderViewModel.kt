@@ -22,7 +22,7 @@ class CreateOrderViewModel @Inject constructor(
     private var _searchUserFlow = MutableStateFlow<UiStateList<SearchUser>>(UiStateList.EMPTY)
     val searchUserFlow: StateFlow<UiStateList<SearchUser>> get() = _searchUserFlow
 
-    fun searchUser(number: Int) = viewModelScope.launch {
+    fun searchUser(number: String) = viewModelScope.launch {
         _searchUserFlow.value = UiStateList.LOADING
         try {
             val res = repository.searchUser(number)

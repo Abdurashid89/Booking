@@ -80,7 +80,7 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
             }
             inputPhoneNumber.addTextChangedListener { text ->
                 if(text.toString().length > 4 && text.toString() != currentPhoneNumber){
-                    viewModel.searchUser(text.toString().toInt())
+                    viewModel.searchUser(text.toString())
                     currentPhoneNumber = text.toString()
                 }
             }
@@ -94,7 +94,7 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
                 if(number.isNotEmpty() && day.isNotEmpty() && startTime.isNotEmpty()
                     && endTime.isNotEmpty() && firstName.isNotEmpty() && lastName.isNotEmpty()){
                     viewModel.createOrder(
-                        CreateOrder(null,stadiumId,startTime,endTime,day+"T$startTime:00.000000",firstName,lastName,number))
+                        CreateOrder(null,stadiumId,day+"T$startTime:00.000000",day+"T$endTime:00.000000",day+"T$startTime:00.000000",firstName,lastName,number))
                 }else{
                     showMessage("Iltimos qatorlarni to'ldiring")
                 }

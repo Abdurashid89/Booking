@@ -60,7 +60,7 @@ interface ApiService {
     suspend fun createOrder(@Body data:CreateOrder):ResponseObject<Any>
 
     @GET("koinot/order/searchNumber/{number}")
-    suspend fun search(@Path("number") number: Int):ResponseList<SearchUser>
+    suspend fun search(@Path("number") number: String):ResponseList<SearchUser>
 
     @GET("koinot/order/searchNumber")
     suspend fun getNewStadiumId():ResponseObject<Int>
