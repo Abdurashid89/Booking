@@ -21,7 +21,7 @@ interface ApiService {
     suspend fun getStadium() : ResponseList<Stadium>
 
     @GET("koinot/stadium/myStadiumOrder/{order}")
-    suspend fun stadiumOrder(@Path("order") order : Int) : ResponseList<Order>
+    suspend fun stadiumOrder(@Path("order") order : Long) : ResponseList<Order>
 
 
     @GET("koinot/stadium/activeOrder/{number}")
@@ -31,13 +31,13 @@ interface ApiService {
     suspend fun reject(@Path("number") number:Int):ResponseObject<Any>
 
     @GET("koinot/stadiumDash/graph/{number}")
-    suspend fun graph(@Path("number") number:Int):ResponseList<Dashboard>
+    suspend fun graph(@Path("number") number:Long):ResponseList<Dashboard>
 
     @POST("koinot/auth/firebase/{token}")
     suspend fun token(@Path("token") token:String):ResponseList<Any>
 
     @GET("koinot/stadiumDash/archiveAll/{number}")
-    suspend fun archiveAll(@Path("number") number: Int):ResponseList<Order>
+    suspend fun archiveAll(@Path("number") number: Long):ResponseList<Order>
 
     @GET("koinot/stadiumDash/archiveAfterCreateTime/{number}")
     suspend fun archiveAfterCreateTime(

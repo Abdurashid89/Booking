@@ -15,6 +15,8 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
     private var listener : SingleBlock<Order>? = null
     private var acceptListener : SingleBlock<Order>? = null
     private var rejectListener : SingleBlock<Order>? = null
+    private var phoneNumberListener1 : SingleBlock<String>? = null
+    private var phoneNumberListener2 : SingleBlock<String>? = null
     private val list = ArrayList<Order>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = VHolder(
@@ -37,6 +39,12 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
                phone1.text = d.phoneNumber
                phone2.text = d.originalPhoneNumber
 
+                phone1.setOnClickListener {
+                    phoneNumberListener1?.invoke(d.phoneNumber)
+                }
+                phone2.setOnClickListener {
+                    phoneNumberListener2?.invoke(d.phoneNumber)
+                }
                 btnAccept.setOnClickListener {
                     acceptListener?.invoke(d)
                 }
@@ -67,5 +75,11 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
 
     fun setOnRejectListener(block:SingleBlock<Order>){
         rejectListener = block
+    }
+    fun setOnPhoneNumber1Listener(block:SingleBlock<String>){
+        phoneNumberListener1 = block
+    }
+    fun setOnPhoneNumber2Listener(block:SingleBlock<String>){
+        phoneNumberListener2 = block
     }
 }

@@ -22,7 +22,7 @@ class DashboardViewModel @Inject constructor(
     private var _dashboardFlow = MutableStateFlow<UiStateList<Dashboard>>(UiStateList.EMPTY)
     val dashboardFlow: StateFlow<UiStateList<Dashboard>> get() = _dashboardFlow
 
-    fun getDashboard(stadiumId:Int) = viewModelScope.launch {
+    fun getDashboard(stadiumId:Long) = viewModelScope.launch {
         _dashboardFlow.value = UiStateList.LOADING
         try {
             val res = repository.dashboard(stadiumId)
@@ -40,7 +40,7 @@ class DashboardViewModel @Inject constructor(
     private var _archiveAllFlow = MutableStateFlow<UiStateList<Order>>(UiStateList.EMPTY)
     val archiveAllFlow: StateFlow<UiStateList<Order>> get() = _archiveAllFlow
 
-    fun archiveAll(number:Int) = viewModelScope.launch {
+    fun archiveAll(number:Long) = viewModelScope.launch {
         _archiveAllFlow.value = UiStateList.LOADING
         try {
             val res = repository.archiveAll(number)

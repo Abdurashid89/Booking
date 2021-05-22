@@ -30,14 +30,14 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     private var _bn: FragmentDashboardBinding? = null
     val bn get() = _bn!!
     private val viewModel: DashboardViewModel by viewModels()
-    private var stadiumId = 0
+    private var stadiumId = 0L
     private val adapter = DashboardOrderAdapter()
     private var ordersList = ArrayList<Order>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        stadiumId = arguments?.getInt(CONSTANTS.STADION_ID)!!
+        stadiumId = arguments?.getLong(CONSTANTS.STADION_ID)!!
     }
 
 

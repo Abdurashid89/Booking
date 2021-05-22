@@ -6,7 +6,5 @@ data class CreateOrder(
     var startDate: String,
     var endDate: String,
     var time: String,
-    var firstName: String,
-    var lastName: String,
-    var phoneNumber: String
+    var firstName: String
 )

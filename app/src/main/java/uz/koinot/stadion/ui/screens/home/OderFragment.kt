@@ -1,6 +1,9 @@
 package uz.koinot.stadion.ui.screens.home
 
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.os.bundleOf
@@ -28,13 +31,12 @@ class OderFragment : BaseFragment(R.layout.fragment_oder) {
     private var _bn: FragmentOderBinding? = null
     private val bn get() = _bn!!
     private val adapter = OrderAdapter()
-    private  var stadiumId:Int = 0
+    private  var stadiumId:Long = 0
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        if(arguments != null)
-        stadiumId = arguments?.getInt(CONSTANTS.STADION_ID,0)!!
-
+        stadiumId = arguments?.getLong(CONSTANTS.STADION_ID,0)!!
+        Log.d("AAA","fragment stadiumId: $stadiumId")
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -61,6 +63,13 @@ class OderFragment : BaseFragment(R.layout.fragment_oder) {
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
                 viewModel.rejectOrder(it.id)
             }
+        }
+        adapter.setOnPhoneNumber1Listener {
+            requireActivity().startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${if(it.contains("+")) it else "+$it"}")))
+        }
+
+        adapter.setOnPhoneNumber2Listener {
+            requireActivity().startActivity(Intent(Intent.ACTION_DIAL, Uri.parse("tel:${if(it.contains("+")) it else "+$it"}")))
         }
 
     }

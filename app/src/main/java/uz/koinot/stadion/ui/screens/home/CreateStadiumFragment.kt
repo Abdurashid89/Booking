@@ -153,7 +153,7 @@ class CreateStadiumFragment : BaseFragment(R.layout.fragment_create_stadium) {
                     }
                     is UiStateObject.ERROR -> {
                         showProgressDialog(false)
-                        showMessage("Error not created")
+                        showMessage(it.message)
                     }
                     is UiStateObject.LOADING -> {
                         showProgressDialog(true)

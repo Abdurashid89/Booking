@@ -1,5 +1,6 @@
 package uz.koinot.stadion.adapter
 
+import android.util.Log
 import androidx.core.os.bundleOf
 import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
@@ -12,6 +13,7 @@ class PagerAdapter(fragment: Fragment,val stadiumId:Long) : FragmentStateAdapter
     override fun getItemCount() = 2
 
     override fun createFragment(position: Int): Fragment {
+        Log.d("AAA","adapter stadiumId: $stadiumId")
         return when(position){
             0 -> OderFragment().apply { arguments = bundleOf(CONSTANTS.STADION_ID to stadiumId) }
             1 -> DashboardFragment().apply { arguments = bundleOf(CONSTANTS.STADION_ID to stadiumId) }

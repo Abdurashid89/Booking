@@ -71,8 +71,6 @@ class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
                 adapter.clear()
                 currentPhoneNumber = it.phoneNumber
                 inputPhoneNumber.setText(it.phoneNumber)
-                inputFirstName.setText(it.firstName)
-                inputLastName.setText(it.lastName)
             }
             inputDay.setOnClickListener {
                 val dialog = DatePickerDialog.newInstance{ _, year, monthOfYear, dayOfMonth ->
@@ -113,12 +111,10 @@ class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
                 val day = inputDay.text.toString().trim()
                 val startTime = inputStartDate.text.toString().trim()
                 val endTime = inputEndDate.text.toString().trim()
-                val firstName = inputFirstName.text.toString().trim()
-                val lastName = inputLastName.text.toString().trim()
                 if(number.isNotEmpty() && day.isNotEmpty() && startTime.isNotEmpty()
-                    && endTime.isNotEmpty() && firstName.isNotEmpty() && lastName.isNotEmpty()){
+                    && endTime.isNotEmpty()){
                     viewModel.createOrder(
-                        CreateOrder(null,stadiumId,day+"T$startTime:00.000000",day+"T$endTime:00.000000",day+"T$startTime:00.000000",firstName,lastName,number))
+                        CreateOrder(null,stadiumId,day+"T$startTime:00.000000",day+"T$endTime:00.000000",day+"T$startTime:00.000000",number))
                 }else{
                     showMessage("Iltimos qatorlarni to'ldiring")
                 }
@@ -207,8 +203,6 @@ class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
             inputDay.text?.clear()
             inputStartDate.text?.clear()
             inputEndDate.text?.clear()
-            inputFirstName.text?.clear()
-            inputLastName.text?.clear()
         }
     }
 

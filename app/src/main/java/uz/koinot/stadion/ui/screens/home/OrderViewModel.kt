@@ -21,7 +21,7 @@ class OrderViewModel @Inject constructor(
     private var _ordersFlow = MutableStateFlow<UiStateList<Order>>(UiStateList.EMPTY)
     val orderFlow: StateFlow<UiStateList<Order>> get() = _ordersFlow
 
-    fun getOder(orderId:Int) = viewModelScope.launch {
+    fun getOder(orderId:Long) = viewModelScope.launch {
         _ordersFlow.value = UiStateList.LOADING
         try {
             val res = repository.getOder(orderId)

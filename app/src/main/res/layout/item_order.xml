@@ -28,6 +28,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Phone 1"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:textColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/endDate" />
@@ -37,6 +40,9 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Phone 2"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
             android:textColor="@color/red"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintTop_toBottomOf="@id/phone1" />
