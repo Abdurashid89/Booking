@@ -50,7 +50,25 @@ class CreateOrderViewModel @Inject constructor(
                 _createOrderFlow.value = UiStateObject.ERROR(res.message)
             }
         } catch (e: Exception) {
-            _createOrderFlow.value = UiStateObject.ERROR(e.localizedMessage)
+            _createOrderFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
+            e.printStackTrace()
+        }
+    }
+
+    private var _orderPriceFlow = MutableStateFlow<UiStateObject<Double>>(UiStateObject.EMPTY)
+    val orderPriceFlow: StateFlow<UiStateObject<Double>> get() = _orderPriceFlow
+
+    fun getOrderPrice(id:Int,startDate:String,endDate:String) = viewModelScope.launch {
+        _orderPriceFlow.value = UiStateObject.LOADING
+        try {
+            val res = repository.orderPrice(id, startDate, endDate)
+            if (res.success == 200 && res.objectKoinot != null) {
+                _orderPriceFlow.value = UiStateObject.SUCCESS(res.objectKoinot!!)
+            } else {
+                _orderPriceFlow.value = UiStateObject.ERROR(res.message)
+            }
+        } catch (e: Exception) {
+            _orderPriceFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
             e.printStackTrace()
         }
     }

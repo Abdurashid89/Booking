@@ -1,162 +1,227 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".ui.screens.home.CreateOrderFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
-        android:layout_width="match_parent"
-        app:title="Create Order"
         android:id="@+id/toolbar"
-        app:navigationIcon="@drawable/ic_baseline_arrow_back"
-        android:layout_height="wrap_content"/>
-
-
-    <LinearLayout
         android:layout_width="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:padding="24dp"
+        android:layout_height="wrap_content"
+        app:navigationIcon="@drawable/ic_baseline_arrow_back"
+        app:title="Create Order" />
+
+
+    <ScrollView
+        android:layout_width="match_parent"
         android:layout_height="match_parent">
 
-        <com.google.android.material.textfield.TextInputLayout
-            style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="24dp">
 
-            <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/inputPhoneNumber"
+            <FrameLayout
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:hint="Phone Number"
-                android:text="+998"
-                android:drawablePadding="12dp"
-                android:drawableStart="@drawable/ic_baseline_phone_android"
-                android:imeOptions="actionNext"
-                android:inputType="phone"
-                android:maxLength="13">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:padding="12dp">
 
-            </com.google.android.material.textfield.TextInputEditText>
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="34dp"
+                    android:gravity="center"
+                    android:text="Summa:"
+                    android:textSize="20sp" />
 
-        </com.google.android.material.textfield.TextInputLayout>
-        <androidx.recyclerview.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:id="@+id/rv_users"
-            app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-            android:layout_height="wrap_content"/>
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
-        android:id="@+id/dayLayout"
-        android:layout_marginTop="16dp"
-        android:layout_height="wrap_content">
+                <TextView
+                    android:id="@+id/text_order_price"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="24dp"
+                    android:textSize="20sp"
+                    android:textStyle="bold"
+                    android:text="0" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputDay"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Day"
-            android:clickable="false"
-            android:focusable="false"
-            android:imeOptions="actionNext"
-            android:inputType="phone"
-            android:maxLength="13">
+                <ImageButton
+                    android:id="@+id/myLocation"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:layout_marginEnd="12dp"
+                    android:background="?selectableItemBackground"
+                    android:src="@drawable/ic_baseline_gps_fixed" />
 
-        </com.google.android.material.textfield.TextInputEditText>
+                <ProgressBar
+                    android:id="@+id/loading_price"
+                    android:layout_width="24dp"
+                    android:layout_height="24dp"
+                    android:layout_gravity="center"
+                    android:layout_marginStart="12dp"
+                    android:layout_marginEnd="12dp"
+                    android:visibility="gone" />
 
-    </com.google.android.material.textfield.TextInputLayout>
+            </FrameLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:id="@+id/startTimeLayout"
-        android:layout_height="wrap_content">
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputStartDate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Start Date"
-            android:clickable="false"
-            android:focusable="false"
-            android:imeOptions="actionNext"
-            android:inputType="phone"
-            android:maxLength="13">
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputPhoneNumber"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:drawableStart="@drawable/ic_baseline_phone_android"
+                    android:drawablePadding="12dp"
+                    android:hint="Phone Number"
+                    android:imeOptions="actionNext"
+                    android:inputType="phone"
+                    android:maxLength="13"
+                    android:text="+998">
 
-        </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputEditText>
 
-    </com.google.android.material.textfield.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:id="@+id/endTimeLayout"
-        android:layout_height="wrap_content">
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_users"
+                android:layout_width="match_parent"
+                tools:itemCount="2"
+                tools:listitem="@layout/item_users"
+                android:layout_height="wrap_content"
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputEndDate"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="End Date"
-            android:clickable="false"
-            android:focusable="false"
-            android:imeOptions="actionNext"
-            android:inputType="phone"
-            android:maxLength="13">
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/dayLayout"
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
 
-        </com.google.android.material.textfield.TextInputEditText>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputDay"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:clickable="false"
+                    android:focusable="false"
+                    android:hint="Day"
+                    android:imeOptions="actionNext"
+                    android:inputType="phone"
+                    android:maxLength="13">
 
-    </com.google.android.material.textfield.TextInputLayout>
+                </com.google.android.material.textfield.TextInputEditText>
 
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:layout_height="wrap_content">
+            </com.google.android.material.textfield.TextInputLayout>
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputFirstName"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="First Name"
-            android:imeOptions="actionNext"
-            android:inputType="text"
-            android:maxLength="26">
+            <androidx.appcompat.widget.LinearLayoutCompat
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
 
-        </com.google.android.material.textfield.TextInputEditText>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/startTimeLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginEnd="10dp"
+                    android:layout_weight="1">
 
-    </com.google.android.material.textfield.TextInputLayout>
-    <com.google.android.material.textfield.TextInputLayout
-        style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
-        android:layout_width="match_parent"
-        android:layout_marginTop="16dp"
-        android:layout_height="wrap_content">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputStartDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:hint="Start Date"
+                        android:imeOptions="actionNext"
+                        android:inputType="phone"
+                        android:maxLength="13">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/inputLastName"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:hint="Last Name"
-            android:imeOptions="actionDone"
-            android:inputType="text"
-            android:maxLength="26">
+                    </com.google.android.material.textfield.TextInputEditText>
 
-        </com.google.android.material.textfield.TextInputEditText>
+                </com.google.android.material.textfield.TextInputLayout>
 
-    </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/endTimeLayout"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="10dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_weight="1">
 
-        <com.google.android.material.button.MaterialButton
-            android:layout_width="match_parent"
-            android:layout_marginTop="24dp"
-            android:text="Create Order"
-            android:id="@+id/btn_create_order"
-            android:textAllCaps="false"
-            android:layout_height="wrap_content"/>
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/inputEndDate"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:clickable="false"
+                        android:focusable="false"
+                        android:hint="End Date"
+                        android:imeOptions="actionNext"
+                        android:inputType="phone"
+                        android:maxLength="13">
 
-    </LinearLayout>
+                    </com.google.android.material.textfield.TextInputEditText>
+
+                </com.google.android.material.textfield.TextInputLayout>
+
+            </androidx.appcompat.widget.LinearLayoutCompat>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputFirstName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="First Name"
+                    android:imeOptions="actionNext"
+                    android:inputType="text"
+                    android:maxLength="26">
+
+                </com.google.android.material.textfield.TextInputEditText>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="16dp">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/inputLastName"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="Last Name"
+                    android:imeOptions="actionDone"
+                    android:inputType="text"
+                    android:maxLength="26">
+
+                </com.google.android.material.textfield.TextInputEditText>
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_create_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="24dp"
+                android:text="Create Order"
+                android:textAllCaps="false" />
+
+        </LinearLayout>
+    </ScrollView>
 </LinearLayout>

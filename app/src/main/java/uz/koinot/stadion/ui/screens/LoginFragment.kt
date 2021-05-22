@@ -12,6 +12,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.MainActivity
 import uz.koinot.stadion.R
 import uz.koinot.stadion.data.model.Login
@@ -24,7 +25,7 @@ import uz.koinot.stadion.utils.showMessage
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginFragment : Fragment(R.layout.fragment_login) {
+class LoginFragment : BaseFragment(R.layout.fragment_login) {
 
     @Inject
     lateinit var storage: LocalStorage
@@ -59,16 +60,19 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             viewModel.loginFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
+                        showProgressDialog(false)
                         storage.hasAccount = true
                         storage.phoneNumber = number
+                        storage.firebaseToken = ""
                         requireActivity().startActivity(Intent(requireContext(),MainActivity::class.java))
                         requireActivity().finish()
                     }
                     is UiStateObject.ERROR ->{
+                        showProgressDialog(false)
                         showMessage("Error Please Try again")
                     }
                     is UiStateObject.LOADING ->{
-                        showMessage("Loading")
+                       showProgressDialog(true)
                     }
                     else -> Unit
                 }

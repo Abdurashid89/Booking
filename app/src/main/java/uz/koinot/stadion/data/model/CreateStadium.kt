@@ -1,7 +1,7 @@
 package uz.koinot.stadion.data.model
 
 class CreateStadium(
-    var id: Int?,
+    var id: Long?,
     var name: String,
     var latitude: Double,
     var phone_number: String,

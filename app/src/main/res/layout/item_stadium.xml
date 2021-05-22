@@ -44,9 +44,18 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="end"
                 android:layout_weight="1"
-                android:gravity="end"
+                android:gravity="center"
                 android:text="2"
                 android:textColor="@color/purple_200" />
+
+            <ImageButton
+                android:id="@+id/btn_more"
+                android:layout_marginStart="12dp"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="?selectableItemBackground"
+                android:src="@drawable/ic_baseline_more_vert" />
         </LinearLayout>
 
         <LinearLayout
@@ -63,14 +72,7 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 tools:listitem="@layout/rv_image" />
 
-            <ImageButton
-                android:id="@+id/add_image"
-                android:layout_marginStart="12dp"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:background="?selectableItemBackground"
-                android:src="@drawable/ic_baseline_add_circle_outline" />
+
         </LinearLayout>
 
     </LinearLayout>

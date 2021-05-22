@@ -13,6 +13,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.OrderAdapter
 import uz.koinot.stadion.data.model.Stadium
@@ -21,7 +22,7 @@ import uz.koinot.stadion.utils.*
 
 
 @AndroidEntryPoint
-class OderFragment : Fragment(R.layout.fragment_oder) {
+class OderFragment : BaseFragment(R.layout.fragment_oder) {
 
     private val viewModel: OrderViewModel by viewModels()
     private var _bn: FragmentOderBinding? = null
@@ -69,16 +70,15 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
             viewModel.orderFlow.collect {
                 when(it){
                     is UiStateList.SUCCESS ->{
+                        showProgressDialog(false)
                         if(it.data != null && it.data.isNotEmpty()){
                             bn.apply {
                                 adapter.submitList(it.data)
-                                progress.isVisible = false
                                 textNoOrder.isVisible = false
                                 rvOrders.isVisible = true
                             }
                         }else{
                             bn.apply {
-                                progress.isVisible = false
                                 textNoOrder.isVisible = true
                                 rvOrders.isVisible = false
                             }
@@ -86,15 +86,15 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
 
                     }
                     is UiStateList.ERROR ->{
+                        showProgressDialog(false)
                         bn.apply {
-                            progress.isVisible = false
                             textNoOrder.isVisible = true
                             rvOrders.isVisible = false
                         }
                     }
                     is UiStateList.LOADING ->{
+                        showProgressDialog(true)
                         bn.apply {
-                            progress.isVisible = true
                             textNoOrder.isVisible = false
                             rvOrders.isVisible = false
                         }
@@ -107,14 +107,15 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
             viewModel.acceptFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
-//                        showMessage("Muvaffaqiyatli")
+                        showProgressDialog(false)
                         viewModel.getOder(stadiumId)
                     }
                     is UiStateObject.ERROR ->{
+                        showProgressDialog(false)
                         showMessage("Xatolik")
                     }
                     is UiStateObject.LOADING ->{
-
+                        showProgressDialog(true)
                     }
                     else -> Unit
                 }
@@ -124,14 +125,15 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
             viewModel.rejectFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
-//                        showMessage("Muvaffaqiyatli")
+                        showProgressDialog(false)
                         viewModel.getOder(stadiumId)
                     }
                     is UiStateObject.ERROR ->{
+                        showProgressDialog(false)
                         showMessage("Xatolik")
                     }
                     is UiStateObject.LOADING ->{
-
+                        showProgressDialog(true)
                     }
                     else -> Unit
                 }

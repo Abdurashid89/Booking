@@ -1,6 +1,7 @@
 package uz.koinot.stadion.ui.screens.home
 
 import android.Manifest
+import android.annotation.SuppressLint
 import android.content.IntentSender
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -23,7 +24,6 @@ import com.google.android.gms.maps.model.MarkerOptions
 import com.google.android.gms.tasks.Task
 import com.google.gson.Gson
 import uz.koinot.stadion.R
-import uz.koinot.stadion.databinding.FragmentHomeBinding
 import uz.koinot.stadion.databinding.FragmentMapBinding
 import uz.koinot.stadion.utils.*
 
@@ -37,6 +37,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private lateinit var tracker:GPSTracker
     private var adress = ""
 
+    @SuppressLint("PotentialBehaviorOverride")
     override fun onCreateView(
         inflater: LayoutInflater,
         container: ViewGroup?,
@@ -105,6 +106,9 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
+        bn.backArrow.setOnClickListener {
+            findNavController().navigateUp()
+        }
         bn.btnChooseLocation.setOnClickListener {
             if(location != null){
                 findNavController().navigate(R.id.createStadiumFragment,
@@ -164,7 +168,6 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         }catch (e:Exception){
             e.printStackTrace()
         }
-
     }
 
     override fun onDestroy() {

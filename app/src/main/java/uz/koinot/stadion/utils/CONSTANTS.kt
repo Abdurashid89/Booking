@@ -5,6 +5,8 @@ object CONSTANTS {
     const val BASE_URL = "http://104.236.3.227:1002"
     const val TOKEN = "token"
     const val PHONE_NUMBER = "phoneNumber"
+    const val FIRST_NAME = "firstName"
+    const val LAST_NAME = "lastName"
     const val FIREBASE_TOKEN = "firebaseToken"
     const val HAS_ACCOUNT = "has_account"
     const val STADION = "stadium"

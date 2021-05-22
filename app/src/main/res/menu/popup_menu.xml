@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/update_menu"
+        android:icon="@drawable/ic_baseline_create_24"
+        android:title="Update" />
+
+    <item
+        android:id="@+id/add_image_menu"
+        android:icon="@drawable/ic_baseline_add_a_photo"
+        android:title="Add Image" />
+</menu>

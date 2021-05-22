@@ -18,6 +18,7 @@ import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import uz.koinot.stadion.AuthActivity
+import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.StadiumAdapter
 import uz.koinot.stadion.data.model.Stadium
@@ -27,13 +28,13 @@ import uz.koinot.stadion.utils.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefreshListener {
+class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefreshListener {
 
     private val viewModel: HomeViewModel by viewModels()
     private var _bn: FragmentHomeBinding? = null
     private val bn get() = _bn!!
     private val adapter = StadiumAdapter()
-    private var stadiumId = 0
+    private var stadiumId = 0L
     private lateinit var navController: NavController
 
     @Inject
@@ -67,10 +68,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
         collects()
 
         adapter.setOnClickListener {
+            storage.currentStadiumId = it.id
             navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to Gson().toJson(it)),Utils.navOptions())
         }
 
-        adapter.setOnLongClickListener {
+        adapter.setOnUpdateClickListener {
             navController.navigate(R.id.createStadiumFragment, bundleOf(CONSTANTS.STADIUM_TYPE  to CONSTANTS.EDIT_STADIUM,CONSTANTS.STADIUM_DATA to Gson().toJson(it)),Utils.navOptions())
         }
 
@@ -116,15 +118,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
                 when(it){
                     is UiStateList.SUCCESS ->{
                         bn.swipeRefresh.isRefreshing = false
+                        showProgressDialog(false)
                         if(it.data != null && it.data.isNotEmpty()){
                             bn.apply {
-                                progress.isVisible = false
                                 textNotStadium.isVisible = false
                                 homeRv.isVisible = true
                             }
                         }else{
                             bn.apply {
-                                progress.isVisible = false
                                 textNotStadium.isVisible = true
                                 homeRv.isVisible = false
                             }
@@ -142,14 +143,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
                             requireActivity().finish()
 
                             swipeRefresh.isRefreshing = false
-                            progress.isVisible = false
+                            showProgressDialog(false)
                             homeRv.isVisible = false
                         }
                     }
                     is UiStateList.LOADING ->{
                         bn.apply {
                             swipeRefresh.isRefreshing = false
-                            progress.isVisible = true
+                          showProgressDialog(true)
                             textNotStadium.isVisible = false
                             homeRv.isVisible = false
                         }
@@ -162,13 +163,15 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
             viewModel.imageFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
+                        showProgressDialog(false)
                       viewModel.getAllStadium()
                     }
                     is UiStateObject.ERROR ->{
+                        showProgressDialog(false)
                      showMessage("Error")
                     }
                     is UiStateObject.LOADING ->{
-
+                        showProgressDialog(true)
                     }
                     else -> Unit
                 }

@@ -44,7 +44,7 @@ class HomeViewModel @Inject constructor(
     private var _imageFlow = MutableStateFlow<UiStateObject<Boolean>>(UiStateObject.EMPTY)
     val imageFlow: StateFlow<UiStateObject<Boolean>> get() = _imageFlow
 
-    fun uploadImage(id: Int, path: String) = viewModelScope.launch {
+    fun uploadImage(id: Long, path: String) = viewModelScope.launch {
         _imageFlow.value = UiStateObject.LOADING
         try {
             val file = File(path)

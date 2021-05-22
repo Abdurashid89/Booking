@@ -7,6 +7,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -14,19 +15,26 @@ import androidx.navigation.fragment.findNavController
 import com.wdullaer.materialdatetimepicker.date.DatePickerDialog
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.Job
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.MainActivity
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.UserAdapter
 import uz.koinot.stadion.data.model.CreateOrder
+import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.FragmentCreateOrderBinding
-import uz.koinot.stadion.databinding.FragmentOderBinding
 import uz.koinot.stadion.utils.*
 import java.util.*
+import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
+class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
+
+    @Inject
+    lateinit var pref:LocalStorage
 
     private val viewModel: CreateOrderViewModel by viewModels()
     private var _bn: FragmentCreateOrderBinding? = null
@@ -34,6 +42,7 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
     private var stadiumId = 0
     private val adapter = UserAdapter()
     private var currentPhoneNumber = ""
+    var job:Job? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -51,6 +60,11 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
                 findNavController().navigateUp()
             }
 
+            myLocation.setOnClickListener {
+                currentPhoneNumber = pref.phoneNumber
+                inputPhoneNumber.setText(pref.phoneNumber)
+            }
+            
             rvUsers.adapter = adapter
 
             adapter.setOnClickListener {
@@ -70,17 +84,27 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
             }
             inputStartDate.setOnClickListener {
                 TimePickerDialog.newInstance({ _, hourOfDay, minute, _ ->
-                    inputStartDate.setText("${hourOfDay.getString()}:${minute.getString()}")
+                    val date1 = "${hourOfDay.getString()}:${minute.getString()}"
+                    inputStartDate.setText(date1)
+                    val date2 = inputEndDate.text.toString()
+                    if(date2.isNotEmpty()){
+                        viewModel.getOrderPrice(stadiumId,date1,date2)
+                    }
                 },true).show(parentFragmentManager,"aaa")
             }
             inputEndDate.setOnClickListener {
                 TimePickerDialog.newInstance({ _, hourOfDay, minute, _ ->
-                    inputEndDate.setText("${hourOfDay.getString()}:${minute.getString()}")
+                    val date1 = "${hourOfDay.getString()}:${minute.getString()}"
+                    inputEndDate.setText(date1)
+                    val date2 = inputStartDate.text.toString()
+                    if(date2.isNotEmpty()){
+                        viewModel.getOrderPrice(stadiumId,date2,date1)
+                    }
                 },true).show(parentFragmentManager,"ttt")
             }
             inputPhoneNumber.addTextChangedListener { text ->
                 if(text.toString().length > 4 && text.toString() != currentPhoneNumber){
-                    viewModel.searchUser(text.toString())
+                    searchJob(text.toString())
                     currentPhoneNumber = text.toString()
                 }
             }
@@ -103,19 +127,29 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
         collects()
     }
 
+    private fun searchJob(toString: String) {
+        job?.cancel()
+        job = viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            delay(1000)
+            viewModel.searchUser(toString)
+        }
+    }
+
     private fun collects() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.createOrderFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
+                        showProgressDialog(false)
                         clearData()
                         showMessage("Successfully created order")
                     }
                     is UiStateObject.ERROR ->{
+                        showProgressDialog(false)
                         showMessage("Error Please Try again")
                     }
                     is UiStateObject.LOADING ->{
-                        showMessage("Loading")
+                        showProgressDialog(true)
                     }
                     else -> Unit
                 }
@@ -132,7 +166,34 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
                         showMessage("Error Please Try again")
                     }
                     is UiStateList.LOADING ->{
-                        showMessage("Loading")
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.orderPriceFlow.collect {
+                when(it){
+                    is UiStateObject.SUCCESS ->{
+                        bn.loadingPrice.isVisible = false
+                        bn.textOrderPrice.isVisible = true
+                        if(it.data.toString().contains("-")){
+                            showMessage("Vaqt kiritishda xatolik")
+                            bn.textOrderPrice.text = "0"
+                            bn.inputEndDate.setText("")
+                        }else
+                             bn.textOrderPrice.text = it.data.toMoneyFormat()
+                    }
+                    is UiStateObject.ERROR ->{
+                        bn.loadingPrice.isVisible = false
+                        bn.textOrderPrice.isVisible = true
+//                        showMessage("Error Please Try again")
+                    }
+                    is UiStateObject.LOADING ->{
+                        bn.loadingPrice.isVisible = true
+                        bn.textOrderPrice.isVisible = false
+//                        showMessage("Loading")
                     }
                     else -> Unit
                 }

@@ -48,7 +48,7 @@ interface ApiService {
     @Multipart
     @POST("koinot/stadium/uploadPhotoFileList/{id}")
     suspend fun uploadPhoto(
-        @Path("id") id:Int,
+        @Path("id") id:Long,
         @Part image: List<MultipartBody.Part>
         ): ResponseObject<Any>
 
@@ -64,6 +64,13 @@ interface ApiService {
 
     @GET("koinot/order/searchNumber")
     suspend fun getNewStadiumId():ResponseObject<Int>
+
+    @GET("koinot/order/{id}/{startDate}/{endDate}")
+    suspend fun orderPrice(
+        @Path("id") id: Int,
+        @Path("startDate") startDate: String,
+        @Path("endDate") endDate: String
+    ):ResponseObject<Double>
 
 
 }

@@ -7,7 +7,7 @@ import uz.koinot.stadion.ui.screens.dashboard.DashboardFragment
 import uz.koinot.stadion.ui.screens.home.OderFragment
 import uz.koinot.stadion.utils.CONSTANTS
 
-class PagerAdapter(fragment: Fragment,val stadiumId:Int) : FragmentStateAdapter(fragment) {
+class PagerAdapter(fragment: Fragment,val stadiumId:Long) : FragmentStateAdapter(fragment) {
 
     override fun getItemCount() = 2
 

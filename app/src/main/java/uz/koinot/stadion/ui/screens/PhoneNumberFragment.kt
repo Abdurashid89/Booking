@@ -9,6 +9,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.R
 import uz.koinot.stadion.data.api.ApiService
 import uz.koinot.stadion.data.model.Register
@@ -21,7 +22,7 @@ import uz.koinot.stadion.utils.userMessage
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
+class PhoneNumberFragment : BaseFragment(R.layout.fragment_phone_number) {
 
     @Inject
     lateinit var api: ApiService
@@ -47,8 +48,10 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
                 if (number.length == 13 && password.isNotEmpty()) {
                     lifecycleScope.launchWhenCreated {
                         try {
+                            showProgressDialog(true)
                             val res = api.auth(Register(number, password))
                             if (res.success == 200) {
+                                showProgressDialog(false)
                                 storage.accessToken = res.objectKoinot!!.accessToken
                                 customLog("success")
                                 storage.phoneNumber = number
@@ -58,11 +61,13 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
                                     Utils.navOptions()
                                 )
                             } else {
+                                showProgressDialog(false)
                                 customLog("error")
                                 showMessage(res.message)
                             }
 
                         } catch (e: Exception) {
+                            showProgressDialog(false)
                             customLog(e.userMessage())
                             showMessage(e.userMessage())
                         }

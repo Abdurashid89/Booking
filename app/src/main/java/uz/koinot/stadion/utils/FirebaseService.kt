@@ -66,7 +66,7 @@ class FirebaseService : FirebaseMessagingService() {
         val intent = Intent(this,MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
         intent.putExtra("koinot","main")
-        intent.putExtra("id",message.data["id"]?.toInt() ?: 0)
+        intent.putExtra("stadium",message.data["stadium"].toString())
         val requestCode: Int = (0..10).random()
         val pendingIntent = PendingIntent.getActivity(this,requestCode,intent,FLAG_ONE_SHOT)
         val bigStyle = NotificationCompat.BigTextStyle()

@@ -5,10 +5,12 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.MainActivity
 import uz.koinot.stadion.R
 import uz.koinot.stadion.data.api.ApiService
@@ -18,7 +20,7 @@ import uz.koinot.stadion.utils.showMessage
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class VerificationFragment : Fragment(R.layout.fragment_verification) {
+class VerificationFragment : BaseFragment(R.layout.fragment_verification) {
 
     @Inject
     lateinit var api: ApiService
@@ -41,24 +43,28 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
         bn.btnVerification.setOnClickListener {
             val number = bn.inputVerificationNumber.text.toString().trim()
             if(number.isNotEmpty()){
-                GlobalScope.launch {
+                lifecycleScope.launchWhenCreated{
                     try {
+                        showProgressDialog(true)
                         val res = api.verify(number)
-                        MainScope().launch {
+
                             if(res.success == 200){
+                                showProgressDialog(false)
                                 showMessage("Siz muvaffaqiyatli ro'yhatdan o'tdingiz!")
                                 storage.hasAccount = true
+                                storage.firebaseToken = ""
                                 requireActivity().startActivity(Intent(requireContext(),MainActivity::class.java))
                                 requireActivity().finish()
                             }else{
+                                showProgressDialog(false)
                                 showMessage("Xatolik")
                             }
-                        }
+
 
                     }catch (e:Exception){
-                        MainScope().launch {
+                        showProgressDialog(false)
                             showMessage("Xatolik")
-                        }
+
                     }
                 }
 

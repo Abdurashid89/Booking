@@ -1,5 +1,7 @@
 package uz.koinot.stadion
 
+import android.content.Intent
+import android.graphics.Color
 import android.media.MediaPlayer
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
@@ -47,7 +49,9 @@ class MainActivity : AppCompatActivity() {
         _bn = ActivityMainBinding.inflate(layoutInflater)
         setContentView(bn.root)
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
-//        navController = findNavController(R.id.nav_host_fragment_container)
+        navController = findNavController(R.id.nav_host_fragment_container)
+
+        window.navigationBarColor = Color.WHITE
 
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
             mFirebaseAnalytics.setAnalyticsCollectionEnabled(true)
@@ -58,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         }
         Firebase.messaging.isAutoInitEnabled = true
 
-        if(!storage.firebaseToken.isEmpty()){
+//        if(storage.firebaseToken.isEmpty()){
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener{task ->
                 if(!task.isSuccessful) return@OnCompleteListener
 
@@ -66,63 +70,34 @@ class MainActivity : AppCompatActivity() {
 
                 lifecycleScope.launchWhenCreated {
                     try {
-                        val res = api.token(task.result.toString())
-//                        if(res.success == 200){
-////                            showMessage(res.message)
-//                        }else{
-////                            showMessage(
-////                                res.message
-////                            )
-//                        }
+                       api.token(task.result.toString())
                     }catch (e:Exception){
-                        showMessage(e.localizedMessage)
+                        showMessage(e.localizedMessage?: "not found")
                         e.printStackTrace()
                     }
                 }
                 Log.e("AAA","token is: "+task.result.toString())
             })
-        }
+//        }
 
 
         val text = intent.getStringExtra("koinot")
-        val id = intent.getIntExtra("id",0)
+        val stadium = intent.getStringExtra("stadium")
         if(text == "main"){
-            navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to Gson().toJson(Stadium())),
+            navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to stadium),
                 Utils.navOptions())
         }
 
-
-//        navController.addOnDestinationChangedListener { controller, destination, arguments ->
-//            when(destination.id){
-//                R.id.homeFragment -> bn.bottomNav.selectedItemId = R.id.homeFragment
-//                R.id.activeOrderFragment -> bn.bottomNav.selectedItemId = R.id.activeOrderFragment
-//                R.id.archiveOrderkFragment -> bn.bottomNav.selectedItemId = R.id.archiveOrderkFragment
-//            }
-//        }
-
-
-//        bn.bottomNav.setOnNavigationItemSelectedListener{
-//            when(it.itemId){
-//                R.id.homeFragment ->{
-//                    if (navController.currentDestination?.id != R.id.homeFragment)
-//                    navController.navigate(R.id.homeFragment)
-//                }
-//                R.id.activeOrderFragment ->{
-//                    if (navController.currentDestination?.id != R.id.activeOrderFragment)
-//                    navController.navigate(R.id.activeOrderFragment)
-//                }
-//                R.id.archiveOrderkFragment ->{
-//                    if (navController.currentDestination?.id != R.id.archiveOrderkFragment)
-//                    navController.navigate(R.id.archiveOrderkFragment)
-//                }
-//               else ->{
-//                   navController.navigate(R.id.homeFragment)
-//               }
-//            }
-//           false
-//        }
     }
 
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        val text = intent?.getStringExtra("koinot")
+        val stadium = intent?.getStringExtra("stadium")
+        if(text == "main"){
+            navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to stadium), Utils.navOptions())
+        }
+    }
     override fun onDestroy() {
         super.onDestroy()
         _bn = null

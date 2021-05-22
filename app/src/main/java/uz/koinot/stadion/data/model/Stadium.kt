@@ -1,7 +1,7 @@
 package uz.koinot.stadion.data.model
 
 data class Stadium(
-    var id:Int = 0,
+    var id:Long = 0,
     var name: String = "",
     var countVerify:Int = 0,
     var countNotVerify:Int = 0,

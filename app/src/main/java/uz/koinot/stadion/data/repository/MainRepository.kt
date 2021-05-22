@@ -27,11 +27,12 @@ class MainRepository @Inject constructor(
     suspend fun archiveAll(number:Int) = api.archiveAll(number)
     suspend fun archiveAfterCreateTime(number: Int,time:String) = api.archiveAfterCreateTime(number,time)
     suspend fun login(data:Login) = api.login(data)
-    suspend fun attachment(id:Int,image: MultipartBody.Part) = api.uploadPhoto(id, listOf(image))
+    suspend fun attachment(id:Long,image: MultipartBody.Part) = api.uploadPhoto(id, listOf(image))
     suspend fun createStadium(data: CreateStadium) = api.createStadium(data)
     suspend fun createOrder(data: CreateOrder) = api.createOrder(data)
     suspend fun searchUser(data: String) = api.search(data)
     suspend fun getNewStadiumId() = api.getNewStadiumId()
+    suspend fun orderPrice(id:Int, startDate:String,endDate:String) = api.orderPrice(id, startDate, endDate)
 
 
 

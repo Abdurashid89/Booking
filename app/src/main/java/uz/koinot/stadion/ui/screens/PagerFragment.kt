@@ -34,7 +34,7 @@ class PagerFragment : Fragment(R.layout.fragment_pager) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         val arg = arguments?.getString(CONSTANTS.STADION,"")
-        stadium = Gson().fromJson(arg, object : TypeToken<Stadium>() {}.type)
+        stadium = Gson().fromJson(arg, Stadium::class.java)
         navController = findNavController()
     }
 

@@ -19,6 +19,7 @@ import com.google.gson.reflect.TypeToken
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.AttachmentAdapter
 import uz.koinot.stadion.data.model.CreateStadium
@@ -30,7 +31,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
+class CreateStadiumFragment : BaseFragment(R.layout.fragment_create_stadium) {
 
     private var _bn: FragmentCreateStadiumBinding? = null
     val bn get() = _bn!!
@@ -116,22 +117,6 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                 }, true).show(childFragmentManager, "mmm")
             }
 
-
-//            addImage.setOnClickListener {
-//                checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
-//                    if (adapter.itemCount < 10) {
-//                        val intent = Intent(Intent.ACTION_PICK)
-//                        intent.type = "image/*"
-//                        startActivityForResult(intent, 1)
-//                    } else {
-//                        showMessage("belgilangan limitda rasm yulab bo'ldingiz")
-//                    }
-//
-//                }
-////                imagePicker()
-//            }
-//            rvImages.adapter = adapter
-
             btnAddStadium.setOnClickListener {
                 val number = inputPhoneNumber.text.toString().trim()
                 val location = location.text.toString().trim()
@@ -159,45 +144,19 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
         }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            viewModel.imageFlow.collect {
-                when (it) {
-                    is UiStateObject.SUCCESS -> {
-                        showMessage("Stadium successfully created!")
-                        findNavController().popBackStack(R.id.homeFragment, false)
-                    }
-                    is UiStateObject.ERROR -> {
-                        showMessage("error upload")
-                    }
-                    is UiStateObject.LOADING -> {
-
-                    }
-                    else -> Unit
-                }
-            }
-        }
-
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.createStadiumFlow.collect {
                 when (it) {
                     is UiStateObject.SUCCESS -> {
-
+                        showProgressDialog(false)
                         showMessage("Successfully!")
                         findNavController().popBackStack(R.id.homeFragment, false)
-//                        stadiumId = it.data
-//                        showMessage("Successfully created")
-//                        val ls = adapter.getList()
-//                        val list = ArrayList<String>()
-//                        ls.forEach {
-//                            list.add(PathUtil.getPath(requireContext(), it))
-//                        }
-//                        viewModel.uploadImage(stadiumId, list)
-//                        findNavController().popBackStack(R.id.homeFragment,false)
                     }
                     is UiStateObject.ERROR -> {
+                        showProgressDialog(false)
                         showMessage("Error not created")
                     }
                     is UiStateObject.LOADING -> {
-
+                        showProgressDialog(true)
                     }
                     else -> Unit
                 }

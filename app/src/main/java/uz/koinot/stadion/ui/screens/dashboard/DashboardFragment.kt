@@ -13,6 +13,7 @@ import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
+import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.DashboardOrderAdapter
 import uz.koinot.stadion.adapter.OrderAdapter
@@ -24,7 +25,7 @@ import uz.koinot.stadion.utils.UiStateList
 import uz.koinot.stadion.utils.showMessage
 
 @AndroidEntryPoint
-class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
+class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
     private var _bn: FragmentDashboardBinding? = null
     val bn get() = _bn!!
@@ -53,21 +54,12 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     }
 
     private fun collects() {
-//        GlobalScope.launch {
-//            val orders = viewModel.getAllOrder()
-//            if (orders.isNotEmpty()) {
-//                viewModel.afterCreateFlow(stadiumId, orders[0].startDate)
-//                    ordersList.addAll(orders)
-//            } else {
-//                viewModel.archiveAll(stadiumId)
-//            }
-//
-//        }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.archiveAllFlow.collect {
                 when (it) {
                     is UiStateList.SUCCESS -> {
+                        showProgressDialog(false)
                         bn.rvOrders.isVisible = true
                         if (it.data != null && it.data.isNotEmpty()){
                             adapter.submitList(it.data)
@@ -75,15 +67,14 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                         }else{
                             bn.nothing.visibility = View.VISIBLE
                         }
-//                        GlobalScope.launch {
-//                            viewModel.setAllOrder(it.data!!)
-//                        }
                     }
                     is UiStateList.ERROR -> {
+                        showProgressDialog(false)
                         bn.rvOrders.isVisible = false
                         showMessage("Xatolik")
                     }
                     is UiStateList.LOADING -> {
+                        showProgressDialog(true)
                         bn.nothing.visibility = View.GONE
                         bn.rvOrders.isVisible = false
                     }
@@ -121,7 +112,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             viewModel.dashboardFlow.collect {
                 when (it) {
                     is UiStateList.SUCCESS -> {
-//                        showMessage("Muvaffaqiyatli")
                         if (it.data != null && it.data.isNotEmpty()){
                             createChart(it.data)
                             bn.nothing.isVisible = false
