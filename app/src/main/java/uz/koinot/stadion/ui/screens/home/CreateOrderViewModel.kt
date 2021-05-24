@@ -58,7 +58,7 @@ class CreateOrderViewModel @Inject constructor(
     private var _orderPriceFlow = MutableStateFlow<UiStateObject<Double>>(UiStateObject.EMPTY)
     val orderPriceFlow: StateFlow<UiStateObject<Double>> get() = _orderPriceFlow
 
-    fun getOrderPrice(id:Int,startDate:String,endDate:String) = viewModelScope.launch {
+    fun getOrderPrice(id:Long,startDate:String,endDate:String) = viewModelScope.launch {
         _orderPriceFlow.value = UiStateObject.LOADING
         try {
             val res = repository.orderPrice(id, startDate, endDate)

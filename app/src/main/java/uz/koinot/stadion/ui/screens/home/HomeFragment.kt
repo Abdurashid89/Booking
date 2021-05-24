@@ -1,5 +1,6 @@
 package uz.koinot.stadion.ui.screens.home
 
+import android.Manifest
 import android.app.Activity
 import android.app.AlertDialog
 import android.content.Intent
@@ -85,6 +86,16 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
             val dialog = ImageDialog(stadium.photos,position)
             dialog.show(childFragmentManager,"image")
         }
+        adapter.setOnDeleteClickListener {
+            val dialog = AlertDialog.Builder(requireContext())
+            dialog.setTitle("Delete")
+            dialog.setMessage("Do you want to delete this stadium!")
+            dialog.setNegativeButton("No",{dialog, which -> dialog.dismiss() })
+            dialog.setPositiveButton("Yes") { dialog, which ->
+               viewModel.deleteStadium(it.id)
+            }
+            dialog.show()
+        }
         bn.logOut.setOnClickListener {
             val dialog = AlertDialog.Builder(requireContext())
             dialog.setTitle("Exit")
@@ -106,11 +117,14 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
 
     private fun addImage(it: Stadium) {
         stadiumId = it.id
-        if (adapter.itemCount < 10) {
-            val intent = Intent(Intent.ACTION_PICK)
-            intent.type = "image/*"
-            startActivityForResult(intent, 1)
+        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE){
+            if (adapter.itemCount < 10) {
+                val intent = Intent(Intent.ACTION_PICK)
+                intent.type = "image/*"
+                startActivityForResult(intent, 1)
+            }
         }
+
     }
 
     private fun collects() {
@@ -169,10 +183,27 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
                     }
                     is UiStateObject.ERROR ->{
                         showProgressDialog(false)
-                     showMessage("Error")
+                     showMessage(it.message)
                     }
                     is UiStateObject.LOADING ->{
                         showProgressDialog(true)
+                    }
+                    else -> Unit
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.deleteStadiumFlow.collect {
+                when(it){
+                    is UiStateObject.SUCCESS ->{
+                        viewModel.getAllStadium()
+                    }
+                    is UiStateObject.ERROR ->{
+                        showProgressDialog(false)
+                       showMessage(it.message)
+                    }
+                    is UiStateObject.LOADING ->{
+                       showProgressDialog(true)
                     }
                     else -> Unit
                 }

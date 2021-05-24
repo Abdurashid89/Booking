@@ -61,4 +61,22 @@ class HomeViewModel @Inject constructor(
             _imageFlow.value = UiStateObject.ERROR(e.localizedMessage)
         }
     }
+
+    private var _deleteStadiumFlow = MutableStateFlow<UiStateObject<String>>(UiStateObject.EMPTY)
+    val deleteStadiumFlow: StateFlow<UiStateObject<String>> get() = _deleteStadiumFlow
+
+    fun deleteStadium(id: Long) = viewModelScope.launch {
+        _deleteStadiumFlow.value = UiStateObject.LOADING
+        try {
+            val res = repository.deleteStadium(id)
+            if (res.success == 200) {
+                _deleteStadiumFlow.value = UiStateObject.SUCCESS(res.message)
+            } else {
+                _deleteStadiumFlow.value = UiStateObject.ERROR(res.message, true)
+            }
+        } catch (e: Exception) {
+            _deleteStadiumFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
+            e.printStackTrace()
+        }
+    }
 }

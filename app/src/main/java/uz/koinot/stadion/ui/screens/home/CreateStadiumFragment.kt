@@ -86,6 +86,8 @@ class CreateStadiumFragment : BaseFragment(R.layout.fragment_create_stadium) {
                 inputPhoneNumber.setText(storage.phoneNumber)
                 location.setText(adress)
             } else {
+                toolbar.title = "Update Stadium"
+                btnAddStadium.text = "Update Stadium"
                 inputPhoneNumber.setText(stadium.phone_number)
                 location.setText(stadium.address)
                 nameStadium.setText(stadium.name)

@@ -17,6 +17,7 @@ class StadiumAdapter : RecyclerView.Adapter<StadiumAdapter.VHolder>() {
     private var listener: SingleBlock<Stadium>? = null
     private var listenerAddImage: SingleBlock<Stadium>? = null
     private var updateListener: SingleBlock<Stadium>? = null
+    private var deleteListener: SingleBlock<Stadium>? = null
     private var imageListener: ((Stadium, Int) -> Unit)? = null
     private val list = ArrayList<Stadium>()
 
@@ -55,6 +56,9 @@ class StadiumAdapter : RecyclerView.Adapter<StadiumAdapter.VHolder>() {
                                 if(list.size < 10)
                                 listenerAddImage?.invoke(d)
                             }
+                            R.id.delete_stadium -> {
+                                deleteListener?.invoke(d)
+                            }
                             else -> Unit
                         }
                         true
@@ -84,6 +88,10 @@ class StadiumAdapter : RecyclerView.Adapter<StadiumAdapter.VHolder>() {
 
     fun setOnUpdateClickListener(block: SingleBlock<Stadium>) {
         updateListener = block
+    }
+
+    fun setOnDeleteClickListener(block: SingleBlock<Stadium>) {
+        deleteListener = block
     }
 
     fun setOnImageClickListener(block: (Stadium, Int) -> Unit) {

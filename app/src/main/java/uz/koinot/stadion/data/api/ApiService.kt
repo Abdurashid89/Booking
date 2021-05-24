@@ -67,10 +67,11 @@ interface ApiService {
 
     @GET("koinot/order/{id}/{startDate}/{endDate}")
     suspend fun orderPrice(
-        @Path("id") id: Int,
+        @Path("id") id: Long,
         @Path("startDate") startDate: String,
         @Path("endDate") endDate: String
     ):ResponseObject<Double>
 
-
+    @POST("koinot/stadium/delete/{id}")
+    suspend fun deleteStadium(@Path("id") id:Long):ResponseObject<Any>
 }

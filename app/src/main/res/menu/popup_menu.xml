@@ -9,4 +9,9 @@
         android:id="@+id/add_image_menu"
         android:icon="@drawable/ic_baseline_add_a_photo"
         android:title="Add Image" />
+
+    <item
+        android:id="@+id/delete_stadium"
+        android:icon="@drawable/ic_baseline_delete"
+        android:title="Delete" />
 </menu>

@@ -32,7 +32,8 @@ class MainRepository @Inject constructor(
     suspend fun createOrder(data: CreateOrder) = api.createOrder(data)
     suspend fun searchUser(data: String) = api.search(data)
     suspend fun getNewStadiumId() = api.getNewStadiumId()
-    suspend fun orderPrice(id:Int, startDate:String,endDate:String) = api.orderPrice(id, startDate, endDate)
+    suspend fun orderPrice(id:Long, startDate:String,endDate:String) = api.orderPrice(id, startDate, endDate)
+    suspend fun deleteStadium(id:Long) = api.deleteStadium(id)
 
 
 

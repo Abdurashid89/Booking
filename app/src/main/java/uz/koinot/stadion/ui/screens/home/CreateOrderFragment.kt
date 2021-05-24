@@ -3,6 +3,7 @@ package uz.koinot.stadion.ui.screens.home
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -39,7 +40,7 @@ class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
     private val viewModel: CreateOrderViewModel by viewModels()
     private var _bn: FragmentCreateOrderBinding? = null
     private val bn get() = _bn!!
-    private var stadiumId = 0
+    private var stadiumId = 0L
     private val adapter = UserAdapter()
     private var currentPhoneNumber = ""
     var job:Job? = null
@@ -47,7 +48,8 @@ class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if(arguments != null){
-            stadiumId = arguments?.getInt(CONSTANTS.STADION_ID)!!
+            Log.d("AAA","stadiumId:$stadiumId")
+            stadiumId = arguments?.getLong(CONSTANTS.STADION_ID)?:0L
         }
     }
 
@@ -199,10 +201,11 @@ class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
 
     private fun clearData() {
         bn.apply {
-            inputPhoneNumber.text?.clear()
+            inputPhoneNumber.setText("+998")
             inputDay.text?.clear()
             inputStartDate.text?.clear()
             inputEndDate.text?.clear()
+            textOrderPrice.text = "0"
         }
     }
 
