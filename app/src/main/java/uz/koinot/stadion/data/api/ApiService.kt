@@ -25,10 +25,10 @@ interface ApiService {
 
 
     @GET("koinot/stadium/activeOrder/{number}")
-    suspend fun accept(@Path("number") number:Int):ResponseObject<Any>
+    suspend fun accept(@Path("number") number:Long):ResponseObject<Any>
 
     @GET("koinot/stadium/cancelOrder/{number}")
-    suspend fun reject(@Path("number") number:Int):ResponseObject<Any>
+    suspend fun reject(@Path("number") number:Long):ResponseObject<Any>
 
     @GET("koinot/stadiumDash/graph/{number}")
     suspend fun graph(@Path("number") number:Long):ResponseList<Dashboard>
@@ -41,7 +41,7 @@ interface ApiService {
 
     @GET("koinot/stadiumDash/archiveAfterCreateTime/{number}")
     suspend fun archiveAfterCreateTime(
-        @Path("number") number: Int,
+        @Path("number") number: Long,
         @Query("time") time: String
     ):ResponseList<Order>
 
@@ -74,4 +74,7 @@ interface ApiService {
 
     @POST("koinot/stadium/delete/{id}")
     suspend fun deleteStadium(@Path("id") id:Long):ResponseObject<Any>
+
+    @DELETE("koinot/stadium/deletePhoto/{id}")
+    suspend fun deleteImage(@Path("id") id:Long):ResponseObject<Any>
 }

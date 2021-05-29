@@ -16,6 +16,7 @@ import uz.koinot.stadion.utils.SingleBlock
 class RvImageAdapter(val stadium: Stadium): RecyclerView.Adapter<RvImageAdapter.VHolder>() {
 
     private var imageListener : ((Stadium, Int)->Unit)? = null
+    private var deleteImageListener: SingleBlock<Long>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = VHolder(
         RvImageBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -38,10 +39,17 @@ class RvImageAdapter(val stadium: Stadium): RecyclerView.Adapter<RvImageAdapter.
             itemView.setOnClickListener {
                 imageListener?.invoke(stadium,adapterPosition)
             }
+            itemView.setOnLongClickListener {
+                deleteImageListener?.invoke(d.id)
+                true
+            }
 
         }
     }
     fun setOnClickListener(block: (Stadium,Int) -> Unit){
         imageListener = block
+    }
+    fun setOnImageDeleteListener(block: SingleBlock<Long>) {
+        deleteImageListener = block
     }
 }

@@ -17,6 +17,7 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
     private var rejectListener : SingleBlock<Order>? = null
     private var phoneNumberListener1 : SingleBlock<String>? = null
     private var phoneNumberListener2 : SingleBlock<String>? = null
+    private var cancelOrderListener: SingleBlock<Long>? = null
     private val list = ArrayList<Order>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = VHolder(
@@ -40,16 +41,22 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
                phone2.text = d.originalPhoneNumber
 
                 phone1.setOnClickListener {
-                    phoneNumberListener1?.invoke(d.phoneNumber)
+                    if(d.phoneNumber != null)
+                    phoneNumberListener1?.invoke(d.phoneNumber!!)
                 }
                 phone2.setOnClickListener {
-                    phoneNumberListener2?.invoke(d.phoneNumber)
+                    if(d.originalPhoneNumber != null)
+                    phoneNumberListener2?.invoke(d.originalPhoneNumber!!)
                 }
                 btnAccept.setOnClickListener {
                     acceptListener?.invoke(d)
                 }
                 btnReject.setOnClickListener {
                     rejectListener?.invoke(d)
+                }
+                itemView.setOnLongClickListener {
+                    cancelOrderListener?.invoke(d.id.toLong())
+                    true
                 }
 
                 layoutAccept.isVisible = !d.active
@@ -65,8 +72,8 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setOnClickListener(block:SingleBlock<Order>){
-        listener = block
+    fun setOnCancelListener(block:SingleBlock<Long>){
+        cancelOrderListener = block
     }
 
     fun setOnAcceptListener(block:SingleBlock<Order>){

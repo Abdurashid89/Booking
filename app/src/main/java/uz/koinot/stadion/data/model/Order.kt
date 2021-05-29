@@ -3,12 +3,12 @@ package uz.koinot.stadion.data.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 
-@Entity(tableName = "order")
+@Entity
 data class Order(
     @PrimaryKey(autoGenerate = false)
-    var id:Int,
-    var phoneNumber:String,
-    var originalPhoneNumber:String,
+    var id:Long,
+    var phoneNumber:String?,
+    var originalPhoneNumber:String?,
     var firstName:String?,
     var lastName:String?,
     var language:String,
@@ -19,5 +19,6 @@ data class Order(
     var endDate:String,
     var time:String,
     var active:Boolean,
-    var cancelOrder:Boolean
+    var cancelOrder:Boolean,
+    var stadiumId:Long = 0,
 )

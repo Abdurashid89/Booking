@@ -37,7 +37,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        stadiumId = arguments?.getLong(CONSTANTS.STADION_ID)!!
+        stadiumId = arguments?.getLong(CONSTANTS.STADION_ID,0L) ?: 0L
     }
 
 
@@ -46,14 +46,23 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
         bn.rvOrders.adapter = adapter
         viewModel.getDashboard(stadiumId)
-
-        viewModel.archiveAll(stadiumId)
         collects()
 
 
     }
 
     private fun collects() {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.getAllOrder(stadiumId).collect {
+                if(it.isEmpty()){
+                    viewModel.archiveAll(stadiumId)
+                }else{
+                    val time = "${it[0].time} ${it[0].startDate}:30.000000"
+                    viewModel.afterCreateFlow(stadiumId,time)
+                    adapter.submitList(it)
+                }
+            }
+        }
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.archiveAllFlow.collect {
@@ -62,10 +71,10 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                         showProgressDialog(false)
                         bn.rvOrders.isVisible = true
                         if (it.data != null && it.data.isNotEmpty()){
-                            adapter.submitList(it.data)
+                            addToDb(it.data)
                             bn.nothing.visibility = View.GONE
                         }else{
-                            bn.nothing.visibility = View.VISIBLE
+//                            bn.nothing.visibility = View.VISIBLE
                         }
                     }
                     is UiStateList.ERROR -> {
@@ -88,13 +97,9 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                 when (it) {
                     is UiStateList.SUCCESS -> {
                         bn.rvOrders.isVisible = true
-                        val list = ArrayList<Order>()
-                        it.data?.let { it1 -> list.addAll(it1) }
-                        list.addAll(ordersList)
-                        adapter.submitList(list)
-                        GlobalScope.launch {
-                            viewModel.removeAllOrder()
-                            viewModel.setAllOrder(list)
+
+                        if (it.data != null && it.data.isNotEmpty()){
+                            addToDb(it.data)
                         }
                     }
                     is UiStateList.ERROR -> {
@@ -129,6 +134,19 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                     else -> Unit
                 }
             }
+        }
+    }
+
+    private fun addToDb(data: List<Order>) {
+        val ls = ArrayList<Order>()
+
+        data.forEach { order->
+            order.stadiumId = stadiumId
+            ls.add(order)
+        }
+
+        GlobalScope.launch {
+            viewModel.setAllOrder(ls)
         }
     }
 

@@ -18,6 +18,7 @@ class StadiumAdapter : RecyclerView.Adapter<StadiumAdapter.VHolder>() {
     private var listenerAddImage: SingleBlock<Stadium>? = null
     private var updateListener: SingleBlock<Stadium>? = null
     private var deleteListener: SingleBlock<Stadium>? = null
+    private var deleteImageListener: SingleBlock<Long>? = null
     private var imageListener: ((Stadium, Int) -> Unit)? = null
     private val list = ArrayList<Stadium>()
 
@@ -37,11 +38,14 @@ class StadiumAdapter : RecyclerView.Adapter<StadiumAdapter.VHolder>() {
                 stdName.text = d.name
                 verifyCount.text = d.countVerify.toString()
                 notVerifyCount.text = d.countNotVerify.toString()
-                val adapter = RvImageAdapter(d)
-                rvImages.adapter = adapter
+                val imageAdapter = RvImageAdapter(d)
+                rvImages.adapter = imageAdapter
 
-                adapter.setOnClickListener { stadium, pos ->
+                imageAdapter.setOnClickListener { stadium, pos ->
                     imageListener?.invoke(stadium, pos)
+                }
+                imageAdapter.setOnImageDeleteListener {
+                    deleteImageListener?.invoke(it)
                 }
                 btnMore.setOnClickListener {
                     val popup = PopupMenu(it.context, it)
@@ -69,10 +73,6 @@ class StadiumAdapter : RecyclerView.Adapter<StadiumAdapter.VHolder>() {
             itemView.setOnClickListener {
                 listener?.invoke(d)
             }
-            itemView.setOnLongClickListener {
-                updateListener?.invoke(d)
-                true
-            }
         }
     }
 
@@ -96,6 +96,10 @@ class StadiumAdapter : RecyclerView.Adapter<StadiumAdapter.VHolder>() {
 
     fun setOnImageClickListener(block: (Stadium, Int) -> Unit) {
         imageListener = block
+    }
+
+    fun setOnImageDeleteListener(block:  SingleBlock<Long>) {
+        deleteImageListener = block
     }
 
     fun setOnAddImageClickListener(block: (Stadium) -> Unit) {

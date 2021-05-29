@@ -39,7 +39,7 @@ class OrderViewModel @Inject constructor(
     private var _acceptFlow = MutableStateFlow<UiStateObject<String>>(UiStateObject.EMPTY)
     val acceptFlow: StateFlow<UiStateObject<String>> get() = _acceptFlow
 
-    fun acceptOrder(orderId:Int) = viewModelScope.launch {
+    fun acceptOrder(orderId:Long) = viewModelScope.launch {
         _acceptFlow.value = UiStateObject.LOADING
         try {
             val res = repository.accept(orderId)
@@ -58,7 +58,7 @@ class OrderViewModel @Inject constructor(
     private var _rejectFlow = MutableStateFlow<UiStateObject<String>>(UiStateObject.EMPTY)
     val rejectFlow: StateFlow<UiStateObject<String>> get() = _rejectFlow
 
-    fun rejectOrder(orderId:Int) = viewModelScope.launch {
+    fun rejectOrder(orderId:Long) = viewModelScope.launch {
         _rejectFlow.value = UiStateObject.LOADING
         try {
             val res = repository.reject(orderId)

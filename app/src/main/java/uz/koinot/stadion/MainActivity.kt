@@ -62,7 +62,7 @@ class MainActivity : AppCompatActivity() {
         }
         Firebase.messaging.isAutoInitEnabled = true
 
-//        if(storage.firebaseToken.isEmpty()){
+        if(storage.firebaseToken.isEmpty()){
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener{task ->
                 if(!task.isSuccessful) return@OnCompleteListener
 
@@ -78,7 +78,7 @@ class MainActivity : AppCompatActivity() {
                 }
                 Log.e("AAA","token is: "+task.result.toString())
             })
-//        }
+        }
 
 
         val text = intent.getStringExtra("koinot")

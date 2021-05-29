@@ -58,7 +58,7 @@ class DashboardViewModel @Inject constructor(
     private var _afterCreateFlow = MutableStateFlow<UiStateList<Order>>(UiStateList.EMPTY)
     val afterCreateFlow: StateFlow<UiStateList<Order>> get() = _afterCreateFlow
 
-    fun afterCreateFlow(number:Int,time:String) = viewModelScope.launch {
+    fun afterCreateFlow(number:Long,time:String) = viewModelScope.launch {
         _afterCreateFlow.value = UiStateList.LOADING
         try {
             val res = repository.archiveAfterCreateTime(number,time)
@@ -74,7 +74,7 @@ class DashboardViewModel @Inject constructor(
     }
 
     suspend fun setAllOrder(list: List<Order>) = repository.setAllOrder(list)
-    suspend fun getAllOrder() = repository.getAllOrder()
+    suspend fun getAllOrder(id:Long) = repository.getAllOrder(id)
     suspend fun removeAllOrder() = repository.removeAllOrder()
 
 

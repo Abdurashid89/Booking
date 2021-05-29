@@ -81,6 +81,17 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
         adapter.setOnAddImageClickListener {
             addImage(it)
         }
+        adapter.setOnImageDeleteListener {
+            val dialog = AlertDialog.Builder(requireContext())
+            dialog.setTitle(getString(R.string.delete))
+            dialog.setMessage(getString(R.string.are_you_sure_delete_image))
+            dialog.setNegativeButton(getString(R.string.no),{ dialog, which -> dialog.dismiss() })
+            dialog.setPositiveButton(getString(R.string.yes)) { dialog, which ->
+                viewModel.deleteImage(it)
+            }
+            dialog.show()
+
+        }
 
         adapter.setOnImageClickListener { stadium, position ->
             val dialog = ImageDialog(stadium.photos,position)
@@ -103,6 +114,7 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
             dialog.setNegativeButton(getString(R.string.no),{dialog, which -> dialog.dismiss() })
             dialog.setPositiveButton(getString(R.string.no)) { dialog, which ->
                 storage.hasAccount = false
+                storage.firebaseToken = ""
                 requireActivity().startActivity(Intent(requireContext(), AuthActivity::class.java))
                 requireActivity().finish()
             }
@@ -194,6 +206,23 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
         }
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.deleteStadiumFlow.collect {
+                when(it){
+                    is UiStateObject.SUCCESS ->{
+                        viewModel.getAllStadium()
+                    }
+                    is UiStateObject.ERROR ->{
+                        showProgressDialog(false)
+                       showMessage(it.message)
+                    }
+                    is UiStateObject.LOADING ->{
+                       showProgressDialog(true)
+                    }
+                    else -> Unit
+                }
+            }
+        }
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.deleteImageFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
                         viewModel.getAllStadium()

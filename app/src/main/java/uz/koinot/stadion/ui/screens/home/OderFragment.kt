@@ -42,12 +42,10 @@ class OderFragment : BaseFragment(R.layout.fragment_oder) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentOderBinding.bind(view)
 
-//        bn.nameStadium.text = stadiumId.name
         bn.rvOrders.adapter = adapter
         bn.rvOrders.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getOder(stadiumId)
         bn.btnAddOrder.setOnClickListener {
-//            showMessage("Tez orada ishlab qolishi mumkin")
             findNavController().navigate(R.id.createOrderFragment, bundleOf(CONSTANTS.STADION_ID to stadiumId),Utils.navOptions())
         }
 
@@ -57,6 +55,15 @@ class OderFragment : BaseFragment(R.layout.fragment_oder) {
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
                 viewModel.acceptOrder(it.id)
             }
+        }
+
+        adapter.setOnCancelListener {orderId->
+            val dialog = BaseDialog(getString(R.string.cancel),getString(R.string.cancel_order))
+            dialog.setOnDeleteListener {
+                dialog.dismiss()
+                viewModel.rejectOrder(orderId)
+            }
+            dialog.show(childFragmentManager,"asd")
         }
 
         adapter.setOnRejectListener {

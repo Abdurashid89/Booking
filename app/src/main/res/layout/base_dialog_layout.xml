@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    app:cardCornerRadius="24dp"
+    android:layout_height="wrap_content">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Text title"
+            android:layout_marginStart="32dp"
+            android:textStyle="bold"
+            android:layout_marginTop="24dp"
+            android:id="@+id/text_title"
+            android:layout_height="wrap_content"/>
+        <TextView
+            android:layout_width="wrap_content"
+            android:text="Text description"
+            android:layout_marginTop="16dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginEnd="32dp"
+            android:id="@+id/text_description"
+            android:layout_height="wrap_content"/>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:orientation="horizontal"
+            android:gravity="end"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:layout_width="wrap_content"
+                app:cornerRadius="12dp"
+                android:textAllCaps="false"
+                android:text="@string/no"
+                android:id="@+id/btn_no"
+                android:textColor="@color/red"
+                android:layout_margin="16dp"
+                android:background="@drawable/bgn_cancel"
+                android:layout_height="36dp"/>
+
+            <Button
+                android:layout_width="wrap_content"
+                app:cornerRadius="12dp"
+                android:textAllCaps="false"
+                android:text="@string/yes"
+                android:id="@+id/btn_yes"
+                android:textColor="@color/green"
+                android:layout_margin="16dp"
+                android:background="@drawable/bgn_accept"
+                android:layout_height="36dp"/>
+
+        </LinearLayout>
+    </LinearLayout>
+
+</com.google.android.material.card.MaterialCardView>
