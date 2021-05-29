@@ -32,7 +32,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
     private val viewModel: DashboardViewModel by viewModels()
     private var stadiumId = 0L
     private val adapter = DashboardOrderAdapter()
-    private var ordersList = ArrayList<Order>()
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -72,9 +71,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                         bn.rvOrders.isVisible = true
                         if (it.data != null && it.data.isNotEmpty()){
                             addToDb(it.data)
-                            bn.nothing.visibility = View.GONE
-                        }else{
-//                            bn.nothing.visibility = View.VISIBLE
                         }
                     }
                     is UiStateList.ERROR -> {
@@ -84,7 +80,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                     }
                     is UiStateList.LOADING -> {
                         showProgressDialog(true)
-                        bn.nothing.visibility = View.GONE
                         bn.rvOrders.isVisible = false
                     }
                     else -> Unit
@@ -119,9 +114,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                     is UiStateList.SUCCESS -> {
                         if (it.data != null && it.data.isNotEmpty()){
                             createChart(it.data)
-                            bn.nothing.isVisible = false
-                        }else{
-                            bn.nothing.isVisible = true
                         }
 
                     }
@@ -129,7 +121,6 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                         showMessage(getString(R.string.error))
                     }
                     is UiStateList.LOADING -> {
-                        bn.nothing.isVisible = false
                     }
                     else -> Unit
                 }
