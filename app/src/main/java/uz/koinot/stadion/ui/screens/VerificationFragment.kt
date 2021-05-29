@@ -50,20 +50,20 @@ class VerificationFragment : BaseFragment(R.layout.fragment_verification) {
 
                             if(res.success == 200){
                                 showProgressDialog(false)
-                                showMessage("Siz muvaffaqiyatli ro'yhatdan o'tdingiz!")
+                                showMessage(getString(R.string.success_register))
                                 storage.hasAccount = true
                                 storage.firebaseToken = ""
                                 requireActivity().startActivity(Intent(requireContext(),MainActivity::class.java))
                                 requireActivity().finish()
                             }else{
                                 showProgressDialog(false)
-                                showMessage("Xatolik")
+                                showMessage(getString(R.string.error))
                             }
 
 
                     }catch (e:Exception){
                         showProgressDialog(false)
-                            showMessage("Xatolik")
+                        showMessage(getString(R.string.error))
 
                     }
                 }

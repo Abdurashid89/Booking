@@ -161,7 +161,7 @@ class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
                         adapter.submitList(it.data)
                     }
                     is UiStateList.ERROR ->{
-                        showMessage("Error Please Try again")
+                        showMessage(getString(R.string.pease_try_again))
                     }
                     is UiStateList.LOADING ->{
                     }
@@ -177,7 +177,7 @@ class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
                         bn.loadingPrice.isVisible = false
                         bn.textOrderPrice.isVisible = true
                         if(it.data.toString().contains("-")){
-                            showMessage("Vaqt kiritishda xatolik")
+                            showMessage(getString(R.string.vaqt_kiritishda_xatolik))
                             bn.textOrderPrice.text = "0"
                             bn.inputEndDate.setText("")
                         }else

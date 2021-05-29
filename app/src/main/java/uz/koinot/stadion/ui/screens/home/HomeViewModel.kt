@@ -36,7 +36,7 @@ class HomeViewModel @Inject constructor(
                 _stadiumFlow.value = UiStateList.ERROR(res.message, true, res.success)
             }
         } catch (e: Exception) {
-            _stadiumFlow.value = UiStateList.ERROR(e.localizedMessage)
+            _stadiumFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
             e.printStackTrace()
         }
     }
@@ -58,7 +58,7 @@ class HomeViewModel @Inject constructor(
                 _imageFlow.value = UiStateObject.ERROR(res.message, true)
             }
         } catch (e: Exception) {
-            _imageFlow.value = UiStateObject.ERROR(e.localizedMessage)
+            _imageFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
         }
     }
 

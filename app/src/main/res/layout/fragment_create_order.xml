@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         app:navigationIcon="@drawable/ic_baseline_arrow_back"
-        app:title="Create Order" />
+        app:title="@string/createOrder" />
 
 
     <ScrollView
@@ -37,7 +37,7 @@
                     android:layout_height="wrap_content"
                     android:layout_marginStart="34dp"
                     android:gravity="center"
-                    android:text="Summa:"
+                    android:text="@string/summa"
                     android:textSize="20sp" />
 
                 <TextView
@@ -81,7 +81,7 @@
                     android:layout_height="match_parent"
                     android:drawableStart="@drawable/ic_baseline_phone_android"
                     android:drawablePadding="12dp"
-                    android:hint="Phone Number"
+                    android:hint="@string/phone_number"
                     android:imeOptions="actionNext"
                     android:inputType="phone"
                     android:maxLength="13"
@@ -112,7 +112,7 @@
                     android:layout_height="match_parent"
                     android:clickable="false"
                     android:focusable="false"
-                    android:hint="Day"
+                    android:hint="@string/day"
                     android:imeOptions="actionNext"
                     android:inputType="phone"
                     android:maxLength="13">
@@ -141,7 +141,7 @@
                         android:layout_height="match_parent"
                         android:clickable="false"
                         android:focusable="false"
-                        android:hint="Start Date"
+                        android:hint="@string/start_date"
                         android:imeOptions="actionNext"
                         android:inputType="phone"
                         android:maxLength="13">
@@ -165,7 +165,7 @@
                         android:layout_height="match_parent"
                         android:clickable="false"
                         android:focusable="false"
-                        android:hint="End Date"
+                        android:hint="@string/end_date"
                         android:imeOptions="actionNext"
                         android:inputType="phone"
                         android:maxLength="13">
@@ -181,7 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="24dp"
-                android:text="Create Order"
+                android:text="@string/createOrder"
                 android:textAllCaps="false" />
 
         </LinearLayout>

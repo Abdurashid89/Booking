@@ -3,15 +3,15 @@
     <item
         android:id="@+id/update_menu"
         android:icon="@drawable/ic_baseline_create_24"
-        android:title="Update" />
+        android:title="@string/update" />
 
     <item
         android:id="@+id/add_image_menu"
         android:icon="@drawable/ic_baseline_add_a_photo"
-        android:title="Add Image" />
+        android:title="@string/add_image" />
 
     <item
         android:id="@+id/delete_stadium"
         android:icon="@drawable/ic_baseline_delete"
-        android:title="Delete" />
+        android:title="@string/delete" />
 </menu>

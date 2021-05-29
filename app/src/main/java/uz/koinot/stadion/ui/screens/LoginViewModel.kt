@@ -32,7 +32,7 @@ class LoginViewModel @Inject constructor(
                 _loginFlow.value = UiStateObject.ERROR(res.message,true)
             }
         } catch (e: Exception) {
-            _loginFlow.value = UiStateObject.ERROR(e.localizedMessage)
+            _loginFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
             e.printStackTrace()
         }
     }

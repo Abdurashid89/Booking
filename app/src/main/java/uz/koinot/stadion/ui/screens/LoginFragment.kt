@@ -45,7 +45,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
                 if(number.length == 13 && password.length > 2){
                     viewModel.login(Login(number,password))
                 }else{
-                    showMessage("Please enter fields")
+                    showMessage(getString(R.string.enter_fields))
                 }
 
             }
@@ -69,7 +69,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
                     }
                     is UiStateObject.ERROR ->{
                         showProgressDialog(false)
-                        showMessage("Error Please Try again")
+                        showMessage(getString(R.string.pease_try_again))
                     }
                     is UiStateObject.LOADING ->{
                        showProgressDialog(true)

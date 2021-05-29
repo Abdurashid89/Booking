@@ -32,7 +32,7 @@ class CreateOrderViewModel @Inject constructor(
                 _searchUserFlow.value = UiStateList.ERROR(res.message)
             }
         } catch (e: Exception) {
-            _searchUserFlow.value = UiStateList.ERROR(e.localizedMessage)
+            _searchUserFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
             e.printStackTrace()
         }
     }

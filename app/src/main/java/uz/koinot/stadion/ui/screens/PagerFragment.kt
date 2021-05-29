@@ -54,9 +54,9 @@ class PagerFragment : Fragment(R.layout.fragment_pager) {
         bn.tabLayout.setTabTextColors(resources.getColor(R.color.lightGray), resources.getColor(R.color.colorPrimaryDarkE))
         TabLayoutMediator(bn.tabLayout,bn.viewPager){tab, position->
             if(position == 0){
-                tab.text = "Orders"
+                tab.text = getString(R.string.orders)
             }else if(position == 1){
-                tab.text = "Dashboard"
+                tab.text = getString(R.string.dashboard)
             }
         }.attach()
 

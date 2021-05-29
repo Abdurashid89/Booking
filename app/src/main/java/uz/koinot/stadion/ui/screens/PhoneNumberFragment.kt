@@ -74,7 +74,7 @@ class PhoneNumberFragment : BaseFragment(R.layout.fragment_phone_number) {
 
                     }
                 } else {
-                    showMessage("Iltimos malumotlarni to'ldiring")
+                    showMessage(getString(R.string.enter_fields))
                 }
             }
         }

@@ -14,7 +14,7 @@
 
         <com.google.android.material.appbar.MaterialToolbar
             android:layout_width="match_parent"
-            app:title="Create Stadium"
+            app:title="@string/createStadium"
             android:id="@+id/toolbar"
             app:navigationIcon="@drawable/ic_baseline_arrow_back"
             android:layout_height="wrap_content"/>
@@ -33,7 +33,7 @@
                 android:id="@+id/inputPhoneNumber"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Phone Number"
+                android:hint="@string/phone_number"
                 android:drawableStart="@drawable/ic_baseline_phone_android"
                 android:drawablePadding="12dp"
                 android:imeOptions="actionNext"
@@ -53,7 +53,7 @@
                 android:id="@+id/location"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Adress Stadium"
+                android:hint="@string/adress_stadium"
                 android:clickable="false"
                 android:focusable="false"
                 android:imeOptions="actionNext"
@@ -72,7 +72,7 @@
                 android:id="@+id/nameStadium"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Name Stadium"
+                android:hint="@string/name_stadium"
                 android:imeOptions="actionNext"
                 android:inputType="text">
 
@@ -92,7 +92,7 @@
                 android:id="@+id/time_open"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Time Open"
+                android:hint="@string/time_open"
                 android:clickable="false"
                 android:focusable="false"
                 android:imeOptions="actionNext"
@@ -114,7 +114,7 @@
                 android:id="@+id/time_close"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Time Close"
+                android:hint="@string/time_close"
                 android:clickable="false"
                 android:focusable="false"
                 android:imeOptions="actionNext"
@@ -134,7 +134,7 @@
                 android:id="@+id/price_day"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Price Day"
+                android:hint="@string/price_day"
                 android:imeOptions="actionNext"
                 android:inputType="number">
 
@@ -151,7 +151,7 @@
                 android:id="@+id/priceNight"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Price Night"
+                android:hint="@string/price_night"
                 android:imeOptions="actionNext"
                 android:inputType="number">
 
@@ -173,7 +173,7 @@
                 android:layout_height="match_parent"
                 android:clickable="false"
                 android:focusable="false"
-                android:hint="When start night time?"
+                android:hint="@string/when_start_night_time"
                 android:imeOptions="actionNext"
                 android:inputType="text">
 
@@ -190,7 +190,7 @@
                 android:id="@+id/widthStadium"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Width Stadium"
+                android:hint="@string/width_stadium"
                 android:imeOptions="actionNext"
                 android:inputType="number">
 
@@ -207,7 +207,7 @@
                 android:id="@+id/heightStadium"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="Height Stadium"
+                android:hint="@string/height_stadium"
                 android:imeOptions="actionDone"
                 android:inputType="number">
 
@@ -220,7 +220,7 @@
             android:layout_width="match_parent"
             android:layout_marginTop="24dp"
             android:id="@+id/btn_add_stadium"
-            android:text="Add Stadium"
+            android:text="@string/add_stadium"
             android:textAllCaps="false"
             android:layout_height="match_parent"/>
 

@@ -31,7 +31,7 @@ class OrderViewModel @Inject constructor(
                 _ordersFlow.value = UiStateList.ERROR(res.message)
             }
         }catch (e:Exception){
-            _ordersFlow.value = UiStateList.ERROR(e.localizedMessage)
+            _ordersFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
             e.printStackTrace()
         }
     }
@@ -49,7 +49,7 @@ class OrderViewModel @Inject constructor(
                 _acceptFlow.value = UiStateObject.ERROR(res.message)
             }
         }catch (e:Exception){
-            _acceptFlow.value = UiStateObject.ERROR(e.localizedMessage)
+            _acceptFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
             e.printStackTrace()
         }
     }
@@ -68,7 +68,7 @@ class OrderViewModel @Inject constructor(
                 _rejectFlow.value = UiStateObject.ERROR(res.message)
             }
         }catch (e:Exception){
-            _rejectFlow.value = UiStateObject.ERROR(e.localizedMessage)
+            _rejectFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
             e.printStackTrace()
         }
     }

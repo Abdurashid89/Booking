@@ -119,7 +119,7 @@ class MapFragment : Fragment(R.layout.fragment_map) {
                     )
                     ,Utils.navOptions())
             }else{
-                Toast.makeText(requireContext(), "Please choose stadium location", Toast.LENGTH_SHORT).show()
+                Toast.makeText(requireContext(), getString(R.string.please_choose_location), Toast.LENGTH_SHORT).show()
             }
         }
 

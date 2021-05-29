@@ -88,22 +88,22 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
         }
         adapter.setOnDeleteClickListener {
             val dialog = AlertDialog.Builder(requireContext())
-            dialog.setTitle("Delete")
-            dialog.setMessage("Do you want to delete this stadium!")
-            dialog.setNegativeButton("No",{dialog, which -> dialog.dismiss() })
-            dialog.setPositiveButton("Yes") { dialog, which ->
+            dialog.setTitle(getString(R.string.delete))
+            dialog.setMessage(getString(R.string.are_you_sure))
+            dialog.setNegativeButton(getString(R.string.no),{ dialog, which -> dialog.dismiss() })
+            dialog.setPositiveButton(getString(R.string.yes)) { dialog, which ->
                viewModel.deleteStadium(it.id)
             }
             dialog.show()
         }
         bn.logOut.setOnClickListener {
             val dialog = AlertDialog.Builder(requireContext())
-            dialog.setTitle("Exit")
-            dialog.setMessage("Do you want to exit!")
-            dialog.setNegativeButton("No",{dialog, which -> dialog.dismiss() })
-            dialog.setPositiveButton("Yes") { dialog, which ->
+            dialog.setTitle(getString(R.string.exit))
+            dialog.setMessage(getString(R.string.do_you_want_to_exit))
+            dialog.setNegativeButton(getString(R.string.no),{dialog, which -> dialog.dismiss() })
+            dialog.setPositiveButton(getString(R.string.no)) { dialog, which ->
                 storage.hasAccount = false
-                requireActivity().startActivity(Intent(requireContext(),AuthActivity::class.java))
+                requireActivity().startActivity(Intent(requireContext(), AuthActivity::class.java))
                 requireActivity().finish()
             }
             dialog.show()

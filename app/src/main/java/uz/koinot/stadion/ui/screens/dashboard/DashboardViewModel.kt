@@ -32,7 +32,7 @@ class DashboardViewModel @Inject constructor(
                 _dashboardFlow.value = UiStateList.ERROR(res.message)
             }
         }catch (e:Exception){
-            _dashboardFlow.value = UiStateList.ERROR(e.localizedMessage)
+            _dashboardFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
             e.printStackTrace()
         }
     }
@@ -50,7 +50,7 @@ class DashboardViewModel @Inject constructor(
                 _archiveAllFlow.value = UiStateList.ERROR(res.message)
             }
         }catch (e:Exception){
-            _archiveAllFlow.value = UiStateList.ERROR(e.localizedMessage)
+            _archiveAllFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
             e.printStackTrace()
         }
     }
@@ -68,7 +68,7 @@ class DashboardViewModel @Inject constructor(
                 _afterCreateFlow.value = UiStateList.ERROR(res.message)
             }
         }catch (e:Exception){
-            _afterCreateFlow.value = UiStateList.ERROR(e.localizedMessage)
+            _afterCreateFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
             e.printStackTrace()
         }
     }

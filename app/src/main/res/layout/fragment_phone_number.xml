@@ -10,7 +10,7 @@
 
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"
-        app:title="Register"
+        app:title="@string/register"
         android:id="@+id/toolbar"
         app:navigationIcon="@drawable/ic_baseline_arrow_back"
         android:layout_height="wrap_content"/>
@@ -29,7 +29,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:hint="Phone Number"
+            android:hint="@string/phone_number"
             android:imeOptions="actionNext"
             android:inputType="phone"
             android:drawableStart="@drawable/ic_baseline_phone_android"
@@ -50,7 +50,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:hint="Password"
+            android:hint="@string/password"
             android:drawableStart="@drawable/ic_baseline_lock"
             android:drawablePadding="12dp"
             android:imeOptions="actionNext"
@@ -71,7 +71,7 @@
 
         <com.google.android.material.textfield.TextInputEditText
             android:layout_width="match_parent"
-            android:hint="Confirm Password"
+            android:hint="@string/confirm_password"
             android:drawableStart="@drawable/ic_baseline_lock"
             android:drawablePadding="12dp"
             android:imeOptions="actionDone"
@@ -92,7 +92,7 @@
         android:layout_marginTop="32dp"
         android:background="@drawable/btn_bgn"
         android:textColor="@color/white"
-        android:text="Register"
+        android:text="@string/register"
         android:textAllCaps="false" />
     </androidx.appcompat.widget.LinearLayoutCompat>
 

@@ -71,7 +71,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                     is UiStateList.ERROR -> {
                         showProgressDialog(false)
                         bn.rvOrders.isVisible = false
-                        showMessage("Xatolik")
+                        showMessage(getString(R.string.error))
                     }
                     is UiStateList.LOADING -> {
                         showProgressDialog(true)
@@ -99,7 +99,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
                     }
                     is UiStateList.ERROR -> {
                         bn.rvOrders.isVisible = false
-                        showMessage("Xatolik")
+                        showMessage(getString(R.string.error))
                     }
                     is UiStateList.LOADING -> {
                         bn.rvOrders.isVisible = false
@@ -121,7 +121,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
                     }
                     is UiStateList.ERROR -> {
-                        showMessage("Xatolik")
+                        showMessage(getString(R.string.error))
                     }
                     is UiStateList.LOADING -> {
                         bn.nothing.isVisible = false

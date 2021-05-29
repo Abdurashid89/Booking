@@ -139,7 +139,7 @@ class OderFragment : BaseFragment(R.layout.fragment_oder) {
                     }
                     is UiStateObject.ERROR ->{
                         showProgressDialog(false)
-                        showMessage("Xatolik")
+                        showMessage(getString(R.string.error))
                     }
                     is UiStateObject.LOADING ->{
                         showProgressDialog(true)

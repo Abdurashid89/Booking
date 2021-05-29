@@ -46,18 +46,6 @@ class CreateStadiumFragment : BaseFragment(R.layout.fragment_create_stadium) {
     @Inject
     lateinit var storage: LocalStorage
 
-    private var currentUri: Uri? = null
-    private var img1: Uri? = null
-    private var img2: Uri? = null
-    private var img3: Uri? = null
-    private var img4: Uri? = null
-    private var img5: Uri? = null
-    private var img6: Uri? = null
-    private var img7: Uri? = null
-    private var img8: Uri? = null
-    private var img9: Uri? = null
-    private var img10: Uri? = null
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
@@ -86,8 +74,8 @@ class CreateStadiumFragment : BaseFragment(R.layout.fragment_create_stadium) {
                 inputPhoneNumber.setText(storage.phoneNumber)
                 location.setText(adress)
             } else {
-                toolbar.title = "Update Stadium"
-                btnAddStadium.text = "Update Stadium"
+                toolbar.title = getString(R.string.update_stadium)
+                btnAddStadium.text = getString(R.string.update_stadium)
                 inputPhoneNumber.setText(stadium.phone_number)
                 location.setText(stadium.address)
                 nameStadium.setText(stadium.name)
@@ -140,7 +128,7 @@ class CreateStadiumFragment : BaseFragment(R.layout.fragment_create_stadium) {
                         viewModel.createStadium(
                             CreateStadium(stadium.id, nameStadium, stadium.latitude, number, stadium.longitude, location, timeOpen, timeClose, timeNight, priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt()))
                 }else{
-                    showMessage("Wrong")
+                    showMessage(getString(R.string.wrong))
                 }
             }
         }
@@ -150,7 +138,7 @@ class CreateStadiumFragment : BaseFragment(R.layout.fragment_create_stadium) {
                 when (it) {
                     is UiStateObject.SUCCESS -> {
                         showProgressDialog(false)
-                        showMessage("Successfully!")
+                        showMessage(getString(R.string.success))
                         findNavController().popBackStack(R.id.homeFragment, false)
                     }
                     is UiStateObject.ERROR -> {
@@ -165,22 +153,6 @@ class CreateStadiumFragment : BaseFragment(R.layout.fragment_create_stadium) {
             }
         }
 
-    }
-
-//    private fun imagePicker(){
-//        ImagePicker.with(this)
-//            .crop()
-//            .compress(1024)
-//            .maxResultSize(1080,1080)
-//            .start()
-//    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-        if (resultCode == Activity.RESULT_OK) {
-//            currentUri = data?.data ?: return
-//            adapter.addImage(currentUri!!)
-        }
     }
 
     override fun onDestroy() {
