@@ -45,6 +45,7 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
 
         bn.rvOrders.adapter = adapter
         viewModel.getDashboard(stadiumId)
+        bn.rvOrders.isVisible = true
         collects()
 
 

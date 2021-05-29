@@ -77,4 +77,7 @@ interface ApiService {
 
     @DELETE("koinot/stadium/deletePhoto/{id}")
     suspend fun deleteImage(@Path("id") id:Long):ResponseObject<Any>
+
+    @POST("koinot/auth/recode")
+    suspend fun recode():ResponseObject<Any>
 }

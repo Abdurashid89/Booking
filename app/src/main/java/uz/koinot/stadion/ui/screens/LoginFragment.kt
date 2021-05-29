@@ -68,6 +68,9 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
                         requireActivity().finish()
                     }
                     is UiStateObject.ERROR ->{
+                        storage.hasAccount = false
+                        storage.phoneNumber = ""
+                        storage.firebaseToken = ""
                         showProgressDialog(false)
                         showMessage(getString(R.string.pease_try_again))
                     }

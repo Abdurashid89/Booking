@@ -17,7 +17,7 @@
         android:textStyle="bold"
         android:text="@string/welcome"
         android:textColor="#00BCD4"
-        android:textSize="32sp" />
+        android:textSize="24sp" />
 
     <com.google.android.material.textfield.TextInputLayout
         style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"

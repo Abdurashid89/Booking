@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -81,15 +82,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
         adapter.setOnAddImageClickListener {
             addImage(it)
         }
-        adapter.setOnImageDeleteListener {
-            val dialog = AlertDialog.Builder(requireContext())
-            dialog.setTitle(getString(R.string.delete))
-            dialog.setMessage(getString(R.string.are_you_sure_delete_image))
-            dialog.setNegativeButton(getString(R.string.no),{ dialog, which -> dialog.dismiss() })
-            dialog.setPositiveButton(getString(R.string.yes)) { dialog, which ->
-                viewModel.deleteImage(it)
+        adapter.setOnImageDeleteListener {id->
+            val dialog = BaseDialog(getString(R.string.delete),getString(R.string.are_you_sure_delete_image))
+            dialog.setOnDeleteListener {
+                viewModel.deleteImage(id)
+                dialog.dismiss()
             }
-            dialog.show()
+            dialog.show(childFragmentManager,"fsgsdfdf")
 
         }
 
@@ -97,28 +96,25 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
             val dialog = ImageDialog(stadium.photos,position)
             dialog.show(childFragmentManager,"image")
         }
-        adapter.setOnDeleteClickListener {
-            val dialog = AlertDialog.Builder(requireContext())
-            dialog.setTitle(getString(R.string.delete))
-            dialog.setMessage(getString(R.string.are_you_sure))
-            dialog.setNegativeButton(getString(R.string.no),{ dialog, which -> dialog.dismiss() })
-            dialog.setPositiveButton(getString(R.string.yes)) { dialog, which ->
-               viewModel.deleteStadium(it.id)
+        adapter.setOnDeleteClickListener {stadium->
+            val dialog = BaseDialog(getString(R.string.delete),getString(R.string.are_you_sure))
+            dialog.setOnDeleteListener {
+                viewModel.deleteStadium(stadium.id)
+                dialog.dismiss()
             }
-            dialog.show()
+            dialog.show(childFragmentManager,"wrt")
+
         }
         bn.logOut.setOnClickListener {
-            val dialog = AlertDialog.Builder(requireContext())
-            dialog.setTitle(getString(R.string.exit))
-            dialog.setMessage(getString(R.string.do_you_want_to_exit))
-            dialog.setNegativeButton(getString(R.string.no),{dialog, which -> dialog.dismiss() })
-            dialog.setPositiveButton(getString(R.string.no)) { dialog, which ->
+            val dialog = BaseDialog(getString(R.string.exit),getString(R.string.do_you_want_to_exit))
+            dialog.setOnDeleteListener {
                 storage.hasAccount = false
+                dialog.dismiss()
                 storage.firebaseToken = ""
                 requireActivity().startActivity(Intent(requireContext(), AuthActivity::class.java))
                 requireActivity().finish()
             }
-            dialog.show()
+            dialog.show(childFragmentManager,"fsdf")
 
         }
 
@@ -129,13 +125,20 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
 
     private fun addImage(it: Stadium) {
         stadiumId = it.id
-        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE){
-            if (adapter.itemCount < 10) {
-                val intent = Intent(Intent.ACTION_PICK)
-                intent.type = "image/*"
-                startActivityForResult(intent, 1)
-            }
+        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
+            ImagePicker.with(this)
+                .compress(1024)
+                .galleryOnly()
+                .maxResultSize(1080, 1080)
+                .start()
+
         }
+//        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE){
+//                val intent = Intent(Intent.ACTION_PICK)
+//                intent.type = "image/*"
+//            requireActivity().startActivityForResult(intent, 1)
+//
+//        }
 
     }
 
@@ -144,22 +147,21 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
             viewModel.stadiumFlow.collect {
                 when(it){
                     is UiStateList.SUCCESS ->{
+                        showProgress(false)
                         bn.swipeRefresh.isRefreshing = false
-                        showProgressDialog(false)
                         if(it.data != null && it.data.isNotEmpty()){
                             bn.apply {
                                 textNotStadium.isVisible = false
-                                homeRv.isVisible = true
                             }
                         }else{
                             bn.apply {
                                 textNotStadium.isVisible = true
-                                homeRv.isVisible = false
                             }
                         }
 
                     }
                     is UiStateList.ERROR ->{
+                        showProgress(false)
                         bn.apply {
                             textNotStadium.isVisible = true
                             if(it.fromServer)
@@ -170,16 +172,13 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
                             requireActivity().finish()
 
                             swipeRefresh.isRefreshing = false
-                            showProgressDialog(false)
-                            homeRv.isVisible = false
                         }
                     }
                     is UiStateList.LOADING ->{
+                        showProgress(true)
                         bn.apply {
                             swipeRefresh.isRefreshing = false
-                          showProgressDialog(true)
                             textNotStadium.isVisible = false
-                            homeRv.isVisible = false
                         }
                     }
                     else -> Unit
@@ -190,15 +189,16 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
             viewModel.imageFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
-                        showProgressDialog(false)
+                        showProgress(false)
                       viewModel.getAllStadium()
                     }
                     is UiStateObject.ERROR ->{
-                        showProgressDialog(false)
+                        showProgress(false)
                      showMessage(it.message)
                     }
                     is UiStateObject.LOADING ->{
-                        showProgressDialog(true)
+                        showProgress(true)
+
                     }
                     else -> Unit
                 }
@@ -208,14 +208,15 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
             viewModel.deleteStadiumFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
+                        showProgress(false)
                         viewModel.getAllStadium()
                     }
                     is UiStateObject.ERROR ->{
-                        showProgressDialog(false)
+                        showProgress(false)
                        showMessage(it.message)
                     }
                     is UiStateObject.LOADING ->{
-                       showProgressDialog(true)
+                        showProgress(true)
                     }
                     else -> Unit
                 }
@@ -224,20 +225,24 @@ class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.On
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.deleteImageFlow.collect {
                 when(it){
-                    is UiStateObject.SUCCESS ->{
+                    is UiStateObject.SUCCESS -> {
+                        showProgress(false)
                         viewModel.getAllStadium()
                     }
                     is UiStateObject.ERROR ->{
-                        showProgressDialog(false)
-                       showMessage(it.message)
+                        showProgress(false)
+                        showMessage(it.message)
                     }
                     is UiStateObject.LOADING ->{
-                       showProgressDialog(true)
+                        showProgress(true)
                     }
                     else -> Unit
                 }
             }
         }
+    }
+    private fun showProgress(status:Boolean){
+        bn.progressBar.isVisible = status
     }
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)

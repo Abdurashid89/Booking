@@ -28,7 +28,7 @@ class VerificationFragment : BaseFragment(R.layout.fragment_verification) {
     @Inject
     lateinit var storage: LocalStorage
 
-    private var time = 0
+    private var time = 0L
 
 
     private var _bn: FragmentVerificationBinding? = null
@@ -38,30 +38,38 @@ class VerificationFragment : BaseFragment(R.layout.fragment_verification) {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentVerificationBinding.bind(view)
-        bn.txNumber.text = bn.txNumber.text.toString()+storage.phoneNumber.substring(9,storage.phoneNumber.length)
+        bn.txNumber.text = bn.txNumber.text.toString() + storage.phoneNumber.substring(
+            9,
+            storage.phoneNumber.length
+        )
 
         bn.btnVerification.setOnClickListener {
             val number = bn.inputVerificationNumber.text.toString().trim()
-            if(number.isNotEmpty()){
-                lifecycleScope.launchWhenCreated{
+            if (number.isNotEmpty()) {
+                lifecycleScope.launchWhenCreated {
                     try {
                         showProgressDialog(true)
                         val res = api.verify(number)
 
-                            if(res.success == 200){
-                                showProgressDialog(false)
-                                showMessage(getString(R.string.success_register))
-                                storage.hasAccount = true
-                                storage.firebaseToken = ""
-                                requireActivity().startActivity(Intent(requireContext(),MainActivity::class.java))
-                                requireActivity().finish()
-                            }else{
-                                showProgressDialog(false)
-                                showMessage(getString(R.string.error))
-                            }
+                        if (res.success == 200) {
+                            showProgressDialog(false)
+                            showMessage(getString(R.string.success_register))
+                            storage.hasAccount = true
+                            storage.firebaseToken = ""
+                            requireActivity().startActivity(
+                                Intent(
+                                    requireContext(),
+                                    MainActivity::class.java
+                                )
+                            )
+                            requireActivity().finish()
+                        } else {
+                            showProgressDialog(false)
+                            showMessage(getString(R.string.error))
+                        }
 
 
-                    }catch (e:Exception){
+                    } catch (e: Exception) {
                         showProgressDialog(false)
                         showMessage(getString(R.string.error))
 
@@ -71,9 +79,22 @@ class VerificationFragment : BaseFragment(R.layout.fragment_verification) {
             }
         }
         bn.sentAgain.setOnClickListener {
-            if(time + 3000 < System.currentTimeMillis()){
+            if (time + 60000 < System.currentTimeMillis()) {
+                lifecycleScope.launchWhenCreated {
+                    try {
+                     val res = api.recode()
+                        if(res.success == 200){
+                            showMessage("Мы отправили проверочный код")
+                        }else{
+                            showMessage(getString(R.string.error))
+                        }
 
+                    } catch (e: Exception) {
+                        showMessage(getString(R.string.error))
+                    }
+                }
             }
+            time = System.currentTimeMillis()
         }
     }
 
