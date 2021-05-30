@@ -10,6 +10,7 @@ import uz.koinot.stadion.data.model.Login
 import uz.koinot.stadion.data.repository.MainRepository
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.utils.UiStateObject
+import uz.koinot.stadion.utils.userMessage
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,8 +33,8 @@ class LoginViewModel @Inject constructor(
                 _loginFlow.value = UiStateObject.ERROR(res.message,true)
             }
         } catch (e: Exception) {
-            _loginFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
-            e.printStackTrace()
+            _loginFlow.value = UiStateObject.ERROR(e.userMessage())
+//            e.printStackTrace()
         }
     }
 }

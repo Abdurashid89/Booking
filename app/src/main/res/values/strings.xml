@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Стадион</string>
+    <string name="app_name">BRBT</string>
     <string name="home">главное меню</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Привет пустой фрагмент</string>
@@ -33,7 +33,7 @@
     <string name="choose_location">Выберите место</string>
     <string name="choose">Выбирать</string>
     <string name="orderlar_yo_q">нет заказов</string>
-    <string name="register">регистр</string>
+    <string name="register">Регистрация</string>
     <string name="phone_number">Телефонный номер</string>
     <string name="confirm_password">Подтвердить Пароль</string>
     <string name="we_have_sent_verification_code_nto_998">We have sent verification code \nto:*998 ** ***</string>

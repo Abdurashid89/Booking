@@ -8,76 +8,80 @@ import uz.koinot.stadion.data.model.*
 interface ApiService {
 
     @POST("koinot/auth/register")
-    suspend fun auth(@Body data:Register):ResponseObject<TokenBody>
+    suspend fun auth(@Body data: Register): ResponseObject<TokenBody>
 
     @POST("koinot/auth/login")
-    suspend fun login(@Body data:Login):ResponseObject<TokenBody>
+    suspend fun login(@Body data: Login): ResponseObject<TokenBody>
 
 
     @POST("koinot/auth/verify/{number}")
-    suspend fun verify(@Path("number") number:String):ResponseObject<Any>
+    suspend fun verify(@Path("number") number: String): ResponseObject<Any>
 
     @GET("koinot/stadium/myStadium")
-    suspend fun getStadium() : ResponseList<Stadium>
+    suspend fun getStadium(): ResponseList<Stadium>
 
     @GET("koinot/stadium/myStadiumOrder/{order}")
-    suspend fun stadiumOrder(@Path("order") order : Long) : ResponseList<Order>
+    suspend fun stadiumOrder(@Path("order") order: Long): ResponseList<Order>
 
 
     @GET("koinot/stadium/activeOrder/{number}")
-    suspend fun accept(@Path("number") number:Long):ResponseObject<Any>
+    suspend fun accept(@Path("number") number: Long): ResponseObject<Any>
 
     @GET("koinot/stadium/cancelOrder/{number}")
-    suspend fun reject(@Path("number") number:Long):ResponseObject<Any>
+    suspend fun reject(@Path("number") number: Long): ResponseObject<Any>
 
     @GET("koinot/stadiumDash/graph/{number}")
-    suspend fun graph(@Path("number") number:Long):ResponseList<Dashboard>
+    suspend fun graph(
+        @Path("number") number: Long,
+        @Query("startDate") startDate: String,
+        @Query("endDate") endDate: String
+    ): ResponseList<Dashboard>
 
     @POST("koinot/auth/firebase/{token}")
-    suspend fun token(@Path("token") token:String):ResponseList<Any>
+    suspend fun token(@Path("token") token: String): ResponseList<Any>
 
     @GET("koinot/stadiumDash/archiveAll/{number}")
-    suspend fun archiveAll(@Path("number") number: Long):ResponseList<Order>
+    suspend fun archiveAll(@Path("number") number: Long): ResponseList<Order>
 
     @GET("koinot/stadiumDash/archiveAfterCreateTime/{number}")
     suspend fun archiveAfterCreateTime(
         @Path("number") number: Long,
         @Query("time") time: String
-    ):ResponseList<Order>
+    ): ResponseList<Order>
 
     @Multipart
     @POST("koinot/stadium/uploadPhotoFileList/{id}")
     suspend fun uploadPhoto(
-        @Path("id") id:Long,
+        @Path("id") id: Long,
         @Part image: List<MultipartBody.Part>
-        ): ResponseObject<Any>
+    ): ResponseObject<Any>
 
 
     @POST("koinot/stadium/saveOrEdit")
-    suspend fun createStadium(@Body data:CreateStadium):ResponseObject<Int>
+    suspend fun createStadium(@Body data: CreateStadium): ResponseObject<Int>
 
     @POST("koinot/order/adminCreateOrder")
-    suspend fun createOrder(@Body data:CreateOrder):ResponseObject<Any>
+    suspend fun createOrder(@Body data: CreateOrder): ResponseObject<Any>
 
     @GET("koinot/order/searchNumber/{number}")
-    suspend fun search(@Path("number") number: String):ResponseList<SearchUser>
+    suspend fun search(@Path("number") number: String): ResponseList<SearchUser>
 
     @GET("koinot/order/searchNumber")
-    suspend fun getNewStadiumId():ResponseObject<Int>
+    suspend fun getNewStadiumId(): ResponseObject<Int>
 
     @GET("koinot/order/{id}/{startDate}/{endDate}")
     suspend fun orderPrice(
         @Path("id") id: Long,
         @Path("startDate") startDate: String,
         @Path("endDate") endDate: String
-    ):ResponseObject<Double>
+    ): ResponseObject<Double>
 
     @POST("koinot/stadium/delete/{id}")
-    suspend fun deleteStadium(@Path("id") id:Long):ResponseObject<Any>
+    suspend fun deleteStadium(@Path("id") id: Long): ResponseObject<Any>
 
     @DELETE("koinot/stadium/deletePhoto/{id}")
-    suspend fun deleteImage(@Path("id") id:Long):ResponseObject<Any>
+    suspend fun deleteImage(@Path("id") id: Long): ResponseObject<Any>
 
     @POST("koinot/auth/recode")
-    suspend fun recode():ResponseObject<Any>
+    suspend fun recode(): ResponseObject<Any>
 }

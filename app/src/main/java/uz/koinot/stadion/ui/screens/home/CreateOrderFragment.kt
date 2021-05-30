@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
+class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
 
     @Inject
     lateinit var pref:LocalStorage
@@ -138,16 +138,16 @@ class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
             viewModel.createOrderFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
-                        showProgressDialog(false)
+                        showProgress(false)
                         clearData()
                         showMessage("Successfully created order")
                     }
                     is UiStateObject.ERROR ->{
-                        showProgressDialog(false)
+                        showProgress(false)
                         showMessage("Error Please Try again")
                     }
                     is UiStateObject.LOADING ->{
-                        showProgressDialog(true)
+                        showProgress(true)
                     }
                     else -> Unit
                 }
@@ -176,6 +176,7 @@ class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
                     is UiStateObject.SUCCESS ->{
                         bn.loadingPrice.isVisible = false
                         bn.textOrderPrice.isVisible = true
+                        showProgress(false)
                         if(it.data.toString().contains("-")){
                             showMessage(getString(R.string.vaqt_kiritishda_xatolik))
                             bn.textOrderPrice.text = "0"
@@ -186,11 +187,13 @@ class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
                     is UiStateObject.ERROR ->{
                         bn.loadingPrice.isVisible = false
                         bn.textOrderPrice.isVisible = true
+                        showProgress(false)
 //                        showMessage("Error Please Try again")
                     }
                     is UiStateObject.LOADING ->{
                         bn.loadingPrice.isVisible = true
                         bn.textOrderPrice.isVisible = false
+                        showProgress(true)
 //                        showMessage("Loading")
                     }
                     else -> Unit
@@ -207,6 +210,10 @@ class CreateOrderFragment : BaseFragment(R.layout.fragment_create_order) {
             inputEndDate.text?.clear()
             textOrderPrice.text = "0"
         }
+    }
+
+    private fun showProgress(status:Boolean){
+        bn.progressBar.isVisible = status
     }
 
     override fun onDestroy() {

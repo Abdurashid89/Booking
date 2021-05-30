@@ -8,7 +8,21 @@
     android:orientation="vertical"
     android:padding="24dp"
     tools:context=".ui.screens.PhoneNumberFragment">
-
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="11dp"
+        android:indeterminateBehavior="repeat"
+        android:indeterminateDuration="10"
+        android:indeterminateOnly="true"
+        android:maxHeight="24dip"
+        android:minHeight="24dip"
+        android:visibility="gone"
+        android:progressBackgroundTint="#208afa"
+        android:progressBackgroundTintMode="multiply"
+        />
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="180dp"

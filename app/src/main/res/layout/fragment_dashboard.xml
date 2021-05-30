@@ -4,37 +4,44 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:padding="12dp"
+    android:orientation="vertical"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     tools:context=".ui.screens.dashboard.DashboardFragment">
-
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        style="?android:progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="11dp"
+        android:indeterminateBehavior="repeat"
+        android:indeterminateDuration="10"
+        android:indeterminateOnly="true"
+        android:maxHeight="24dip"
+        android:minHeight="24dip"
+        android:visibility="gone"
+        android:progressBackgroundTint="#208afa"
+        android:progressBackgroundTintMode="multiply"
+        />
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-        <androidx.constraintlayout.widget.ConstraintLayout
+        <LinearLayout
             android:layout_width="match_parent"
             android:orientation="vertical"
             android:layout_height="match_parent">
 
-            <ir.farshid_roohi.linegraph.LineChart
-                android:layout_width="match_parent"
-                android:id="@+id/lineChart"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent"
-                app:chart_line_color="#32FFFFFF"
-                app:chart_bg_color="#FF2B4A83"
-                android:layout_height="300dp"/>
+<!--            <com.github.mikephil.charting.charts.LineChart-->
+<!--                android:id="@+id/lineChart"-->
+<!--                android:visibility="gone"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="300dp"/>-->
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/lineChart"
                 android:id="@+id/rv_orders"
-                android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
                 android:layout_height="wrap_content"/>
 
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
-
-
-
 </LinearLayout>

@@ -6,6 +6,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavOptions
@@ -25,7 +26,7 @@ import uz.koinot.stadion.utils.showMessage
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class LoginFragment : BaseFragment(R.layout.fragment_login) {
+class LoginFragment : Fragment(R.layout.fragment_login) {
 
     @Inject
     lateinit var storage: LocalStorage
@@ -60,7 +61,7 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
             viewModel.loginFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
-                        showProgressDialog(false)
+                        showProgress(false)
                         storage.hasAccount = true
                         storage.phoneNumber = number
                         storage.firebaseToken = ""
@@ -71,17 +72,20 @@ class LoginFragment : BaseFragment(R.layout.fragment_login) {
                         storage.hasAccount = false
                         storage.phoneNumber = ""
                         storage.firebaseToken = ""
-                        showProgressDialog(false)
-                        showMessage(getString(R.string.pease_try_again))
+                        showProgress(false)
+                        showMessage(it.message)
                     }
                     is UiStateObject.LOADING ->{
-                       showProgressDialog(true)
+                        showProgress(true)
                     }
                     else -> Unit
                 }
             }
         }
 
+    }
+    private fun showProgress(status:Boolean){
+        bn.progressBar.isVisible = status
     }
 
     override fun onDestroy() {

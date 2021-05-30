@@ -36,8 +36,8 @@ class HomeViewModel @Inject constructor(
                 _stadiumFlow.value = UiStateList.ERROR(res.message, true, res.success)
             }
         } catch (e: Exception) {
-            _stadiumFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
-            e.printStackTrace()
+            _stadiumFlow.value = UiStateList.ERROR(e.localizedMessage ?: "not found")
+//            e.printStackTrace()
         }
     }
 
@@ -76,7 +76,7 @@ class HomeViewModel @Inject constructor(
             }
         } catch (e: Exception) {
             _deleteStadiumFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
-            e.printStackTrace()
+//            e.printStackTrace()
         }
     }
 
@@ -94,7 +94,7 @@ class HomeViewModel @Inject constructor(
             }
         } catch (e: Exception) {
             _deleteImageFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
-            e.printStackTrace()
+//            e.printStackTrace()
         }
     }
 }

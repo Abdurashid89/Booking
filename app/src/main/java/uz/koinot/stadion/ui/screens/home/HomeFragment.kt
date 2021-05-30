@@ -31,7 +31,7 @@ import uz.koinot.stadion.utils.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class HomeFragment : BaseFragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefreshListener {
+class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefreshListener {
 
     private val viewModel: HomeViewModel by viewModels()
     private var _bn: FragmentHomeBinding? = null

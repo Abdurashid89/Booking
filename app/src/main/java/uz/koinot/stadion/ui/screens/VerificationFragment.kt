@@ -5,6 +5,7 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
@@ -20,7 +21,7 @@ import uz.koinot.stadion.utils.showMessage
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class VerificationFragment : BaseFragment(R.layout.fragment_verification) {
+class VerificationFragment : Fragment(R.layout.fragment_verification) {
 
     @Inject
     lateinit var api: ApiService
@@ -38,21 +39,17 @@ class VerificationFragment : BaseFragment(R.layout.fragment_verification) {
     @SuppressLint("SetTextI18n")
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentVerificationBinding.bind(view)
-        bn.txNumber.text = bn.txNumber.text.toString() + storage.phoneNumber.substring(
-            9,
-            storage.phoneNumber.length
-        )
 
         bn.btnVerification.setOnClickListener {
             val number = bn.inputVerificationNumber.text.toString().trim()
             if (number.isNotEmpty()) {
                 lifecycleScope.launchWhenCreated {
                     try {
-                        showProgressDialog(true)
+                        showProgress(true)
                         val res = api.verify(number)
 
                         if (res.success == 200) {
-                            showProgressDialog(false)
+                            showProgress(false)
                             showMessage(getString(R.string.success_register))
                             storage.hasAccount = true
                             storage.firebaseToken = ""
@@ -64,13 +61,13 @@ class VerificationFragment : BaseFragment(R.layout.fragment_verification) {
                             )
                             requireActivity().finish()
                         } else {
-                            showProgressDialog(false)
+                            showProgress(false)
                             showMessage(getString(R.string.error))
                         }
 
 
                     } catch (e: Exception) {
-                        showProgressDialog(false)
+                        showProgress(false)
                         showMessage(getString(R.string.error))
 
                     }
@@ -80,9 +77,11 @@ class VerificationFragment : BaseFragment(R.layout.fragment_verification) {
         }
         bn.sentAgain.setOnClickListener {
             if (time + 60000 < System.currentTimeMillis()) {
+                showProgress(true)
                 lifecycleScope.launchWhenCreated {
                     try {
                      val res = api.recode()
+                        showProgress(false)
                         if(res.success == 200){
                             showMessage("Мы отправили проверочный код")
                         }else{
@@ -90,6 +89,7 @@ class VerificationFragment : BaseFragment(R.layout.fragment_verification) {
                         }
 
                     } catch (e: Exception) {
+                        showProgress(false)
                         showMessage(getString(R.string.error))
                     }
                 }
@@ -98,6 +98,9 @@ class VerificationFragment : BaseFragment(R.layout.fragment_verification) {
         }
     }
 
+    private fun showProgress(status:Boolean){
+        bn.progressBar.isVisible = status
+    }
     override fun onDestroy() {
         super.onDestroy()
         _bn = null

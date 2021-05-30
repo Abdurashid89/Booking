@@ -60,7 +60,7 @@ class MainActivity : AppCompatActivity() {
             Log.e("AAA","subscribe: ${task.isSuccessful}")
 //            Log.e("AAA","subscribe: ${task.result}")
         }
-        Firebase.messaging.isAutoInitEnabled = true
+//        Firebase.messaging.isAutoInitEnabled = true
 
         if(storage.firebaseToken.isEmpty()){
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener{task ->

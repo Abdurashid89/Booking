@@ -3,6 +3,7 @@ package uz.koinot.stadion.ui.screens
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -22,7 +23,7 @@ import uz.koinot.stadion.utils.userMessage
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class PhoneNumberFragment : BaseFragment(R.layout.fragment_phone_number) {
+class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
 
     @Inject
     lateinit var api: ApiService
@@ -48,10 +49,10 @@ class PhoneNumberFragment : BaseFragment(R.layout.fragment_phone_number) {
                 if (number.length == 13 && password.isNotEmpty()) {
                     lifecycleScope.launchWhenCreated {
                         try {
-                            showProgressDialog(true)
+                            showProgress(true)
                             val res = api.auth(Register(number, password))
                             if (res.success == 200) {
-                                showProgressDialog(false)
+                                showProgress(false)
                                 storage.accessToken = res.objectKoinot!!.accessToken
                                 customLog("success")
                                 storage.phoneNumber = number
@@ -61,13 +62,13 @@ class PhoneNumberFragment : BaseFragment(R.layout.fragment_phone_number) {
                                     Utils.navOptions()
                                 )
                             } else {
-                                showProgressDialog(false)
+                                showProgress(false)
                                 customLog("error")
                                 showMessage(res.message)
                             }
 
                         } catch (e: Exception) {
-                            showProgressDialog(false)
+                            showProgress(false)
                             customLog(e.userMessage())
                             showMessage(e.userMessage())
                         }
@@ -80,6 +81,9 @@ class PhoneNumberFragment : BaseFragment(R.layout.fragment_phone_number) {
         }
 
 
+    }
+    private fun showProgress(status:Boolean){
+        bn.progressBar.isVisible = status
     }
 
     override fun onDestroy() {

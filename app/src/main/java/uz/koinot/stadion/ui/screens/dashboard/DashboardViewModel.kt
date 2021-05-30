@@ -22,10 +22,10 @@ class DashboardViewModel @Inject constructor(
     private var _dashboardFlow = MutableStateFlow<UiStateList<Dashboard>>(UiStateList.EMPTY)
     val dashboardFlow: StateFlow<UiStateList<Dashboard>> get() = _dashboardFlow
 
-    fun getDashboard(stadiumId:Long) = viewModelScope.launch {
+    fun getDashboard(stadiumId:Long,startDate:String,endDate:String) = viewModelScope.launch {
         _dashboardFlow.value = UiStateList.LOADING
         try {
-            val res = repository.dashboard(stadiumId)
+            val res = repository.dashboard(stadiumId,startDate,endDate)
             if(res.success == 200){
                 _dashboardFlow.value = UiStateList.SUCCESS(res.objectKoinot)
             }else{
@@ -33,7 +33,7 @@ class DashboardViewModel @Inject constructor(
             }
         }catch (e:Exception){
             _dashboardFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
-            e.printStackTrace()
+//            e.printStackTrace()
         }
     }
 
@@ -51,7 +51,7 @@ class DashboardViewModel @Inject constructor(
             }
         }catch (e:Exception){
             _archiveAllFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
-            e.printStackTrace()
+//            e.printStackTrace()
         }
     }
 
@@ -69,7 +69,7 @@ class DashboardViewModel @Inject constructor(
             }
         }catch (e:Exception){
             _afterCreateFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
-            e.printStackTrace()
+//            e.printStackTrace()
         }
     }
 

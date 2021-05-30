@@ -25,7 +25,7 @@ import uz.koinot.stadion.utils.*
 
 
 @AndroidEntryPoint
-class OderFragment : BaseFragment(R.layout.fragment_oder) {
+class OderFragment : Fragment(R.layout.fragment_oder) {
 
     private val viewModel: OrderViewModel by viewModels()
     private var _bn: FragmentOderBinding? = null
@@ -45,6 +45,7 @@ class OderFragment : BaseFragment(R.layout.fragment_oder) {
         bn.rvOrders.adapter = adapter
         bn.rvOrders.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getOder(stadiumId)
+
         bn.btnAddOrder.setOnClickListener {
             findNavController().navigate(R.id.createOrderFragment, bundleOf(CONSTANTS.STADION_ID to stadiumId),Utils.navOptions())
         }
@@ -86,7 +87,7 @@ class OderFragment : BaseFragment(R.layout.fragment_oder) {
             viewModel.orderFlow.collect {
                 when(it){
                     is UiStateList.SUCCESS ->{
-                        showProgressDialog(false)
+                        showProgress(false)
                         if(it.data != null && it.data.isNotEmpty()){
                             bn.apply {
                                 adapter.submitList(it.data)
@@ -102,14 +103,14 @@ class OderFragment : BaseFragment(R.layout.fragment_oder) {
 
                     }
                     is UiStateList.ERROR ->{
-                        showProgressDialog(false)
+                        showProgress(false)
                         bn.apply {
                             textNoOrder.isVisible = true
                             rvOrders.isVisible = false
                         }
                     }
                     is UiStateList.LOADING ->{
-                        showProgressDialog(true)
+                        showProgress(true)
                         bn.apply {
                             textNoOrder.isVisible = false
                             rvOrders.isVisible = false
@@ -123,15 +124,15 @@ class OderFragment : BaseFragment(R.layout.fragment_oder) {
             viewModel.acceptFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
-                        showProgressDialog(false)
+                        showProgress(false)
                         viewModel.getOder(stadiumId)
                     }
                     is UiStateObject.ERROR ->{
-                        showProgressDialog(false)
+                        showProgress(false)
                         showMessage("Xatolik")
                     }
                     is UiStateObject.LOADING ->{
-                        showProgressDialog(true)
+                        showProgress(true)
                     }
                     else -> Unit
                 }
@@ -141,20 +142,24 @@ class OderFragment : BaseFragment(R.layout.fragment_oder) {
             viewModel.rejectFlow.collect {
                 when(it){
                     is UiStateObject.SUCCESS ->{
-                        showProgressDialog(false)
+                        showProgress(false)
                         viewModel.getOder(stadiumId)
                     }
                     is UiStateObject.ERROR ->{
-                        showProgressDialog(false)
+                        showProgress(false)
                         showMessage(getString(R.string.error))
                     }
                     is UiStateObject.LOADING ->{
-                        showProgressDialog(true)
+                        showProgress(true)
                     }
                     else -> Unit
                 }
             }
         }
+    }
+
+    private fun showProgress(status:Boolean){
+        bn.progressBar.isVisible = status
     }
 
     override fun onDestroy() {

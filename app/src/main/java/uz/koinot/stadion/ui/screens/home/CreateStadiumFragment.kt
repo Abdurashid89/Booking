@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
+import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
@@ -31,7 +32,7 @@ import javax.inject.Inject
 
 
 @AndroidEntryPoint
-class CreateStadiumFragment : BaseFragment(R.layout.fragment_create_stadium) {
+class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
 
     private var _bn: FragmentCreateStadiumBinding? = null
     val bn get() = _bn!!
@@ -137,22 +138,26 @@ class CreateStadiumFragment : BaseFragment(R.layout.fragment_create_stadium) {
             viewModel.createStadiumFlow.collect {
                 when (it) {
                     is UiStateObject.SUCCESS -> {
-                        showProgressDialog(false)
+                        showProgress(false)
                         showMessage(getString(R.string.success))
                         findNavController().popBackStack(R.id.homeFragment, false)
                     }
                     is UiStateObject.ERROR -> {
-                        showProgressDialog(false)
+                        showProgress(false)
                         showMessage(it.message)
                     }
                     is UiStateObject.LOADING -> {
-                        showProgressDialog(true)
+                        showProgress(true)
                     }
                     else -> Unit
                 }
             }
         }
 
+    }
+
+    private fun showProgress(status:Boolean){
+        bn.progressBar.isVisible = status
     }
 
     override fun onDestroy() {
