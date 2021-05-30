@@ -128,7 +128,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                         showProgress(false)
 
                         if (it.data != null && it.data.isNotEmpty()){
-//                            createChart(it.data)
+                            createChart(it.data)
                         }
 
                     }
@@ -159,67 +159,67 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         }
     }
 
-//    private fun lineGraph(entry: ArrayList<Entry>) {
-//
-//        bn.lineChart.setNoDataText("No Balance yet!")
-//
-//        bn.lineChart.isAutoScaleMinMaxEnabled = true
-//        bn.lineChart.legend.isEnabled = true
-//        bn.lineChart.animateX(1500)
-//
-//        val vl = LineDataSet(entry, "Daily Money")
-//        vl.setDrawFilled(true)
-//
-//        vl.setDrawValues(false)
-//        vl.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
-//
-//        vl.lineWidth = 5f
-//        vl.setDrawCircles(true)
-//
-//        val paint = bn.lineChart.renderer.paintRender
-//        val height = bn.lineChart.height.toFloat()
-//        val width = bn.lineChart.width.toFloat()
-//
-//        val lindGrad = LinearGradient(
-//            0f,
-//            0f,
-//            width,
-//            height,
-//            Color.BLUE,
-//            Color.parseColor("#E45CF4"),
-//            Shader.TileMode.REPEAT
-//        )
-//        paint.shader = lindGrad
-//        vl.fillColor = R.color.green
-//        vl.fillAlpha = R.color.red
-//
-//
-//
-//        bn.lineChart.axisRight.isEnabled = false
-//        bn.lineChart.axisRight.setDrawAxisLine(false)
-//        bn.lineChart.axisRight.setDrawLabels(false)
-//        bn.lineChart.axisRight.setDrawGridLines(false)
-//        bn.lineChart.description.isEnabled = false
-//        bn.lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-//
-//
-//        bn.lineChart.setTouchEnabled(false)
-//
-//        bn.lineChart.data = LineData(vl)
-//        bn.lineChart.invalidate()
-//        bn.lineChart.resetZoom()
-//
-//
-//    }
+    private fun lineGraph(entry: ArrayList<Entry>) {
 
-//    private fun createChart(list: List<Dashboard>) {
-//        bn.lineChart.isVisible = true
-//        val ls = ArrayList<Entry>()
-//        for (i in list.indices){
-//            ls.add(Entry(i.toFloat(),list[i].benefit.toFloat()))
-//        }
-//        lineGraph(ls)
-//    }
+        bn.lineChart.setNoDataText("No Balance yet!")
+
+        bn.lineChart.isAutoScaleMinMaxEnabled = true
+        bn.lineChart.legend.isEnabled = true
+        bn.lineChart.animateX(1500)
+
+        val vl = LineDataSet(entry, "Ежедневные деньги")
+        vl.setDrawFilled(true)
+
+        vl.setDrawValues(false)
+        vl.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
+
+        vl.lineWidth = 5f
+        vl.setDrawCircles(true)
+
+        val paint = bn.lineChart.renderer.paintRender
+        val height = bn.lineChart.height.toFloat()
+        val width = bn.lineChart.width.toFloat()
+
+        val lindGrad = LinearGradient(
+            0f,
+            0f,
+            width,
+            height,
+            Color.BLUE,
+            Color.parseColor("#E45CF4"),
+            Shader.TileMode.REPEAT
+        )
+        paint.shader = lindGrad
+        vl.fillColor = R.color.green
+        vl.fillAlpha = R.color.red
+
+
+
+        bn.lineChart.axisRight.isEnabled = false
+        bn.lineChart.axisRight.setDrawAxisLine(false)
+        bn.lineChart.axisRight.setDrawLabels(false)
+        bn.lineChart.axisRight.setDrawGridLines(false)
+        bn.lineChart.description.isEnabled = false
+        bn.lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
+
+
+        bn.lineChart.setTouchEnabled(false)
+
+        bn.lineChart.data = LineData(vl)
+        bn.lineChart.invalidate()
+        bn.lineChart.resetZoom()
+
+
+    }
+
+    private fun createChart(list: List<Dashboard>) {
+        bn.lineChart.isVisible = true
+        val ls = ArrayList<Entry>()
+        for (i in list.indices){
+            ls.add(Entry(i.toFloat(),list[i].benefit.toFloat()))
+        }
+        lineGraph(ls)
+    }
 
     private fun showProgress(status:Boolean){
         bn.progressBar.isVisible = status
