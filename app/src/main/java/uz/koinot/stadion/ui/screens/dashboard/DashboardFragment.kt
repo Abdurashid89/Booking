@@ -44,7 +44,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private val adapter = DashboardOrderAdapter()
     var type = false
 
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         stadiumId = arguments?.getLong(CONSTANTS.STADION_ID,0L) ?: 0L
@@ -106,7 +105,6 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                         showProgress(false)
                         if (it.data != null && it.data.isNotEmpty()){
                             addToDb(it.data)
-
                         }
                     }
                     is UiStateList.ERROR -> {

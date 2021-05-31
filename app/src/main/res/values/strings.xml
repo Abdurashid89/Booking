@@ -9,6 +9,9 @@
     <string name="stadiums">Стадионы</string>
     <string name="mapKey" translatable="false">AIzaSyBGxa1BZRvZeCA00GNeFE2CIIY-QJqr04c</string>
     <string name="welcome">Добро пожаловать</string>
+    <string name="request_code_again">Запросить код ещё раз через</string>
+    <string name="timer">00:59</string>
+    <string name="confirm_code_again">Отправить код еще раз</string>
     <string name="password">Пароль</string>
     <string name="login">Авторизоваться</string>
     <string name="create_account">Зарегистрироваться</string>

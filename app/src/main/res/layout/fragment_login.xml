@@ -47,8 +47,7 @@
             android:drawableStart="@drawable/ic_baseline_phone_android"
             android:imeOptions="actionNext"
             android:inputType="phone"
-            android:maxLength="13"
-            android:text="+998977772109">
+            android:maxLength="13">
 
         </com.google.android.material.textfield.TextInputEditText>
 
@@ -70,8 +69,7 @@
             android:drawableStart="@drawable/ic_baseline_lock"
             android:imeOptions="actionDone"
             android:inputType="textPassword"
-            android:maxLength="16"
-            android:text="pass">
+            android:maxLength="16">
 
         </com.google.android.material.textfield.TextInputEditText>
 

@@ -20,6 +20,7 @@ import android.view.ViewGroup
 import android.view.WindowManager
 import android.view.animation.*
 import android.view.animation.Animation.AnimationListener
+import android.view.inputmethod.InputMethodManager
 import android.widget.Toast
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
@@ -96,6 +97,14 @@ object Utils {
             Toast.makeText(context, "Internet bilan aloqa yoq!", Toast.LENGTH_SHORT).show()
 //            Snackbar.make(view, "Profilga fotosurat joylash.", Snackbar.LENGTH_LONG)
 //                    .setAction("Ok", null).show()
+        }
+    }
+
+    fun closeKeyboard(activity: Activity) {
+        val view = activity.currentFocus
+        if (view != null) {
+            val imm = activity.getSystemService(Context.INPUT_METHOD_SERVICE) as InputMethodManager
+            imm.hideSoftInputFromWindow(view.windowToken, 0)
         }
     }
 

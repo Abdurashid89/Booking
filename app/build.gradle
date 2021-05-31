@@ -133,6 +133,7 @@ dependencies {
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 
     implementation "com.github.PhilJay:MPAndroidChart:3.0.3"
+    implementation 'com.poovam:pin-edittext-field:1.2.3'
 
     // ImagePicker
     implementation "com.github.dhaval2404:imagepicker:2.0"
