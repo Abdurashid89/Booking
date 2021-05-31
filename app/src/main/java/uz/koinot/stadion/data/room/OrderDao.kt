@@ -13,7 +13,7 @@ interface OrderDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun setAllOrder(list: List<Order>)
 
-    @Query("select * from `Order` where stadiumId=:id")
+    @Query("select * from `Order` where stadiumId=:id order by id desc")
     fun getAllOrders(id:Long):Flow<List<Order>>
 
     @Query("delete from `Order`")

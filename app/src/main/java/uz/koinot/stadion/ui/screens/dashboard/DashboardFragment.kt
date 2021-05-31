@@ -214,7 +214,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         bn.lineChart.isVisible = true
         val ls = ArrayList<Entry>()
         for (i in list.indices){
-            ls.add(Entry(i.toFloat(),list[i].benefit.toFloat()))
+            ls.add(Entry(list[i].day.toFloat(), list[i].benefit.toFloat()))
         }
         lineGraph(ls)
     }

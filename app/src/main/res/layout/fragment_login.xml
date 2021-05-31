@@ -47,6 +47,7 @@
             android:drawableStart="@drawable/ic_baseline_phone_android"
             android:imeOptions="actionNext"
             android:inputType="phone"
+            android:text="+998"
             android:maxLength="13">
 
         </com.google.android.material.textfield.TextInputEditText>

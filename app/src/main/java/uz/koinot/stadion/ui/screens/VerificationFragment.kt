@@ -104,13 +104,6 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
             }
         }
 
-        bn.sentAgain.setOnClickListener {
-            if (time + 60000 < System.currentTimeMillis()) {
-                showProgress(true)
-
-            }
-            time = System.currentTimeMillis()
-        }
     }
 
     private fun startTimer() {
@@ -131,14 +124,8 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
     }
 
     private val textWatcherName = object : TextWatcher {
-
-        override fun afterTextChanged(s: Editable?) {
-
-        }
-
-        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
-        }
-
+        override fun afterTextChanged(s: Editable?) {}
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
         override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
             if (bn.inputVerificationNumber.text!!.length > 5) {
                 Utils.closeKeyboard(requireActivity())

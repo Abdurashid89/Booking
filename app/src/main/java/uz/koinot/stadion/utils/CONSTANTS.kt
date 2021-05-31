@@ -2,7 +2,7 @@ package uz.koinot.stadion.utils
 
 object CONSTANTS {
 
-    const val BASE_URL = "http://104.236.3.227:1002"
+    const val BASE_URL = "http://143.198.59.124:1002"
     const val TOKEN = "token"
     const val PHONE_NUMBER = "phoneNumber"
     const val FIRST_NAME = "firstName"
@@ -13,7 +13,7 @@ object CONSTANTS {
     const val ORDER = "order"
     const val FINISH = "finish"
     const val ALL = "all"
-    const val IMAGE_URL = "http://104.236.3.227:1002/koinot/stadium/byteFile/"
+    const val IMAGE_URL = "http://143.198.59.124:1002/koinot/stadium/byteFile/"
     const val LOCATION = "location"
     const val ADRESS = "adress"
     const val NEW_STADIUM = "NEW_STADIUM"
