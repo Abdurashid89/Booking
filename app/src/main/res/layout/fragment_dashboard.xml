@@ -15,18 +15,22 @@
             android:orientation="vertical"
             android:layout_height="match_parent">
 
-            <ir.farshid_roohi.linegraph.LineChart
+            <HorizontalScrollView
                 android:layout_width="match_parent"
-                android:id="@+id/lineChart"
-                android:visibility="gone"
-                app:layout_constraintTop_toTopOf="parent"
-                app:chart_line_color="#32FFFFFF"
-                app:chart_bg_color="#FF2B4A83"
-                android:layout_height="300dp"/>
+                android:id="@+id/chart_scroll"
+                android:layout_height="wrap_content"
+                tools:ignore="MissingConstraints">
+                <view
+                    android:layout_width="wrap_content"
+                    android:layout_height="300dp"
+                    class="im.dacer.androidcharts.LineView"
+                    android:id="@+id/line_view" />
+            </HorizontalScrollView>
+
 
             <androidx.recyclerview.widget.RecyclerView
                 android:layout_width="match_parent"
-                app:layout_constraintTop_toBottomOf="@id/lineChart"
+                app:layout_constraintTop_toBottomOf="@id/chart_scroll"
                 android:id="@+id/rv_orders"
                 android:visibility="visible"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"

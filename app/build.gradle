@@ -132,7 +132,7 @@ dependencies {
      * */
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 
-
+    implementation 'im.dacer:AndroidCharts:1.0.4'
 
     // ImagePicker
 //    implementation 'com.github.dhaval2404:imagepicker:2.0'
