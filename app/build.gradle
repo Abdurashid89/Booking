@@ -134,9 +134,10 @@ dependencies {
 
     implementation "com.github.PhilJay:MPAndroidChart:3.0.3"
     implementation 'com.poovam:pin-edittext-field:1.2.3'
+    implementation 'im.dacer:AndroidCharts:1.0.4'
 
     // ImagePicker
-    implementation "com.github.dhaval2404:imagepicker:2.0"
+//    implementation 'com.github.dhaval2404:imagepicker:2.0'
 //    implementation 'com.github.dhaval2404:imagepicker-support:1.7.1'
 
 //    implementation 'com.github.dhaval2404:imagepicker-support:1.7.1'

@@ -1,5 +1,6 @@
 package uz.koinot.stadion.ui.screens.dashboard
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.graphics.LinearGradient
 import android.graphics.Shader
@@ -17,6 +18,7 @@ import com.github.mikephil.charting.data.Entry
 import com.github.mikephil.charting.data.LineData
 import com.github.mikephil.charting.data.LineDataSet
 import dagger.hilt.android.AndroidEntryPoint
+import im.dacer.androidcharts.LineView
 import ir.farshid_roohi.linegraph.ChartEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
@@ -212,7 +214,28 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
     }
 
+    @SuppressLint("WrongViewCast")
     private fun createChart(list: List<Dashboard>) {
+
+        val day = java.util.ArrayList<String>()
+        val benefit = java.util.ArrayList<Float>()
+
+        list.forEach {
+            day.add(it.day)
+            benefit.add(it.benefit)
+        }
+        val view = bn.lineView as LineView
+        view.apply {
+            setDrawDotLine(false)
+            setShowPopup(LineView.SHOW_POPUPS_MAXMIN_ONLY)
+            setColorArray(intArrayOf(Color.parseColor("#0E8C30")))
+
+            setFloatDataList(arrayListOf(benefit))
+            setBottomTextList(day)
+        }
+
+
+
         bn.lineChart.isVisible = true
         val ls = ArrayList<Entry>()
         for (i in list.indices){
