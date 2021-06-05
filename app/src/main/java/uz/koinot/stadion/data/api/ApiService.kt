@@ -7,13 +7,6 @@ import uz.koinot.stadion.data.model.*
 
 interface ApiService {
 
-    @POST("koinot/auth/register")
-    suspend fun auth(@Body data: Register): ResponseObject<TokenBody>
-
-    @POST("koinot/auth/login")
-    suspend fun login(@Body data: Login): ResponseObject<TokenBody>
-
-
     @POST("koinot/auth/verify/{number}")
     suspend fun verify(@Path("number") number: String): ResponseObject<Any>
 

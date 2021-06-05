@@ -13,6 +13,7 @@ import kotlinx.coroutines.launch
 import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.R
 import uz.koinot.stadion.data.api.ApiService
+import uz.koinot.stadion.data.api.AuthService
 import uz.koinot.stadion.data.model.Register
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.FragmentPhoneNumberBinding
@@ -26,7 +27,7 @@ import javax.inject.Inject
 class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
 
     @Inject
-    lateinit var api: ApiService
+    lateinit var api: AuthService
 
     @Inject
     lateinit var storage: LocalStorage

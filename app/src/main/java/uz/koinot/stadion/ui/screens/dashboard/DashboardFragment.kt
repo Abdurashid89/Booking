@@ -10,6 +10,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import com.github.mikephil.charting.components.Legend
 import com.github.mikephil.charting.components.XAxis
 import com.github.mikephil.charting.components.YAxis
 import com.github.mikephil.charting.data.Entry
@@ -201,7 +202,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         bn.lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
 
 
-        bn.lineChart.setTouchEnabled(false)
+        bn.lineChart.setTouchEnabled(true)
+        bn.lineChart.setPinchZoom(true)
 
         bn.lineChart.data = LineData(vl)
         bn.lineChart.invalidate()

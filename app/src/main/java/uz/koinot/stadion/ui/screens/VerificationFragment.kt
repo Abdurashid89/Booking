@@ -46,10 +46,12 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentVerificationBinding.bind(view)
 
+        startTimer()
+
         bn.tryAgainText.setOnClickListener {
             bn.tryAgainText.visibility = View.GONE
             bn.countDownTimerLinear.visibility = View.VISIBLE
-            startTimer()
+
             showProgress(true)
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
                 try {

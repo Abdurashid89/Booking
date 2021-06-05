@@ -14,6 +14,7 @@ import retrofit2.Retrofit
 import retrofit2.adapter.rxjava3.RxJava3CallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
 import uz.koinot.stadion.data.api.ApiService
+import uz.koinot.stadion.data.api.AuthService
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.utils.CONSTANTS
 import java.util.concurrent.TimeUnit
@@ -32,9 +33,14 @@ class ServerModule {
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .build()
 
+
+
+
     @Provides
     @Singleton
     fun getApiService(retrofit: Retrofit):ApiService = retrofit.create(ApiService::class.java)
+
+
 
     @Provides
     @Singleton
@@ -55,4 +61,7 @@ class ServerModule {
                 chain.proceed(builder.build())
             })
         .build()
+
+
+
 }

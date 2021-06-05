@@ -11,6 +11,7 @@ import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.databinding.ItemStadiumBinding
 import uz.koinot.stadion.utils.SingleBlock
 import uz.koinot.stadion.utils.setForceShowIcon
+import uz.koinot.stadion.utils.toMoneyFormat
 
 class StadiumAdapter : RecyclerView.Adapter<StadiumAdapter.VHolder>() {
 
@@ -36,6 +37,7 @@ class StadiumAdapter : RecyclerView.Adapter<StadiumAdapter.VHolder>() {
         fun bind(d: Stadium) {
             view.apply {
                 stdName.text = d.name
+                likeCount.text = d.stadium_like.toMoneyFormat()
                 verifyCount.text = d.countVerify.toString()
                 notVerifyCount.text = d.countNotVerify.toString()
                 val imageAdapter = RvImageAdapter(d)

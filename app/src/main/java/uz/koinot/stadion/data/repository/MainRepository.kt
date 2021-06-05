@@ -2,6 +2,7 @@ package uz.koinot.stadion.data.repository
 
 import okhttp3.MultipartBody
 import uz.koinot.stadion.data.api.ApiService
+import uz.koinot.stadion.data.api.AuthService
 import uz.koinot.stadion.data.model.CreateOrder
 import uz.koinot.stadion.data.model.CreateStadium
 import uz.koinot.stadion.data.model.Login
@@ -12,6 +13,7 @@ import javax.inject.Inject
 
 class MainRepository @Inject constructor(
     private val api:ApiService,
+    private val authApi:AuthService,
     private val orderDao: OrderDao
 ) {
 
@@ -26,7 +28,7 @@ class MainRepository @Inject constructor(
     suspend fun dashboard(stadiumId:Long,s1:String,s2:String) = api.graph(stadiumId,s1,s2)
     suspend fun archiveAll(number:Long) = api.archiveAll(number)
     suspend fun archiveAfterCreateTime(number: Long,time:String) = api.archiveAfterCreateTime(number,time)
-    suspend fun login(data:Login) = api.login(data)
+    suspend fun login(data:Login) = authApi.login(data)
     suspend fun attachment(id:Long,image: MultipartBody.Part) = api.uploadPhoto(id, listOf(image))
     suspend fun createStadium(data: CreateStadium) = api.createStadium(data)
     suspend fun createOrder(data: CreateOrder) = api.createOrder(data)
