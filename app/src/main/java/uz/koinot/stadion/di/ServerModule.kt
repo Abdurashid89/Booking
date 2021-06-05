@@ -33,9 +33,6 @@ class ServerModule {
         .addCallAdapterFactory(RxJava3CallAdapterFactory.create())
         .build()
 
-
-
-
     @Provides
     @Singleton
     fun getApiService(retrofit: Retrofit):ApiService = retrofit.create(ApiService::class.java)

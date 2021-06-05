@@ -45,11 +45,11 @@
                     android:visibility="visible" />
             </HorizontalScrollView>
 
-            <androidx.viewpager.widget.ViewPager
+            <View
                 android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginTop="2dp"
-                android:background="@color/teal_700" />
+                android:layout_height="2dp"
+                android:layout_marginTop="4dp"
+                android:background="#0038FF" />
 
 
             <androidx.recyclerview.widget.RecyclerView

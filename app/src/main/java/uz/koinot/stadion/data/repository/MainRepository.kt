@@ -36,6 +36,8 @@ class MainRepository @Inject constructor(
     suspend fun orderPrice(id:Long, startDate:String,endDate:String) = api.orderPrice(id, startDate, endDate)
     suspend fun deleteStadium(id:Long) = api.deleteStadium(id)
     suspend fun deleteImage(id:Long) = api.deleteImage(id)
+    suspend fun getCancel(id:Long) = api.getCancel(id)
+    suspend fun deleteCancel(id:Long) = api.deleteCancel(id)
 
 
 

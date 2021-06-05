@@ -32,8 +32,6 @@ private const val CHANNEL_NAME = "channelName"
 
 class FirebaseService : FirebaseMessagingService() {
 
-
-
     override fun onNewToken(newToken: String) {
         super.onNewToken(newToken)
 
@@ -91,7 +89,7 @@ class FirebaseService : FirebaseMessagingService() {
                 .setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.group_png))
                 .setStyle(bigStyle)
                 .setAutoCancel(true)
-                .setContentIntent(pendingIntent)
+                .setContentIntent( if(message.data["natificationType"] != CONSTANTS.ALL) pendingIntent else null)
                 .build()
 
             val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

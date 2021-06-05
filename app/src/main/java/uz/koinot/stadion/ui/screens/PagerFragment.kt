@@ -57,6 +57,8 @@ class PagerFragment : Fragment(R.layout.fragment_pager) {
                 tab.text = getString(R.string.orders)
             }else if(position == 1){
                 tab.text = getString(R.string.dashboard)
+            }else{
+                tab.text = getString(R.string.cancel)
             }
         }.attach()
 

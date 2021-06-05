@@ -40,7 +40,7 @@ class AuthModule {
     fun getAuthClient(@ApplicationContext context: Context):OkHttpClient.Builder = OkHttpClient.Builder()
         .connectTimeout(60, TimeUnit.SECONDS)
         .readTimeout(60, TimeUnit.SECONDS)
-        .addInterceptor(ChuckInterceptor(context))
+//        .addInterceptor(ChuckInterceptor(context))
         .addInterceptor(HttpLoggingInterceptor().apply {
             level = HttpLoggingInterceptor.Level.BODY
         })

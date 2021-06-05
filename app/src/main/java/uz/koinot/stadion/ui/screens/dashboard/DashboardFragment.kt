@@ -169,7 +169,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             view.apply {
                 setDrawDotLine(false)
                 setShowPopup(LineView.SHOW_POPUPS_MAXMIN_ONLY)
-                setColorArray(intArrayOf(Color.parseColor("#0E8C30")))
+                setColorArray(intArrayOf(Color.parseColor("#0038FF")))
 
                 setBottomTextList(day)
                 setFloatDataList(arrayListOf(benefit))

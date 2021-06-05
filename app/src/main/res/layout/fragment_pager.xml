@@ -32,7 +32,7 @@
                 android:layout_gravity="bottom"
                 app:tabGravity="center"
                 app:tabIndicatorColor="@color/colorPrimaryDarkE"
-                app:tabInlineLabel="true"
+                app:tabInlineLabel="false"
                 app:tabMode="fixed" />
         </LinearLayout>
 
