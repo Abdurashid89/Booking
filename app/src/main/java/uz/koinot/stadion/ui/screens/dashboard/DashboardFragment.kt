@@ -1,5 +1,6 @@
 package uz.koinot.stadion.ui.screens.dashboard
 
+import android.annotation.SuppressLint
 import android.graphics.Color
 import android.os.Bundle
 import androidx.fragment.app.Fragment
@@ -8,6 +9,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
+import im.dacer.androidcharts.LineView
 import ir.farshid_roohi.linegraph.ChartEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
@@ -132,25 +134,28 @@ class DashboardFragment : BaseFragment(R.layout.fragment_dashboard) {
         }
     }
 
+    @SuppressLint("WrongViewCast")
     private fun createChart(list: List<Dashboard>) {
 
-        val day = ArrayList<String>()
-        val benefit = ArrayList<Float>()
-        val count = ArrayList<Float>()
+        val day = java.util.ArrayList<String>()
+        val benefit = java.util.ArrayList<Float>()
+
         list.forEach {
             day.add(it.day)
             benefit.add(it.benefit)
-            count.add(it.count.toFloat())
         }
+        val view = bn.lineView as LineView
+        view.apply {
+            setDrawDotLine(false)
+            setShowPopup(LineView.SHOW_POPUPS_MAXMIN_ONLY)
+            setColorArray(intArrayOf(Color.parseColor("#0E8C30")))
 
-        val one = ChartEntity(Color.WHITE,benefit.toFloatArray())
-        val two = ChartEntity(Color.YELLOW,count.toFloatArray())
-        val list = ArrayList<ChartEntity>()
-        list.add(one)
-        list.add(two)
-        bn.lineChart.isVisible = true
-        bn.lineChart.legendArray = day.toArray() as Array<String>
-        bn.lineChart.setList(list)
+            setFloatDataList(arrayListOf(benefit))
+            setBottomTextList(day)
+        }
+       
+
+
     }
 
     override fun onDestroy() {
