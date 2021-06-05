@@ -20,6 +20,7 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import uz.koinot.stadion.data.INotification
 import uz.koinot.stadion.data.api.ApiService
 import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.storage.LocalStorage
@@ -32,6 +33,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private var iNotification: INotification? = null
 
     @Inject
     lateinit var api:ApiService
@@ -95,12 +97,16 @@ class MainActivity : AppCompatActivity() {
         val text = intent?.getStringExtra("koinot")
         val stadium = intent?.getStringExtra("stadium")
         if(text == "main"){
+            navController.popBackStack()
             navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to stadium), Utils.navOptions())
         }
     }
     override fun onDestroy() {
         super.onDestroy()
         _bn = null
+    }
+    fun setInterface(inter:INotification){
+        iNotification = inter
     }
     
 }

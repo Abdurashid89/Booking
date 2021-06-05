@@ -7,16 +7,11 @@ import android.graphics.Shader
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.HorizontalScrollView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
 import dagger.hilt.android.AndroidEntryPoint
 import im.dacer.androidcharts.LineView
 import ir.farshid_roohi.linegraph.ChartEntity
@@ -160,88 +155,33 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         }
     }
 
-    private fun lineGraph(entry: ArrayList<Entry>) {
 
-        bn.lineChart.setNoDataText("No Balance yet!")
-
-        bn.lineChart.isAutoScaleMinMaxEnabled = true
-        bn.lineChart.legend.isEnabled = true
-        bn.lineChart.animateX(1500)
-
-        val vl = LineDataSet(entry, "Ежедневные деньги")
-        vl.setDrawFilled(true)
-
-        vl.setDrawValues(false)
-        vl.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
-
-        vl.lineWidth = 5f
-        vl.setDrawCircles(true)
-
-        val paint = bn.lineChart.renderer.paintRender
-        val height = bn.lineChart.height.toFloat()
-        val width = bn.lineChart.width.toFloat()
-
-        val lindGrad = LinearGradient(
-            0f,
-            0f,
-            width,
-            height,
-            Color.BLUE,
-            Color.parseColor("#E45CF4"),
-            Shader.TileMode.REPEAT
-        )
-        paint.shader = lindGrad
-        vl.fillColor = R.color.green
-        vl.fillAlpha = R.color.red
-
-
-
-        bn.lineChart.axisRight.isEnabled = false
-        bn.lineChart.axisRight.setDrawAxisLine(false)
-        bn.lineChart.axisRight.setDrawLabels(false)
-        bn.lineChart.axisRight.setDrawGridLines(false)
-        bn.lineChart.description.isEnabled = false
-        bn.lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-
-        bn.lineChart.setTouchEnabled(true)
-        bn.lineChart.setPinchZoom(true)
-
-        bn.lineChart.data = LineData(vl)
-        bn.lineChart.invalidate()
-        bn.lineChart.resetZoom()
-
-
-    }
-
-    @SuppressLint("WrongViewCast")
     private fun createChart(list: List<Dashboard>) {
+        try {
+            val day = java.util.ArrayList<String>()
+            val benefit = java.util.ArrayList<Float>()
 
-        val day = java.util.ArrayList<String>()
-        val benefit = java.util.ArrayList<Float>()
+            list.forEach {
+                day.add(it.day)
+                benefit.add(it.benefit.toFloat())
+            }
+            val view = bn.root.findViewById(R.id.line_view) as LineView
+            view.apply {
+                setDrawDotLine(false)
+                setShowPopup(LineView.SHOW_POPUPS_MAXMIN_ONLY)
+                setColorArray(intArrayOf(Color.parseColor("#0E8C30")))
 
-        list.forEach {
-            day.add(it.day)
-            benefit.add(it.benefit)
+                setBottomTextList(day)
+                setFloatDataList(arrayListOf(benefit))
+            }
+            bn.chartScroll.post {
+                bn.chartScroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
+            }
+        }catch (e:Exception){
+            e.printStackTrace()
+            Log.d("AAA","exeption:$e")
         }
-        val view = bn.lineView as LineView
-        view.apply {
-            setDrawDotLine(false)
-            setShowPopup(LineView.SHOW_POPUPS_MAXMIN_ONLY)
-            setColorArray(intArrayOf(Color.parseColor("#0E8C30")))
 
-            setFloatDataList(arrayListOf(benefit))
-            setBottomTextList(day)
-        }
-
-
-
-        bn.lineChart.isVisible = true
-        val ls = ArrayList<Entry>()
-        for (i in list.indices){
-            ls.add(Entry(list[i].day.toFloat(), list[i].benefit.toFloat()))
-        }
-        lineGraph(ls)
     }
 
     private fun showProgress(status:Boolean){

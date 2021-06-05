@@ -40,7 +40,7 @@ fun Throwable.userMessage() = when (this) {
         405 -> "Method Not Allowed"
         409 -> "Драйвер не найден"
         422 -> "Unprocessable"
-        500 -> "Server Error"
+        in 500..600 -> "Server Error"
         else -> "Something went wrong"
     }
     is IOException -> "Network error"

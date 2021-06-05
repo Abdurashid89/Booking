@@ -4,9 +4,8 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:padding="12dp"
     android:orientation="vertical"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:padding="12dp"
     tools:context=".ui.screens.dashboard.DashboardFragment">
 
     <ProgressBar
@@ -20,15 +19,13 @@
         android:indeterminateOnly="true"
         android:maxHeight="24dip"
         android:minHeight="24dip"
-        android:visibility="gone"
         android:progressBackgroundTint="#208afa"
         android:progressBackgroundTintMode="multiply"
-        />
+        android:visibility="gone" />
+
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
-
-        <androidx.constraintlayout.widget.ConstraintLayout
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -38,45 +35,32 @@
             <HorizontalScrollView
                 android:id="@+id/chart_scroll"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                tools:ignore="MissingConstraints">
+                android:layout_height="wrap_content">
 
-                <View
+                <view
                     android:id="@+id/line_view"
                     class="im.dacer.androidcharts.LineView"
                     android:layout_width="wrap_content"
-                    android:layout_height="300dp" />
+                    android:layout_height="300dp"
+                    android:visibility="visible" />
             </HorizontalScrollView>
 
-            <com.github.mikephil.charting.charts.LineChart
-                android:id="@+id/lineChart"
-                android:visibility="visible"
+            <androidx.viewpager.widget.ViewPager
                 android:layout_width="match_parent"
-                android:layout_height="300dp"/>
+                android:layout_height="1dp"
+                android:layout_marginTop="2dp"
+                android:background="@color/teal_700" />
+
 
             <androidx.recyclerview.widget.RecyclerView
-                android:layout_width="match_parent"
                 android:id="@+id/rv_orders"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="12dp"
                 android:visibility="visible"
-                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager"
-                app:layout_constraintTop_toBottomOf="@id/chart_scroll" />
+                app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
-            <TextView
-                android:id="@+id/nothing"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Arxiv bo'sh"
-                android:textColor="@color/black"
-                android:textSize="24sp"
-                android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
-        </androidx.constraintlayout.widget.ConstraintLayout>
+        </LinearLayout>
     </androidx.core.widget.NestedScrollView>
 
 

@@ -13,6 +13,7 @@ import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.repository.MainRepository
 import uz.koinot.stadion.utils.UiStateList
 import uz.koinot.stadion.utils.UiStateObject
+import uz.koinot.stadion.utils.userMessage
 import java.io.File
 import javax.inject.Inject
 import kotlin.random.Random
@@ -36,7 +37,7 @@ class HomeViewModel @Inject constructor(
                 _stadiumFlow.value = UiStateList.ERROR(res.message, true, res.success)
             }
         } catch (e: Exception) {
-            _stadiumFlow.value = UiStateList.ERROR(e.localizedMessage ?: "not found")
+            _stadiumFlow.value = UiStateList.ERROR(e.userMessage() ?: "not found")
 //            e.printStackTrace()
         }
     }

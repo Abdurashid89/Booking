@@ -16,7 +16,6 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -126,11 +125,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
     private fun addImage(it: Stadium) {
         stadiumId = it.id
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
-            ImagePicker.with(this)
-                .compress(1024)
-                .galleryOnly()
-                .maxResultSize(1080, 1080)
-                .start()
+//            ImagePicker.with(this)
+//                .compress(1024)
+//                .galleryOnly()
+//                .maxResultSize(1080, 1080)
+//                .start()
 
         }
 //        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE){
@@ -164,12 +163,14 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
                         showProgress(false)
                         bn.apply {
                             textNotStadium.isVisible = true
-                            if(it.fromServer)
                                 textNotStadium.text = it.message
-                            if(it.code == 400)
+
+                            if(it.code == 401){
                                 storage.hasAccount = false
-                            requireActivity().startActivity(Intent(requireContext(),AuthActivity::class.java))
-                            requireActivity().finish()
+                                requireActivity().startActivity(Intent(requireContext(),AuthActivity::class.java))
+                                requireActivity().finish()
+                            }
+
 
                             swipeRefresh.isRefreshing = false
                         }

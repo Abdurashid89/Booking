@@ -67,6 +67,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         storage.firebaseToken = ""
                         requireActivity().startActivity(Intent(requireContext(),MainActivity::class.java))
                         requireActivity().finish()
+                        viewModel.reLogin()
                     }
                     is UiStateObject.ERROR ->{
                         storage.hasAccount = false

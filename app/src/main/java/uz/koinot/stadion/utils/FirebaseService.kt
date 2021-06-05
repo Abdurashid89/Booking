@@ -33,6 +33,7 @@ private const val CHANNEL_NAME = "channelName"
 class FirebaseService : FirebaseMessagingService() {
 
 
+
     override fun onNewToken(newToken: String) {
         super.onNewToken(newToken)
 
@@ -59,40 +60,47 @@ class FirebaseService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
-        if(message.data["natificationType"] == CONSTANTS.ORDER){
+
+            var type = 0
+            if(message.data["natificationType"] == CONSTANTS.ORDER){
+                type = R.drawable.ic_baseline_record_voice_over_24
+            }else if(message.data["natificationType"] == CONSTANTS.CANCEL){
+                type = R.drawable.ic_baseline_voice_over_off_24
+            }else {
+                type = R.drawable.ic_baseline_check_circle_24
+            }
+
+            val intent = Intent(this,MainActivity::class.java)
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
+            intent.putExtra("koinot","main")
+            intent.putExtra("stadium",message.data["stadium"].toString())
+            intent.putExtra("order",message.data["order"].toString())
+
+            val requestCode: Int = (0..10).random()
+            val pendingIntent = PendingIntent.getActivity(this,requestCode,intent,FLAG_ONE_SHOT)
+            val bigStyle = NotificationCompat.BigTextStyle()
+            bigStyle.setBigContentTitle(message.data["title"] ?: "Stadium").bigText(message.data["message"] ?: "New Order")
+
+            val notification = NotificationCompat.Builder(this, CHANNEL_ID)
+                .setContentTitle(message.data["title"] ?: "Stadium")
+                .setContentText(message.data["message"] ?: "Sizga yangi zakaz")
+                .setSmallIcon(type)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
+                .setPriority(NotificationCompat.PRIORITY_HIGH)
+                .setCategory(NotificationCompat.CATEGORY_MESSAGE)
+                .setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.group_png))
+                .setStyle(bigStyle)
+                .setAutoCancel(true)
+                .setContentIntent(pendingIntent)
+                .build()
+
+            val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
+            if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
+                createNotificationChannel(manager)
+            val notificationId = Random.nextInt()
+            manager.notify(notificationId,notification)
 
         }
-
-        val intent = Intent(this,MainActivity::class.java)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
-        intent.putExtra("koinot","main")
-        intent.putExtra("stadium",message.data["stadium"].toString())
-        val requestCode: Int = (0..10).random()
-        val pendingIntent = PendingIntent.getActivity(this,requestCode,intent,FLAG_ONE_SHOT)
-        val bigStyle = NotificationCompat.BigTextStyle()
-        bigStyle.setBigContentTitle(message.data["title"] ?: "Stadium").bigText(message.data["message"] ?: "New Order")
-
-        val notification = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setContentTitle(message.data["title"] ?: "Stadium")
-            .setContentText(message.data["message"] ?: "Sizga yangi zakaz")
-            .setSmallIcon(R.drawable.logo)
-            .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
-            .setPriority(NotificationCompat.PRIORITY_HIGH)
-            .setCategory(NotificationCompat.CATEGORY_MESSAGE)
-            .setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.logo))
-            .setStyle(bigStyle)
-            .setAutoCancel(true)
-            .setContentIntent(pendingIntent)
-            .build()
-
-        val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O)
-            createNotificationChannel(manager)
-            val notificationId = Random.nextInt()
-        manager.notify(notificationId,notification)
-
-
-    }
 
     @RequiresApi(Build.VERSION_CODES.O)
     private fun createNotificationChannel(manager: NotificationManager) {
