@@ -53,8 +53,6 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         navController = findNavController(R.id.nav_host_fragment_container)
 
-        window.navigationBarColor = Color.WHITE
-
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
             mFirebaseAnalytics.setAnalyticsCollectionEnabled(true)
 
