@@ -16,6 +16,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
@@ -51,8 +52,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
 
         lifecycleScope.launchWhenCreated {
             viewModel.stadiumFlow.collect {
-                when(it){
-                    is UiStateList.SUCCESS ->{
+                when (it) {
+                    is UiStateList.SUCCESS -> {
                         it.data?.let { it1 -> adapter.submitList(it1) }
                     }
                     else -> Unit
@@ -70,42 +71,57 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
         collects()
 
         adapter.setOnClickListener {
-            Log.d("AAA","stadiumId: ${it.id}")
-            navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to Gson().toJson(it)),Utils.navOptions())
+            Log.d("AAA", "stadiumId: ${it.id}")
+            navController.navigate(
+                R.id.pagerFragment,
+                bundleOf(CONSTANTS.STADION to Gson().toJson(it)),
+                Utils.navOptions()
+            )
         }
 
         adapter.setOnUpdateClickListener {
-            navController.navigate(R.id.createStadiumFragment, bundleOf(CONSTANTS.STADIUM_TYPE  to CONSTANTS.EDIT_STADIUM,CONSTANTS.STADIUM_DATA to Gson().toJson(it)),Utils.navOptions())
+            navController.navigate(
+                R.id.createStadiumFragment,
+                bundleOf(
+                    CONSTANTS.STADIUM_TYPE to CONSTANTS.EDIT_STADIUM,
+                    CONSTANTS.STADIUM_DATA to Gson().toJson(it)
+                ),
+                Utils.navOptions()
+            )
         }
 
         adapter.setOnAddImageClickListener {
             addImage(it)
         }
-        adapter.setOnImageDeleteListener {id->
-            val dialog = BaseDialog(getString(R.string.delete),getString(R.string.are_you_sure_delete_image))
+        adapter.setOnImageDeleteListener { id ->
+            val dialog = BaseDialog(
+                getString(R.string.delete),
+                getString(R.string.are_you_sure_delete_image)
+            )
             dialog.setOnDeleteListener {
                 viewModel.deleteImage(id)
                 dialog.dismiss()
             }
-            dialog.show(childFragmentManager,"fsgsdfdf")
+            dialog.show(childFragmentManager, "fsgsdfdf")
 
         }
 
         adapter.setOnImageClickListener { stadium, position ->
-            val dialog = ImageDialog(stadium.photos,position)
-            dialog.show(childFragmentManager,"image")
+            val dialog = ImageDialog(stadium.photos, position)
+            dialog.show(childFragmentManager, "image")
         }
-        adapter.setOnDeleteClickListener {stadium->
-            val dialog = BaseDialog(getString(R.string.delete),getString(R.string.are_you_sure))
+        adapter.setOnDeleteClickListener { stadium ->
+            val dialog = BaseDialog(getString(R.string.delete), getString(R.string.are_you_sure))
             dialog.setOnDeleteListener {
                 viewModel.deleteStadium(stadium.id)
                 dialog.dismiss()
             }
-            dialog.show(childFragmentManager,"wrt")
+            dialog.show(childFragmentManager, "wrt")
 
         }
         bn.logOut.setOnClickListener {
-            val dialog = BaseDialog(getString(R.string.exit),getString(R.string.do_you_want_to_exit))
+            val dialog =
+                BaseDialog(getString(R.string.exit), getString(R.string.do_you_want_to_exit))
             dialog.setOnDeleteListener {
                 storage.hasAccount = false
                 dialog.dismiss()
@@ -113,23 +129,23 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
                 requireActivity().startActivity(Intent(requireContext(), AuthActivity::class.java))
                 requireActivity().finish()
             }
-            dialog.show(childFragmentManager,"fsdf")
+            dialog.show(childFragmentManager, "fsdf")
 
         }
 
         bn.addStadium.setOnClickListener {
-            navController.navigate(R.id.mapFragment2,null,Utils.navOptions())
+            navController.navigate(R.id.mapFragment2, null, Utils.navOptions())
         }
     }
 
     private fun addImage(it: Stadium) {
         stadiumId = it.id
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
-//            ImagePicker.with(this)
-//                .compress(1024)
-//                .galleryOnly()
-//                .maxResultSize(1080, 1080)
-//                .start()
+            ImagePicker.with(this)
+                .compress(1024)
+                .galleryOnly()
+                .maxResultSize(1080, 1080)
+                .start()
 
         }
 //        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE){
@@ -144,30 +160,35 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
     private fun collects() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.stadiumFlow.collect {
-                when(it){
-                    is UiStateList.SUCCESS ->{
+                when (it) {
+                    is UiStateList.SUCCESS -> {
                         showProgress(false)
                         bn.swipeRefresh.isRefreshing = false
-                        if(it.data != null && it.data.isNotEmpty()){
+                        if (it.data != null && it.data.isNotEmpty()) {
                             bn.apply {
                                 textNotStadium.isVisible = false
                             }
-                        }else{
+                        } else {
                             bn.apply {
                                 textNotStadium.isVisible = true
                             }
                         }
 
                     }
-                    is UiStateList.ERROR ->{
+                    is UiStateList.ERROR -> {
                         showProgress(false)
                         bn.apply {
                             textNotStadium.isVisible = true
-                                textNotStadium.text = it.message
+                            textNotStadium.text = it.message
 
-                            if(it.code == 401){
+                            if (it.code == 401) {
                                 storage.hasAccount = false
-                                requireActivity().startActivity(Intent(requireContext(),AuthActivity::class.java))
+                                requireActivity().startActivity(
+                                    Intent(
+                                        requireContext(),
+                                        AuthActivity::class.java
+                                    )
+                                )
                                 requireActivity().finish()
                             }
 
@@ -175,7 +196,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
                             swipeRefresh.isRefreshing = false
                         }
                     }
-                    is UiStateList.LOADING ->{
+                    is UiStateList.LOADING -> {
                         showProgress(true)
                         bn.apply {
                             swipeRefresh.isRefreshing = false
@@ -188,16 +209,16 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
         }
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.imageFlow.collect {
-                when(it){
-                    is UiStateObject.SUCCESS ->{
+                when (it) {
+                    is UiStateObject.SUCCESS -> {
                         showProgress(false)
-                      viewModel.getAllStadium()
+                        viewModel.getAllStadium()
                     }
-                    is UiStateObject.ERROR ->{
+                    is UiStateObject.ERROR -> {
                         showProgress(false)
-                     showMessage(it.message)
+                        showMessage(it.message)
                     }
-                    is UiStateObject.LOADING ->{
+                    is UiStateObject.LOADING -> {
                         showProgress(true)
 
                     }
@@ -207,16 +228,16 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
         }
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.deleteStadiumFlow.collect {
-                when(it){
-                    is UiStateObject.SUCCESS ->{
+                when (it) {
+                    is UiStateObject.SUCCESS -> {
                         showProgress(false)
                         viewModel.getAllStadium()
                     }
-                    is UiStateObject.ERROR ->{
+                    is UiStateObject.ERROR -> {
                         showProgress(false)
-                       showMessage(it.message)
+                        showMessage(it.message)
                     }
-                    is UiStateObject.LOADING ->{
+                    is UiStateObject.LOADING -> {
                         showProgress(true)
                     }
                     else -> Unit
@@ -225,16 +246,16 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
         }
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.deleteImageFlow.collect {
-                when(it){
+                when (it) {
                     is UiStateObject.SUCCESS -> {
                         showProgress(false)
                         viewModel.getAllStadium()
                     }
-                    is UiStateObject.ERROR ->{
+                    is UiStateObject.ERROR -> {
                         showProgress(false)
                         showMessage(it.message)
                     }
-                    is UiStateObject.LOADING ->{
+                    is UiStateObject.LOADING -> {
                         showProgress(true)
                     }
                     else -> Unit
@@ -242,14 +263,16 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
             }
         }
     }
-    private fun showProgress(status:Boolean){
+
+    private fun showProgress(status: Boolean) {
         bn.progressBar.isVisible = status
     }
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         if (resultCode == Activity.RESULT_OK) {
             val uri = data?.data ?: return
-            val path = PathUtil.getPath(requireContext(),uri)
+            val path = PathUtil.getPath(requireContext(), uri)
             viewModel.uploadImage(stadiumId, path)
         }
     }
