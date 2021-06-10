@@ -38,11 +38,10 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
     val bn get() = _bn!!
     private var adress = ""
     private var stadiumId = 0
-    private var type = false
+    private var type = true
     private lateinit var lan_lat: LatLng
     private lateinit var stadium: Stadium
     private val viewModel: CreateStadiumViewModel by viewModels()
-    private val adapter = AttachmentAdapter()
 
     @Inject
     lateinit var storage: LocalStorage
@@ -50,20 +49,13 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            if (arguments?.getString(CONSTANTS.STADIUM_TYPE) == CONSTANTS.NEW_STADIUM) {
-                type = true
-                val arg = arguments?.getString(CONSTANTS.LOCATION)
-                lan_lat = Gson().fromJson(arg, LatLng::class.java)
-                adress = arguments?.getString(CONSTANTS.ADRESS, "Unknown adress").toString()
-                Log.d("AAA", "log:${lan_lat.latitude} ${lan_lat.longitude} $adress")
-            } else {
+            if (arguments?.getString(CONSTANTS.STADIUM_TYPE) != CONSTANTS.NEW_STADIUM) {
                 type = false
                 val arg = arguments?.getString(CONSTANTS.STADIUM_DATA)
                 stadium = Gson().fromJson(arg, Stadium::class.java)
+                lan_lat = LatLng(stadium.latitude,stadium.longitude)
             }
         }
-
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -71,20 +63,31 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
         _bn = FragmentCreateStadiumBinding.bind(view)
 
         bn.apply {
+            location.setOnClickListener {
+                showProgress(true)
+                val dialog = MapFragment()
+                dialog.setOnClickListener { latLng, s ->
+                    dialog.dismiss()
+                    lan_lat = latLng
+                    adress = s
+                    location.setText(s)
+                    showProgress(false)
+                }
+                dialog.show(childFragmentManager,"nfjdbf")
+            }
             if (type) {
                 inputPhoneNumber.setText(storage.phoneNumber)
-                location.setText(adress)
             } else {
                 toolbar.title = getString(R.string.update_stadium)
                 btnAddStadium.text = getString(R.string.update_stadium)
                 inputPhoneNumber.setText(stadium.phone_number)
                 location.setText(stadium.address)
                 nameStadium.setText(stadium.name)
-                timeOpen.setText(stadium.opening_time)
-                timeClose.setText(stadium.closing_time)
+                timeOpen.setText(stadium.opening_time.toNeedTime())
+                timeClose.setText(stadium.closing_time.toNeedTime())
                 priceDay.setText(stadium.price_day_time.toString())
                 priceNight.setText(stadium.price_night_time.toString())
-                whenStartNightTime.setText(stadium.change_price_time)
+                whenStartNightTime.setText(stadium.change_price_time.toNeedTime())
                 widthStadium.setText(stadium.width.toString())
                 heightStadium.setText(stadium.height.toString())
             }
@@ -125,9 +128,13 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                     { if (type) {
                         viewModel.createStadium(
                             CreateStadium(null, nameStadium, lan_lat.latitude, number, lan_lat.longitude, location, timeOpen.getTimeStamp(), timeClose.getTimeStamp(), timeNight.getTimeStamp(), priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt()))
-                    } else
-                        viewModel.createStadium(
-                            CreateStadium(stadium.id, nameStadium, stadium.latitude, number, stadium.longitude, location, timeOpen, timeClose, timeNight, priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt()))
+                        Log.d("AAA","data:")
+                    } else{
+                       val data = CreateStadium(stadium.id, nameStadium, stadium.latitude, number, stadium.longitude, location, timeOpen.getTimeStamp(), timeClose.getTimeStamp(), timeNight.getTimeStamp(), priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt())
+                        viewModel.createStadium(data)
+                        Log.d("AAA","data:$data")
+                    }
+
                 }else{
                     showMessage(getString(R.string.wrong))
                 }

@@ -125,6 +125,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
                         if (it.data != null && it.data.isNotEmpty()){
                             createChart(it.data)
+                            bn.lineHorizontal.isVisible = true
+                            bn.chartScroll.isVisible = true
                         }
 
                     }
@@ -132,6 +134,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 //                        bn.lineChart.isVisible = false
                         Log.d("AAAA","ERROR ${it.message}")
                         showProgress(false)
+                        bn.lineHorizontal.isVisible = false
+                        bn.chartScroll.isVisible = false
                         showMessage(getString(R.string.error))
                     }
                     is UiStateList.LOADING -> {
@@ -160,6 +164,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         try {
             val day = java.util.ArrayList<String>()
             val benefit = java.util.ArrayList<Float>()
+
 
             list.forEach {
                 day.add(it.day)

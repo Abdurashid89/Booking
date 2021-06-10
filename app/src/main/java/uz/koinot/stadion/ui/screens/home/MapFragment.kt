@@ -10,6 +10,7 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.common.api.ResolvableApiException
@@ -27,7 +28,7 @@ import uz.koinot.stadion.R
 import uz.koinot.stadion.databinding.FragmentMapBinding
 import uz.koinot.stadion.utils.*
 
-class MapFragment : Fragment(R.layout.fragment_map) {
+class MapFragment : DialogFragment() {
 
     private var _bn: FragmentMapBinding? = null
     private val bn get() = _bn!!
@@ -36,6 +37,13 @@ class MapFragment : Fragment(R.layout.fragment_map) {
     private var marker: Marker? = null
     private lateinit var tracker:GPSTracker
     private var adress = ""
+
+    private var listener : ((LatLng,String) -> Unit)? = null
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        setStyle(STYLE_NO_TITLE, R.style.FullScreenDialog2)
+    }
 
     @SuppressLint("PotentialBehaviorOverride")
     override fun onCreateView(
@@ -106,24 +114,14 @@ class MapFragment : Fragment(R.layout.fragment_map) {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        bn.backArrow.setOnClickListener {
-            findNavController().navigateUp()
-        }
+        isCancelable = false
         bn.btnChooseLocation.setOnClickListener {
             if(location != null){
-                findNavController().navigate(R.id.createStadiumFragment,
-                    bundleOf(
-                        CONSTANTS.STADIUM_TYPE to CONSTANTS.NEW_STADIUM,
-                        CONSTANTS.ADRESS to adress,
-                        CONSTANTS.LOCATION to Gson().toJson(location)
-                    )
-                    ,Utils.navOptions())
+                listener?.invoke(location!!,adress)
             }else{
                 Toast.makeText(requireContext(), getString(R.string.please_choose_location), Toast.LENGTH_SHORT).show()
             }
         }
-
-
     }
 
     private fun createLocationRequest() {
@@ -168,6 +166,10 @@ class MapFragment : Fragment(R.layout.fragment_map) {
         }catch (e:Exception){
             e.printStackTrace()
         }
+    }
+
+    fun setOnClickListener(block: (LatLng,String) -> Unit){
+        listener = block
     }
 
     override fun onDestroy() {

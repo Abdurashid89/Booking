@@ -134,7 +134,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
         }
 
         bn.addStadium.setOnClickListener {
-            navController.navigate(R.id.mapFragment2, null, Utils.navOptions())
+            navController.navigate(R.id.createStadiumFragment,
+                bundleOf(CONSTANTS.STADIUM_TYPE to CONSTANTS.NEW_STADIUM),Utils.navOptions())
         }
     }
 
