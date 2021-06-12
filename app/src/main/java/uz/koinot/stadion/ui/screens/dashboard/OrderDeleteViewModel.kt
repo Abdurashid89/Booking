@@ -11,6 +11,7 @@ import uz.koinot.stadion.data.model.Order
 import uz.koinot.stadion.data.repository.MainRepository
 import uz.koinot.stadion.utils.UiStateList
 import uz.koinot.stadion.utils.UiStateObject
+import uz.koinot.stadion.utils.userMessage
 import javax.inject.Inject
 
 @HiltViewModel
@@ -31,7 +32,7 @@ class OrderDeleteViewModel @Inject constructor(
                 _orderDeleteFlow.value = UiStateObject.ERROR(res.message)
             }
         }catch (e:Exception){
-            _orderDeleteFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
+            _orderDeleteFlow.value = UiStateObject.ERROR(e.userMessage()?:"not found")
         }
     }
 
@@ -48,7 +49,7 @@ class OrderDeleteViewModel @Inject constructor(
                 _getCancelFlow.value = UiStateList.ERROR(res.message)
             }
         }catch (e:Exception){
-            _getCancelFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
+            _getCancelFlow.value = UiStateList.ERROR(e.userMessage()?:"not found")
 //            e.printStackTrace()
         }
     }

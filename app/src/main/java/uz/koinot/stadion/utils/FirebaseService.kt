@@ -58,6 +58,7 @@ class FirebaseService : FirebaseMessagingService() {
 
     override fun onMessageReceived(message: RemoteMessage) {
         super.onMessageReceived(message)
+        Log.e("AAA","received:$message")
 
             var type = 0
             if(message.data["natificationType"] == CONSTANTS.ORDER){

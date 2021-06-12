@@ -11,6 +11,7 @@ import android.view.View
 import androidx.core.content.ContextCompat
 import androidx.core.view.isVisible
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
@@ -34,10 +35,6 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
     @Inject
     lateinit var storage: LocalStorage
 
-    private var time = 0L
-
-    private var cTimer: CountDownTimer? = null
-
     private var _bn: FragmentVerificationBinding? = null
     val bn get() = _bn!!
 
@@ -47,10 +44,14 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
         _bn = FragmentVerificationBinding.bind(view)
 
         startTimer()
+        bn.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
 
         bn.tryAgainText.setOnClickListener {
             bn.tryAgainText.visibility = View.GONE
-            bn.countDownTimerLinear.visibility = View.VISIBLE
+           startTimer()
+
 
             showProgress(true)
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
@@ -136,6 +137,7 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
     private fun showProgress(status:Boolean){
         bn.progressBar.isVisible = status
     }
+
     override fun onDestroy() {
         super.onDestroy()
         _bn = null

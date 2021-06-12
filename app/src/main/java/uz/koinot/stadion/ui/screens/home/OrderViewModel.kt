@@ -10,6 +10,7 @@ import uz.koinot.stadion.data.model.Order
 import uz.koinot.stadion.data.repository.MainRepository
 import uz.koinot.stadion.utils.UiStateList
 import uz.koinot.stadion.utils.UiStateObject
+import uz.koinot.stadion.utils.userMessage
 import javax.inject.Inject
 
 
@@ -31,7 +32,7 @@ class OrderViewModel @Inject constructor(
                 _ordersFlow.value = UiStateList.ERROR(res.message)
             }
         }catch (e:Exception){
-            _ordersFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
+            _ordersFlow.value = UiStateList.ERROR(e.userMessage()?:"not found")
             e.printStackTrace()
         }
     }
@@ -49,7 +50,7 @@ class OrderViewModel @Inject constructor(
                 _acceptFlow.value = UiStateObject.ERROR(res.message)
             }
         }catch (e:Exception){
-            _acceptFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
+            _acceptFlow.value = UiStateObject.ERROR(e.userMessage()?:"not found")
             e.printStackTrace()
         }
     }
@@ -68,7 +69,7 @@ class OrderViewModel @Inject constructor(
                 _rejectFlow.value = UiStateObject.ERROR(res.message)
             }
         }catch (e:Exception){
-            _rejectFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
+            _rejectFlow.value = UiStateObject.ERROR(e.userMessage()?:"not found")
             e.printStackTrace()
         }
     }
