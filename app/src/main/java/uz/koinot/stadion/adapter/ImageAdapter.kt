@@ -15,10 +15,7 @@ import uz.koinot.stadion.utils.toMoneyFormat
 
 class ImageAdapter: RecyclerView.Adapter<ImageAdapter.VHolder>() {
 
-    private var listener : SingleBlock<Photos>? = null
-    private var acceptListener : SingleBlock<Photos>? = null
-    private var rejectListener : SingleBlock<Photos>? = null
-    private val list = ArrayList<Photos>()
+    private val list = ArrayList<String>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = VHolder(
         ItemImageBinding.inflate(LayoutInflater.from(parent.context),parent,false)
@@ -30,8 +27,8 @@ class ImageAdapter: RecyclerView.Adapter<ImageAdapter.VHolder>() {
 
     inner class VHolder(val view: ItemImageBinding): RecyclerView.ViewHolder(view.root){
         @SuppressLint("SetTextI18n")
-        fun bind(d: Photos){
-            view.imageView.load(CONSTANTS.IMAGE_URL + d.id.toString()){
+        fun bind(d: String){
+            view.imageView.load(d){
                 crossfade(true)
                 crossfade(500)
                 placeholder(R.drawable.ic_placeholder)
@@ -41,7 +38,7 @@ class ImageAdapter: RecyclerView.Adapter<ImageAdapter.VHolder>() {
         }
     }
 
-    fun submitList(ls: List<Photos>){
+    fun submitList(ls: List<String>){
         list.clear()
         list.addAll(ls)
         notifyDataSetChanged()

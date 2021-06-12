@@ -1,6 +1,8 @@
 package uz.koinot.stadion.ui.screens
 
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.view.isVisible
@@ -10,6 +12,9 @@ import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.launch
+import ru.tinkoff.decoro.MaskImpl
+import ru.tinkoff.decoro.parser.PhoneNumberUnderscoreSlotsParser
+import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.R
 import uz.koinot.stadion.data.api.ApiService
@@ -44,8 +49,20 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
             toolbar.setNavigationOnClickListener {
                 findNavController().navigateUp()
             }
+
+            val slots = PhoneNumberUnderscoreSlotsParser().parseSlots("+998 __ ___ __ __")
+            val format = MaskFormatWatcher(MaskImpl.createTerminated(slots))
+            format.installOn(bn.inputPhoneNumber)
+
+            bn.inputPhoneNumber.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+                if(hasFocus){
+                    bn.inputPhoneNumber.setText("+998")
+                }
+            }
+            bn.inputPhoneNumber.addTextChangedListener(textWatcherName)
+
             btnPhoneNumber.setOnClickListener {
-                number = bn.inputPhoneNumber.text.toString().trim()
+                number = bn.inputPhoneNumber.text.toString().replace(" ","")
                 val password = bn.inputPassword.text.toString().trim()
                 if (number.length == 13 && password.isNotEmpty()) {
                     lifecycleScope.launchWhenCreated {
@@ -82,6 +99,16 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
         }
 
 
+    }
+
+    private val textWatcherName = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {}
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (bn.inputPhoneNumber.text.toString().length == 17) {
+                bn.inputPassword.requestFocus()
+            }
+        }
     }
     private fun showProgress(status:Boolean){
         bn.progressBar.isVisible = status

@@ -84,7 +84,7 @@ class HomeViewModel @Inject constructor(
     private var _deleteImageFlow = MutableStateFlow<UiStateObject<String>>(UiStateObject.EMPTY)
     val deleteImageFlow: StateFlow<UiStateObject<String>> get() = _deleteImageFlow
 
-    fun deleteImage(id: Long) = viewModelScope.launch {
+    fun deleteImage(id: String) = viewModelScope.launch {
         _deleteImageFlow.value = UiStateObject.LOADING
         try {
             val res = repository.deleteImage(id)
@@ -98,4 +98,8 @@ class HomeViewModel @Inject constructor(
 //            e.printStackTrace()
         }
     }
+
+    suspend fun setAllStadium(list: List<Stadium>) = repository.setAllStadium(list)
+    suspend fun getAllStadiumDb() = repository.getAllStadium()
+    suspend fun removeAllStadium() = repository.removeAllStadium()
 }

@@ -1,33 +1,40 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
+    android:id="@+id/swipeRefresh"
     tools:context=".ui.screens.home.OderFragment">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:progressBarStyleHorizontal"
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="11dp"
-        android:indeterminateBehavior="repeat"
-        android:indeterminateDuration="10"
-        android:indeterminateOnly="true"
-        android:maxHeight="24dip"
-        android:minHeight="24dip"
-        android:visibility="gone"
-        android:progressBackgroundTint="#208afa"
-        android:progressBackgroundTintMode="multiply"
-        />
+        android:orientation="vertical"
+        android:layout_height="match_parent">
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            style="?android:progressBarStyleHorizontal"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginHorizontal="11dp"
+            android:indeterminateBehavior="repeat"
+            android:indeterminateDuration="10"
+            android:indeterminateOnly="true"
+            android:maxHeight="24dip"
+            android:minHeight="24dip"
+            android:visibility="gone"
+            android:progressBackgroundTint="#208afa"
+            android:progressBackgroundTintMode="multiply"
+            />
 
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvDeleteOrders"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent" />
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rvDeleteOrders"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:layout_constraintBottom_toBottomOf="parent" />
+    </LinearLayout>
 
-</LinearLayout>
+
+
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

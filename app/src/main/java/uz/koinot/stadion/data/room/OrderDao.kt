@@ -6,6 +6,7 @@ import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import kotlinx.coroutines.flow.Flow
 import uz.koinot.stadion.data.model.Order
+import uz.koinot.stadion.data.model.Stadium
 
 @Dao
 interface OrderDao {
@@ -18,4 +19,13 @@ interface OrderDao {
 
     @Query("delete from `Order`")
     fun removeAllOrders()
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    suspend fun setAllStadium(list: List<Stadium>)
+
+    @Query("select * from `Stadium`")
+    fun getAllStadiums(): Flow<List<Stadium>>
+
+    @Query("delete from `Stadium`")
+    suspend fun removeAllStadiums()
 }

@@ -26,6 +26,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -130,6 +131,14 @@ dependencies {
     // ImagePicker
     implementation "com.github.dhaval2404:imagepicker:2.1"
 //    implementation 'com.github.dhaval2404:imagepicker-support:1.7.1'
+
+
+    implementation "com.github.iwgang:countdownview:2.1.6"
+//    implementation 'ru.egslava:MaskedEditText:1.0.5'
+
+    implementation "ru.tinkoff.decoro:decoro:1.1.1"
+
+
 
 
 

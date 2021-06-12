@@ -45,13 +45,15 @@ class OrderDeleteFragment : Fragment(R.layout.fragment_order_delete) {
         bn.rvDeleteOrders.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getCancel(stadiumId)
 
+        bn.swipeRefresh.setOnRefreshListener {
+            viewModel.getCancel(stadiumId)
+        }
+
         collects()
 
         adapter.setOnDeleteListener {
             viewModel.orderDelete(it.id)
         }
-
-
 
     }
 
@@ -60,6 +62,7 @@ class OrderDeleteFragment : Fragment(R.layout.fragment_order_delete) {
             viewModel.getCancelFlow.collect {
                 when(it){
                     is UiStateList.SUCCESS -> {
+                        bn.swipeRefresh.isRefreshing = false
                         showProgress(false)
                         if (it.data != null && it.data.isNotEmpty()) {
                             bn.apply {
@@ -100,6 +103,7 @@ class OrderDeleteFragment : Fragment(R.layout.fragment_order_delete) {
     }
 
     private fun showProgress(status:Boolean){
+        bn.swipeRefresh.isRefreshing = false
         bn.progressBar.isVisible = status
     }
 

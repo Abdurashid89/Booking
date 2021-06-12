@@ -46,6 +46,10 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
         bn.rvOrders.layoutManager = LinearLayoutManager(requireContext())
         viewModel.getOder(stadiumId)
 
+        bn.swipeRefresh.setOnRefreshListener {
+            viewModel.getOder(stadiumId)
+        }
+
         bn.btnAddOrder.setOnClickListener {
             findNavController().navigate(R.id.createOrderFragment, bundleOf(CONSTANTS.STADION_ID to stadiumId),Utils.navOptions())
         }
@@ -159,6 +163,7 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
     }
 
     private fun showProgress(status:Boolean){
+        bn.swipeRefresh.isRefreshing = false
         bn.progressBar.isVisible = status
     }
 

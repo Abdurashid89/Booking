@@ -41,10 +41,12 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private var stadiumId = 0L
     private val adapter = DashboardOrderAdapter()
     var type = false
+    var startDate = ""
+    var endDate = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        stadiumId = arguments?.getLong(CONSTANTS.STADION_ID,0L) ?: 0L
+        stadiumId = arguments?.getLong(CONSTANTS.STADION_ID, 0L) ?: 0L
     }
 
 
@@ -54,23 +56,26 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         bn.rvOrders.adapter = adapter
         collects()
 
-        try {
-            val startDate = Timestamp(System.currentTimeMillis() - 2592000000)
-            val endDate = Timestamp(System.currentTimeMillis())
-            viewModel.getDashboard(stadiumId, startDate.toString(), endDate.toString())
-        }catch (e:Exception){
+
+        startDate = Timestamp(System.currentTimeMillis() - 2592000000).toString()
+        endDate = Timestamp(System.currentTimeMillis()).toString()
+        viewModel.getDashboard(stadiumId, startDate, endDate)
+
+        bn.swipeRefresh.setOnRefreshListener {
+            viewModel.getDashboard(stadiumId, startDate, endDate)
         }
+
 
     }
 
     private fun collects() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.getAllOrder(stadiumId).collect {
-                if(it.isEmpty()){
+                if (it.isEmpty()) {
                     viewModel.archiveAll(stadiumId)
-                }else{
+                } else {
                     adapter.submitList(it)
-                    if (!type) viewModel.afterCreateFlow(stadiumId,it[0].createdAt.toNeedDate())
+                    if (!type) viewModel.afterCreateFlow(stadiumId, it[0].createdAt.toNeedDate())
                 }
             }
         }
@@ -80,7 +85,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 when (it) {
                     is UiStateList.SUCCESS -> {
                         showProgress(false)
-                        if (it.data != null && it.data.isNotEmpty()){
+                        if (it.data != null && it.data.isNotEmpty()) {
                             addToDb(it.data)
                         }
                     }
@@ -101,7 +106,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 when (it) {
                     is UiStateList.SUCCESS -> {
                         showProgress(false)
-                        if (it.data != null && it.data.isNotEmpty()){
+                        if (it.data != null && it.data.isNotEmpty()) {
                             addToDb(it.data)
                         }
                     }
@@ -120,10 +125,8 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             viewModel.dashboardFlow.collect {
                 when (it) {
                     is UiStateList.SUCCESS -> {
-                        Log.d("AAAA","SUCCESS")
                         showProgress(false)
-
-                        if (it.data != null && it.data.isNotEmpty()){
+                        if (it.data != null && it.data.isNotEmpty()) {
                             createChart(it.data)
                             bn.lineHorizontal.isVisible = true
                             bn.chartScroll.isVisible = true
@@ -131,16 +134,12 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
                     }
                     is UiStateList.ERROR -> {
-//                        bn.lineChart.isVisible = false
-                        Log.d("AAAA","ERROR ${it.message}")
                         showProgress(false)
                         bn.lineHorizontal.isVisible = false
                         bn.chartScroll.isVisible = false
                         showMessage(getString(R.string.error))
                     }
                     is UiStateList.LOADING -> {
-//                        bn.lineChart.isVisible = false
-                        Log.d("AAAA","LOADING")
                         showProgress(true)
                     }
                     else -> Unit
@@ -182,14 +181,15 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             bn.chartScroll.post {
                 bn.chartScroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
             }
-        }catch (e:Exception){
+        } catch (e: Exception) {
             e.printStackTrace()
-            Log.d("AAA","exeption:$e")
+            Log.d("AAA", "exeption:$e")
         }
 
     }
 
-    private fun showProgress(status:Boolean){
+    private fun showProgress(status: Boolean) {
+        bn.swipeRefresh.isRefreshing = false
         bn.progressBar.isVisible = status
     }
 

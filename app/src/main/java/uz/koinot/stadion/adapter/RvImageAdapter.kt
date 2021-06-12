@@ -13,23 +13,23 @@ import uz.koinot.stadion.databinding.RvImageBinding
 import uz.koinot.stadion.utils.CONSTANTS
 import uz.koinot.stadion.utils.SingleBlock
 
-class RvImageAdapter(val stadium: Stadium): RecyclerView.Adapter<RvImageAdapter.VHolder>() {
+class RvImageAdapter(val stadium: Stadium,val list: List<String>): RecyclerView.Adapter<RvImageAdapter.VHolder>() {
 
-    private var imageListener : ((Stadium, Int)->Unit)? = null
-    private var deleteImageListener: SingleBlock<Long>? = null
+    private var imageListener : ((List<String>, Int)->Unit)? = null
+    private var deleteImageListener: SingleBlock<String>? = null
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = VHolder(
         RvImageBinding.inflate(LayoutInflater.from(parent.context),parent,false)
     )
 
-    override fun onBindViewHolder(holder: VHolder, position: Int)  = holder.bind(stadium.photos[position])
+    override fun onBindViewHolder(holder: VHolder, position: Int)  = holder.bind(list[position])
 
-    override fun getItemCount() = stadium.photos.size
+    override fun getItemCount() = list.size
 
     inner class VHolder(val view: RvImageBinding): RecyclerView.ViewHolder(view.root){
         @SuppressLint("SetTextI18n")
-        fun bind(d: Photos){
-            view.imageView.load(CONSTANTS.IMAGE_URL + d.id.toString()){
+        fun bind(d: String){
+            view.imageView.load(d){
                 crossfade(true)
                 crossfade(500)
                 placeholder(R.drawable.ic_placeholder)
@@ -37,19 +37,21 @@ class RvImageAdapter(val stadium: Stadium): RecyclerView.Adapter<RvImageAdapter.
 
             }
             itemView.setOnClickListener {
-                imageListener?.invoke(stadium,adapterPosition)
+                imageListener?.invoke(list,adapterPosition)
             }
             itemView.setOnLongClickListener {
-                deleteImageListener?.invoke(d.id)
+                deleteImageListener?.invoke(d)
                 true
             }
 
         }
     }
-    fun setOnClickListener(block: (Stadium,Int) -> Unit){
+
+    fun setOnClickListener(block: (List<String>,Int) -> Unit){
         imageListener = block
     }
-    fun setOnImageDeleteListener(block: SingleBlock<Long>) {
+
+    fun setOnImageDeleteListener(block: SingleBlock<String>) {
         deleteImageListener = block
     }
 }

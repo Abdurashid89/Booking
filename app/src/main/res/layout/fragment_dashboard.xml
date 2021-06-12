@@ -1,36 +1,36 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<androidx.swiperefreshlayout.widget.SwipeRefreshLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:orientation="vertical"
     android:padding="12dp"
+    android:id="@+id/swipeRefresh"
     tools:context=".ui.screens.dashboard.DashboardFragment">
 
-    <ProgressBar
-        android:id="@+id/progress_bar"
-        style="?android:progressBarStyleHorizontal"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginHorizontal="11dp"
-        android:indeterminateBehavior="repeat"
-        android:indeterminateDuration="10"
-        android:indeterminateOnly="true"
-        android:maxHeight="24dip"
-        android:minHeight="24dip"
-        android:progressBackgroundTint="#208afa"
-        android:progressBackgroundTintMode="multiply"
-        android:visibility="gone" />
-
-    <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
+            <ProgressBar
+                android:id="@+id/progress_bar"
+                style="?android:progressBarStyleHorizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginHorizontal="11dp"
+                android:indeterminateBehavior="repeat"
+                android:indeterminateDuration="10"
+                android:indeterminateOnly="true"
+                android:maxHeight="24dip"
+                android:minHeight="24dip"
+                android:progressBackgroundTint="#208afa"
+                android:progressBackgroundTintMode="multiply"
+                android:visibility="gone" />
 
             <HorizontalScrollView
                 android:id="@+id/chart_scroll"
@@ -64,7 +64,5 @@
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
 
         </LinearLayout>
-    </androidx.core.widget.NestedScrollView>
-
-
-</LinearLayout>
+        </androidx.core.widget.NestedScrollView>
+</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>

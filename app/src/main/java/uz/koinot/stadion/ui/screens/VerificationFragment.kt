@@ -71,58 +71,54 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
         }
         bn.inputVerificationNumber.addTextChangedListener(textWatcherName)
         bn.btnVerification.setOnClickListener {
-            val number = bn.inputVerificationNumber.text.toString().trim()
-            if (number.isNotEmpty()) {
-                lifecycleScope.launchWhenCreated {
-                    try {
-                        showProgress(true)
-                        val res = api.verify(number)
-
-                        if (res.success == 200) {
-                            showProgress(false)
-                            showMessage(getString(R.string.success_register))
-                            storage.hasAccount = true
-                            storage.firebaseToken = ""
-                            requireActivity().startActivity(
-                                Intent(
-                                    requireContext(),
-                                    MainActivity::class.java
-                                )
-                            )
-                            requireActivity().finish()
-                        } else {
-                            showProgress(false)
-                            showMessage(getString(R.string.error))
-                        }
-
-
-                    } catch (e: Exception) {
-                        showProgress(false)
-                        showMessage(getString(R.string.error))
-
-                    }
-                }
-
-            }
+            btnClick()
         }
 
     }
 
-    private fun startTimer() {
-        bn.countDownTimerLinear.visibility = View.VISIBLE
-        cTimer = object : CountDownTimer(60000, 1000) {
-            @SuppressLint("SetTextI18n")
-            override fun onTick(p0: Long) {
-                val l = p0 / 1000
-                bn.onTick.text = "00:$l"
+    private fun btnClick() {
+        val number = bn.inputVerificationNumber.text.toString().trim()
+        if (number.isNotEmpty()) {
+            lifecycleScope.launchWhenCreated {
+                try {
+                    showProgress(true)
+                    val res = api.verify(number)
+
+                    if (res.success == 200) {
+                        showProgress(false)
+                        showMessage(getString(R.string.success_register))
+                        storage.hasAccount = true
+                        storage.firebaseToken = ""
+                        requireActivity().finishAffinity()
+                        requireActivity().startActivity(Intent(requireContext(), MainActivity::class.java))
+                    } else {
+                        showProgress(false)
+                        showMessage(getString(R.string.error))
+                    }
+
+
+                } catch (e: Exception) {
+                    showProgress(false)
+                    showMessage(getString(R.string.error))
+
+                }
             }
 
-            override fun onFinish() {
-                bn.tryAgainText.visibility = View.VISIBLE
-                bn.countDownTimerLinear.visibility = View.GONE
-            }
+        }else{
+            showMessage("error")
         }
-        cTimer?.start()
+    }
+
+
+
+
+    private fun startTimer() {
+        bn.countDownTimerLinear.visibility = View.VISIBLE
+        bn.coutdownView.start(60000)
+        bn.coutdownView.setOnCountdownEndListener {
+            bn.tryAgainText.visibility = View.VISIBLE
+            bn.countDownTimerLinear.visibility = View.GONE
+        }
     }
 
     private val textWatcherName = object : TextWatcher {
@@ -132,6 +128,7 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
             if (bn.inputVerificationNumber.text!!.length > 5) {
                 Utils.closeKeyboard(requireActivity())
                 bn.btnVerification.isEnabled = true
+                btnClick()
             }
         }
     }

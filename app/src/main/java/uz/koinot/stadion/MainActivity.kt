@@ -20,6 +20,8 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
 import uz.koinot.stadion.data.INotification
 import uz.koinot.stadion.data.api.ApiService
 import uz.koinot.stadion.data.model.Stadium
@@ -64,16 +66,15 @@ class MainActivity : AppCompatActivity() {
 
         if(storage.firebaseToken.isEmpty()){
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener{task ->
-                if(!task.isSuccessful) return@OnCompleteListener
+//                if(!task.isSuccessful) return@OnCompleteListener
 
-                storage.firebaseToken = task.result.toString()
-
-                lifecycleScope.launchWhenCreated {
+                GlobalScope.launch {
                     try {
                        api.token(task.result.toString())
+                        storage.firebaseToken = task.result.toString()
                     }catch (e:Exception){
-                        showMessage(e.localizedMessage?: "not found")
-                        e.printStackTrace()
+//                        showMessage(e.localizedMessage?: "not found")
+//                        e.printStackTrace()
                     }
                 }
                 Log.e("AAA","token is: "+task.result.toString())

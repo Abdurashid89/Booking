@@ -24,6 +24,7 @@ import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.AttachmentAdapter
 import uz.koinot.stadion.data.model.CreateStadium
+import uz.koinot.stadion.data.model.Photos
 import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.FragmentCreateStadiumBinding
@@ -83,8 +84,8 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                 inputPhoneNumber.setText(stadium.phone_number)
                 location.setText(stadium.address)
                 nameStadium.setText(stadium.name)
-                timeOpen.setText(stadium.opening_time.toNeedTime())
-                timeClose.setText(stadium.closing_time.toNeedTime())
+                if(stadium.opening_time != null) timeOpen.setText(stadium.opening_time!!.toNeedTime())
+                if(stadium.closing_time != null) timeClose.setText(stadium.closing_time!!.toNeedTime())
                 priceDay.setText(stadium.price_day_time.toString())
                 priceNight.setText(stadium.price_night_time.toString())
                 whenStartNightTime.setText(stadium.change_price_time.toNeedTime())
@@ -122,8 +123,7 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                 val timeNight = whenStartNightTime.text.toString().trim()
                 val widht = widthStadium.text.toString().trim()
                 val height = heightStadium.text.toString().trim()
-                if (number.isNotEmpty() && location.isNotEmpty() && nameStadium.isNotEmpty()
-                    && timeOpen.isNotEmpty() && timeClose.isNotEmpty() && priceDay.isNotEmpty()
+                if (number.isNotEmpty() && location.isNotEmpty() && nameStadium.isNotEmpty() && priceDay.isNotEmpty()
                     && priceNight.isNotEmpty() && timeNight.isNotEmpty() && widht.isNotEmpty() && height.isNotEmpty())
                     { if (type) {
                         viewModel.createStadium(
@@ -147,7 +147,7 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                     is UiStateObject.SUCCESS -> {
                         showProgress(false)
                         showMessage(getString(R.string.success))
-                        findNavController().popBackStack(R.id.homeFragment, false)
+                        viewModel.getAllStadium()
                     }
                     is UiStateObject.ERROR -> {
                         showProgress(false)
@@ -160,6 +160,36 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                 }
             }
         }
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.stadiumFlow.collect {
+                when (it) {
+                    is UiStateList.SUCCESS -> {
+                        showProgress(false)
+                        setToDb(it.data)
+                        findNavController().popBackStack(R.id.homeFragment, false)
+                    }
+                    is UiStateList.ERROR -> {
+                        showProgress(false)
+                        showMessage(it.message)
+                    }
+                    is UiStateList.LOADING -> {
+                        showProgress(true)
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
+    }
+
+    private fun setToDb(data: List<Stadium>?) {
+            if(data != null && data.isNotEmpty()){
+                lifecycleScope.launchWhenCreated {
+                    viewModel.removeAllStadium()
+                    viewModel.setAllStadium(data)
+                }
+            }
+
 
     }
 

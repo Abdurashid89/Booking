@@ -76,13 +76,38 @@
                 android:id="@+id/countDownTimer_text"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"/>
-            <TextView
-                android:layout_marginStart="10dp"
-                android:layout_weight="1"
-                android:text="@string/timer"
-                android:id="@+id/onTick"
+
+            <cn.iwgang.countdownview.CountdownView
+                android:id="@+id/coutdown_view"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                app:isHideTimeBackground="false"
+                app:isShowDay="false"
+                android:visibility="visible"
+                app:isShowHour="false"
+                app:isShowMillisecond="false"
+                app:isShowMinute="true"
+                android:layout_marginLeft="12dp"
+                app:isShowSecond="true"
+                app:isShowTimeBgBorder="false"
+                app:isShowTimeBgDivisionLine="false"
+                app:isTimeTextBold="true"
+                app:suffixDay="days"
+                app:suffixGravity="center"
+                app:suffixHour=":"
+                app:suffixMillisecond="ss"
+                app:suffixMinute=":"
+                android:layout_marginBottom="24dp"
+                android:layout_marginStart="24dp"
+                app:suffixSecond=""
+                app:suffixTextColor="@color/black"
+                app:suffixTextSize="12sp"
+                app:timeBgColor="#00FF5000"
+                android:translationZ="10dp"
+                app:timeBgRadius="3dp"
+                app:timeBgSize="16dp"
+                app:timeTextColor="@color/black"
+                app:timeTextSize="16dp" />
 
         </LinearLayout>
         <TextView

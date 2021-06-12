@@ -19,7 +19,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
+import kotlinx.coroutines.launch
+import kotlinx.coroutines.runBlocking
 import uz.koinot.stadion.AuthActivity
 import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.R
@@ -54,7 +58,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
             viewModel.stadiumFlow.collect {
                 when (it) {
                     is UiStateList.SUCCESS -> {
-                        it.data?.let { it1 -> adapter.submitList(it1) }
+                        viewModel.removeAllStadium()
+                        it.data?.let { it1 -> viewModel.setAllStadium(it1) }
                     }
                     else -> Unit
                 }
@@ -64,14 +69,13 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentHomeBinding.bind(view)
+
         bn.swipeRefresh.setOnRefreshListener(this)
 
         bn.homeRv.adapter = adapter
-        bn.homeRv.layoutManager = LinearLayoutManager(requireContext())
         collects()
 
         adapter.setOnClickListener {
-            Log.d("AAA", "stadiumId: ${it.id}")
             navController.navigate(
                 R.id.pagerFragment,
                 bundleOf(CONSTANTS.STADION to Gson().toJson(it)),
@@ -106,8 +110,8 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
 
         }
 
-        adapter.setOnImageClickListener { stadium, position ->
-            val dialog = ImageDialog(stadium.photos, position)
+        adapter.setOnImageClickListener { list, position ->
+            val dialog = ImageDialog(list, position)
             dialog.show(childFragmentManager, "image")
         }
         adapter.setOnDeleteClickListener { stadium ->
@@ -134,8 +138,10 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
         }
 
         bn.addStadium.setOnClickListener {
-            navController.navigate(R.id.createStadiumFragment,
-                bundleOf(CONSTANTS.STADIUM_TYPE to CONSTANTS.NEW_STADIUM),Utils.navOptions())
+            navController.navigate(
+                R.id.createStadiumFragment,
+                bundleOf(CONSTANTS.STADIUM_TYPE to CONSTANTS.NEW_STADIUM), Utils.navOptions()
+            )
         }
     }
 
@@ -159,6 +165,12 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
     }
 
     private fun collects() {
+
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.getAllStadiumDb().collect {
+                adapter.submitList(it)
+            }
+        }
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.stadiumFlow.collect {
                 when (it) {
@@ -179,8 +191,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
                     is UiStateList.ERROR -> {
                         showProgress(false)
                         bn.apply {
-                            textNotStadium.isVisible = true
-                            textNotStadium.text = it.message
+                            delay(2000)
+                            if(adapter.itemCount == 0){
+                                textNotStadium.isVisible = true
+                                textNotStadium.text = it.message
+                            }
 
                             if (it.code == 401) {
                                 storage.hasAccount = false
