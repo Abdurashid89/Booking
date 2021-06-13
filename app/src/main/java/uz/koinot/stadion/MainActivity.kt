@@ -27,6 +27,7 @@ import uz.koinot.stadion.data.api.ApiService
 import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.ActivityMainBinding
+import uz.koinot.stadion.ui.screens.dashboard.CancelOrderDialog
 import uz.koinot.stadion.utils.CONSTANTS
 import uz.koinot.stadion.utils.Utils
 import uz.koinot.stadion.utils.showMessage
@@ -82,24 +83,39 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val text = intent.getStringExtra("koinot")
-        val stadium = intent.getStringExtra("stadium")
-        if(text == "main"){
-            navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to stadium),
-                Utils.navOptions())
+        createDialog(intent)
+    }
+    private fun createDialog(intent: Intent?){
+        if(intent != null){
+            val text = intent.getStringExtra("koinot")
+            val stadium = intent.getStringExtra("stadium")
+            val natificationType = intent.getStringExtra("natificationType")
+            val status = intent.getBooleanExtra("status",false)
+            val title = intent.getStringExtra("title")
+            val message = intent.getStringExtra("message")
+            if(text == "main"){
+                if(natificationType == CONSTANTS.ALL){
+                 title?.let {
+                     if (message != null) {
+                         CancelOrderDialog(it,message,status).show(supportFragmentManager,"hdbch")
+                     }
+                 }
+                }else{
+                    navController.popBackStack()
+                    navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to stadium),
+                        Utils.navOptions())
+                }
+            }
+
         }
 
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        val text = intent?.getStringExtra("koinot")
-        val stadium = intent?.getStringExtra("stadium")
-        if(text == "main"){
-            navController.popBackStack()
-            navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to stadium), Utils.navOptions())
-        }
+        createDialog(intent)
     }
+
     override fun onDestroy() {
         super.onDestroy()
         _bn = null

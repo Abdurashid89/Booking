@@ -73,7 +73,11 @@ class FirebaseService : FirebaseMessagingService() {
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP)
             intent.putExtra("koinot","main")
             intent.putExtra("stadium",message.data["stadium"].toString())
-            intent.putExtra("order",message.data["order"].toString())
+            intent.putExtra("status",message.data["status"].toBoolean())
+            intent.putExtra("natificationType",message.data["natificationType"].toString())
+            intent.putExtra("title",message.data["title"].toString())
+            intent.putExtra("message",message.data["message"].toString())
+
 
             val requestCode: Int = (0..10).random()
             val pendingIntent = PendingIntent.getActivity(this,requestCode,intent,FLAG_ONE_SHOT)
@@ -90,7 +94,7 @@ class FirebaseService : FirebaseMessagingService() {
                 .setLargeIcon(BitmapFactory.decodeResource(resources,R.drawable.group_png))
                 .setStyle(bigStyle)
                 .setAutoCancel(true)
-                .setContentIntent( if(message.data["natificationType"] != CONSTANTS.ALL) pendingIntent else null)
+                .setContentIntent(pendingIntent)
                 .build()
 
             val manager = getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
