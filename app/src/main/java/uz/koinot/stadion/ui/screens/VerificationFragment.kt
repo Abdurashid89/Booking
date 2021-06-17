@@ -1,11 +1,13 @@
 package uz.koinot.stadion.ui.screens
 
+import android.Manifest
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
 import android.os.CountDownTimer
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.content.ContextCompat
@@ -20,9 +22,11 @@ import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.MainActivity
 import uz.koinot.stadion.R
 import uz.koinot.stadion.data.api.ApiService
+import uz.koinot.stadion.data.model.SmsReceiver
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.FragmentVerificationBinding
 import uz.koinot.stadion.utils.Utils
+import uz.koinot.stadion.utils.checkPermission
 import uz.koinot.stadion.utils.showMessage
 import javax.inject.Inject
 
@@ -44,14 +48,24 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
         _bn = FragmentVerificationBinding.bind(view)
 
         startTimer()
+
+        checkPermission(Manifest.permission.READ_SMS){
+            checkPermission(Manifest.permission.RECEIVE_SMS){
+
+            }
+        }
         bn.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
+        }
+
+        SmsReceiver.setReceiveCodeListener {
+            Log.e("AAA", "SMS code is: $it")
+            bn.inputVerificationNumber.setText(it)
         }
 
         bn.tryAgainText.setOnClickListener {
             bn.tryAgainText.visibility = View.GONE
            startTimer()
-
 
             showProgress(true)
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {

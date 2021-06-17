@@ -12,6 +12,7 @@ import uz.koinot.stadion.data.model.SearchUser
 import uz.koinot.stadion.data.repository.MainRepository
 import uz.koinot.stadion.utils.UiStateList
 import uz.koinot.stadion.utils.UiStateObject
+import uz.koinot.stadion.utils.userMessage
 import javax.inject.Inject
 
 @HiltViewModel
@@ -32,7 +33,7 @@ class CreateOrderViewModel @Inject constructor(
                 _searchUserFlow.value = UiStateList.ERROR(res.message)
             }
         } catch (e: Exception) {
-            _searchUserFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
+            _searchUserFlow.value = UiStateList.ERROR(e.userMessage()?:"not found")
             e.printStackTrace()
         }
     }
@@ -50,7 +51,7 @@ class CreateOrderViewModel @Inject constructor(
                 _createOrderFlow.value = UiStateObject.ERROR(res.message)
             }
         } catch (e: Exception) {
-            _createOrderFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
+            _createOrderFlow.value = UiStateObject.ERROR(e.userMessage()?:"not found")
             e.printStackTrace()
         }
     }
@@ -68,7 +69,7 @@ class CreateOrderViewModel @Inject constructor(
                 _orderPriceFlow.value = UiStateObject.ERROR(res.message)
             }
         } catch (e: Exception) {
-            _orderPriceFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
+            _orderPriceFlow.value = UiStateObject.ERROR(e.userMessage()?:"not found")
             e.printStackTrace()
         }
     }

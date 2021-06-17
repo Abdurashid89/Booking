@@ -6,11 +6,13 @@ import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.View
 import androidx.core.view.isVisible
+import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.MainScope
+import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
 import ru.tinkoff.decoro.MaskImpl
 import ru.tinkoff.decoro.parser.PhoneNumberUnderscoreSlotsParser
@@ -22,10 +24,8 @@ import uz.koinot.stadion.data.api.AuthService
 import uz.koinot.stadion.data.model.Register
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.FragmentPhoneNumberBinding
-import uz.koinot.stadion.utils.Utils
-import uz.koinot.stadion.utils.customLog
-import uz.koinot.stadion.utils.showMessage
-import uz.koinot.stadion.utils.userMessage
+import uz.koinot.stadion.ui.screens.home.HomeViewModel
+import uz.koinot.stadion.utils.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -40,6 +40,8 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
 
     private var _bn: FragmentPhoneNumberBinding? = null
     val bn get() = _bn!!
+
+    private val viewModel: AuthViewModel by viewModels()
 
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -63,37 +65,42 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
 
             btnPhoneNumber.setOnClickListener {
                 number = bn.inputPhoneNumber.text.toString().replace(" ","")
+
                 val password = bn.inputPassword.text.toString().trim()
-                if (number.length == 13 && password.isNotEmpty()) {
-                    lifecycleScope.launchWhenCreated {
-                        try {
-                            showProgress(true)
-                            val res = api.auth(Register(number, password))
-                            if (res.success == 200) {
-                                showProgress(false)
-                                storage.accessToken = res.objectKoinot!!.accessToken
-                                customLog("success")
-                                storage.phoneNumber = number
-                                findNavController().navigate(
-                                    R.id.verificationFragment,
-                                    null,
-                                    Utils.navOptions()
-                                )
-                            } else {
-                                showProgress(false)
-                                customLog("error")
-                                showMessage(res.message)
-                            }
+                val confirmPassword = bn.inputConfirmPassword.text.toString().trim()
 
-                        } catch (e: Exception) {
-                            showProgress(false)
-                            customLog(e.userMessage())
-                            showMessage(e.userMessage())
-                        }
-
-                    }
+                if (number.length == 13 && (password.isNotEmpty() && password == confirmPassword)) {
+                    viewModel.register(Register(number, password))
                 } else {
                     showMessage(getString(R.string.enter_fields))
+                }
+            }
+
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                viewModel.registerFlow.collect {
+                    when(it){
+                        is UiStateObject.SUCCESS->{
+                            showProgress(false)
+                            storage.accessToken =it.data.accessToken
+                            storage.phoneNumber = number
+                            findNavController().navigate(
+                                R.id.verificationFragment,
+                                null,
+                                Utils.navOptions()
+                            )
+                            viewModel.reRegister()
+                        }
+
+                        is UiStateObject.ERROR->{
+                            showMessage(it.message)
+                            showProgress(false)
+                        }
+
+                        is UiStateObject.LOADING->{
+                            showProgress(true)
+                        }
+                        else -> Unit
+                    }
                 }
             }
         }

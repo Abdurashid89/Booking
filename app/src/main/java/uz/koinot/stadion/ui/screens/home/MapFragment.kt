@@ -114,7 +114,9 @@ class MapFragment : DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
-        isCancelable = false
+        bn.btnBack.setOnClickListener {
+            dismiss()
+        }
         bn.btnChooseLocation.setOnClickListener {
             if(location != null){
                 listener?.invoke(location!!,adress)

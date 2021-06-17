@@ -29,7 +29,7 @@ class DeleteOrderAdapter: RecyclerView.Adapter<DeleteOrderAdapter.VHolder>() {
         @SuppressLint("SetTextI18n")
         fun bind(d: Order){
             view.apply {
-                userName.text = "${if(d.firstName != null) d.firstName else ""} ${if(d.lastName != null) d.lastName else ""}"
+                userName.text = "${if(d.firstName != "null") d.firstName else ""} ${if(d.lastName != "null") d.lastName else ""}"
                 startDate.text = d.startDate
                 endDate.text = d.endDate
                 day.text = d.time

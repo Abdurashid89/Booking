@@ -76,7 +76,7 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
             }
             inputDay.setOnClickListener {
                 val dialog = DatePickerDialog.newInstance{ _, year, monthOfYear, dayOfMonth ->
-                    inputDay.setText("${year.getString()}-${monthOfYear.getString()}-${dayOfMonth.getString()}")
+                    inputDay.setText("${year.getString()}-${(monthOfYear + 1).getString()}-${dayOfMonth.getString()}")
                 }
                 dialog.minDate = Calendar.getInstance()
                     dialog.show(parentFragmentManager,"BBB")
@@ -139,8 +139,9 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
                 when(it){
                     is UiStateObject.SUCCESS ->{
                         showProgress(false)
-                        clearData()
                         showMessage("Successfully created order")
+                        findNavController().navigateUp()
+//                        clearData()
                     }
                     is UiStateObject.ERROR ->{
                         showProgress(false)

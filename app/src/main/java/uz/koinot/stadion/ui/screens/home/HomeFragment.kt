@@ -32,6 +32,7 @@ import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.FragmentHomeBinding
 import uz.koinot.stadion.utils.*
+import java.io.File
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -41,6 +42,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
     private var _bn: FragmentHomeBinding? = null
     private val bn get() = _bn!!
     private val adapter = StadiumAdapter()
+    private var file: File = File("")
     private var stadiumId = 0L
     private lateinit var navController: NavController
 
@@ -103,7 +105,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
                 getString(R.string.are_you_sure_delete_image)
             )
             dialog.setOnDeleteListener {
-                viewModel.deleteImage(id)
+                viewModel.deleteImage(id.substring(id.lastIndexOf("/") + 1).toLong())
                 dialog.dismiss()
             }
             dialog.show(childFragmentManager, "fsgsdfdf")
@@ -147,6 +149,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
 
     private fun addImage(it: Stadium) {
         stadiumId = it.id
+//        checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
+//            val intent = Intent(Intent.ACTION_PICK)
+//            intent.type = "image/*"
+//            requireActivity().startActivityForResult(intent, 0)
+//        }
         checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) {
             ImagePicker.with(this)
                 .compress(1024)
@@ -284,9 +291,11 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
         bn.progressBar.isVisible = status
     }
 
+
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
+        Log.d("AAA","data:${resultCode}")
         if (resultCode == Activity.RESULT_OK) {
+            Log.d("AAA","data2:$data")
             val uri = data?.data ?: return
             val path = PathUtil.getPath(requireContext(), uri)
             viewModel.uploadImage(stadiumId, path)

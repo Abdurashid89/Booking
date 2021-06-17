@@ -72,7 +72,6 @@ class OrderDeleteFragment : Fragment(R.layout.fragment_order_delete) {
                     }
                     is UiStateList.ERROR ->{
                         showProgress(false)
-                       showMessage(it.message)
                     }
                     is UiStateList.LOADING ->{
                         showProgress(true)
@@ -90,7 +89,6 @@ class OrderDeleteFragment : Fragment(R.layout.fragment_order_delete) {
                     }
                     is UiStateObject.ERROR ->{
                         showProgress(false)
-                        showMessage(it.message)
                     }
                     is UiStateObject.LOADING ->{
                         showProgress(true)

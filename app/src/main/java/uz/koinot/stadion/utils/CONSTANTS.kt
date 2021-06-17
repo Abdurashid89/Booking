@@ -2,7 +2,7 @@ package uz.koinot.stadion.utils
 
 object CONSTANTS {
 
-    const val BASE_URL = "http://143.198.59.124:1002"
+    const val BASE_URL = "http://143.198.59.124:1999"
     const val TOKEN = "token"
     const val PHONE_NUMBER = "phoneNumber"
     const val FIRST_NAME = "firstName"

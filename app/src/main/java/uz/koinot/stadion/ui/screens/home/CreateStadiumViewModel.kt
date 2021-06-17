@@ -40,7 +40,7 @@ class CreateStadiumViewModel @Inject constructor(
                 _createStadiumFlow.value = UiStateObject.ERROR(res.message,true)
             }
         }catch (e:Exception){
-            _createStadiumFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
+            _createStadiumFlow.value = UiStateObject.ERROR(e.userMessage()?:"not found")
             e.printStackTrace()
         }
     }

@@ -65,14 +65,12 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
 
         bn.apply {
             location.setOnClickListener {
-                showProgress(true)
                 val dialog = MapFragment()
                 dialog.setOnClickListener { latLng, s ->
                     dialog.dismiss()
                     lan_lat = latLng
                     adress = s
                     location.setText(s)
-                    showProgress(false)
                 }
                 dialog.show(childFragmentManager,"nfjdbf")
             }
