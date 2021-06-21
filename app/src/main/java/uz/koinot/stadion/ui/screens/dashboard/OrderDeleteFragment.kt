@@ -36,6 +36,23 @@ class OrderDeleteFragment : Fragment(R.layout.fragment_order_delete) {
         super.onCreate(savedInstanceState)
         stadiumId = arguments?.getLong(CONSTANTS.STADION_ID,0)!!
         Log.d("AAA","fragment stadiumId: $stadiumId")
+
+        viewModel.getCancel(stadiumId)
+
+        lifecycleScope.launchWhenCreated {
+            viewModel.getCancelFlow.collect {
+                when(it){
+                    is UiStateList.SUCCESS -> {
+                        if (it.data != null && it.data.isNotEmpty()) {
+
+                                adapter.submitList(it.data)
+                        }
+                    }
+
+                    else -> Unit
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -43,7 +60,7 @@ class OrderDeleteFragment : Fragment(R.layout.fragment_order_delete) {
 
         bn.rvDeleteOrders.adapter = adapter
         bn.rvDeleteOrders.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.getCancel(stadiumId)
+
 
         bn.swipeRefresh.setOnRefreshListener {
             viewModel.getCancel(stadiumId)
@@ -64,11 +81,6 @@ class OrderDeleteFragment : Fragment(R.layout.fragment_order_delete) {
                     is UiStateList.SUCCESS -> {
                         bn.swipeRefresh.isRefreshing = false
                         showProgress(false)
-                        if (it.data != null && it.data.isNotEmpty()) {
-                            bn.apply {
-                                adapter.submitList(it.data)
-                            }
-                        }
                     }
                     is UiStateList.ERROR ->{
                         showProgress(false)

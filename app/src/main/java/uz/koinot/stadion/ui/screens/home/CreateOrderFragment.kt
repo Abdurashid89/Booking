@@ -113,10 +113,10 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
                 val day = inputDay.text.toString().trim()
                 val startTime = inputStartDate.text.toString().trim()
                 val endTime = inputEndDate.text.toString().trim()
-                if(number.isNotEmpty() && day.isNotEmpty() && startTime.isNotEmpty()
+                if(number.length == 13 && day.isNotEmpty() && startTime.isNotEmpty()
                     && endTime.isNotEmpty()){
                     viewModel.createOrder(
-                        CreateOrder(null,stadiumId,day+"T$startTime:00.000000",day+"T$endTime:00.000000",day+"T$startTime:00.000000",number))
+                        CreateOrder(null,stadiumId,day,startTime,endTime,number))
                 }else{
                     showMessage("Iltimos qatorlarni to'ldiring")
                 }

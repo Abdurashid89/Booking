@@ -37,6 +37,23 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
         super.onCreate(savedInstanceState)
         stadiumId = arguments?.getLong(CONSTANTS.STADION_ID,0)!!
         Log.d("AAA","fragment stadiumId: $stadiumId")
+
+        viewModel.getOder(stadiumId)
+
+        lifecycleScope.launchWhenCreated {
+            viewModel.orderFlow.collect {
+                when(it){
+                    is UiStateList.SUCCESS ->{
+
+                        if(it.data != null && it.data.isNotEmpty())
+
+                                adapter.submitList(it.data)
+
+                    }
+                    else -> Unit
+                }
+            }
+        }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -44,7 +61,7 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
 
         bn.rvOrders.adapter = adapter
         bn.rvOrders.layoutManager = LinearLayoutManager(requireContext())
-        viewModel.getOder(stadiumId)
+
 
         bn.swipeRefresh.setOnRefreshListener {
             viewModel.getOder(stadiumId)
@@ -94,7 +111,6 @@ class OderFragment : Fragment(R.layout.fragment_oder) {
                         showProgress(false)
                         if(it.data != null && it.data.isNotEmpty()){
                             bn.apply {
-                                adapter.submitList(it.data)
                                 textNoOrder.isVisible = false
                                 rvOrders.isVisible = true
                             }
