@@ -49,11 +49,6 @@ class VerificationFragment : Fragment(R.layout.fragment_verification) {
 
         startTimer()
 
-        checkPermission(Manifest.permission.READ_SMS){
-            checkPermission(Manifest.permission.RECEIVE_SMS){
-
-            }
-        }
         bn.toolbar.setNavigationOnClickListener {
             findNavController().navigateUp()
         }

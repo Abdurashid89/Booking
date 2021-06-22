@@ -1,5 +1,6 @@
 package uz.koinot.stadion.ui.screens
 
+import android.Manifest
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -52,7 +53,14 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
                 findNavController().navigateUp()
             }
 
-            val slots = PhoneNumberUnderscoreSlotsParser().parseSlots("+998 __ ___ __ __")
+
+            checkPermission(Manifest.permission.READ_SMS) {
+                checkPermission(Manifest.permission.RECEIVE_SMS) {
+
+                }
+            }
+
+                val slots = PhoneNumberUnderscoreSlotsParser().parseSlots("+998 __ ___ __ __")
             val format = MaskFormatWatcher(MaskImpl.createTerminated(slots))
             format.installOn(bn.inputPhoneNumber)
 

@@ -115,8 +115,7 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
                 val endTime = inputEndDate.text.toString().trim()
                 if(number.length == 13 && day.isNotEmpty() && startTime.isNotEmpty()
                     && endTime.isNotEmpty()){
-                    viewModel.createOrder(
-                        CreateOrder(null,stadiumId,day,startTime,endTime,number))
+                    viewModel.createOrder(CreateOrder(null,stadiumId,day,startTime,endTime,number))
                 }else{
                     showMessage("Iltimos qatorlarni to'ldiring")
                 }
