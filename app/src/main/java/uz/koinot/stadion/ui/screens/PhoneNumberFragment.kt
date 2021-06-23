@@ -53,14 +53,7 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
                 findNavController().navigateUp()
             }
 
-
-            checkPermission(Manifest.permission.READ_SMS) {
-                checkPermission(Manifest.permission.RECEIVE_SMS) {
-
-                }
-            }
-
-                val slots = PhoneNumberUnderscoreSlotsParser().parseSlots("+998 __ ___ __ __")
+            val slots = PhoneNumberUnderscoreSlotsParser().parseSlots("+998 __ ___ __ __")
             val format = MaskFormatWatcher(MaskImpl.createTerminated(slots))
             format.installOn(bn.inputPhoneNumber)
 
@@ -72,16 +65,15 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
             bn.inputPhoneNumber.addTextChangedListener(textWatcherName)
 
             btnPhoneNumber.setOnClickListener {
-                number = bn.inputPhoneNumber.text.toString().replace(" ","")
-
-                val password = bn.inputPassword.text.toString().trim()
-                val confirmPassword = bn.inputConfirmPassword.text.toString().trim()
-
-                if (number.length == 13 && (password.isNotEmpty() && password == confirmPassword)) {
-                    viewModel.register(Register(number, password))
-                } else {
-                    showMessage(getString(R.string.enter_fields))
-                }
+                checkPermissionState(Manifest.permission.RECEIVE_SMS,{
+                    checkPermissionState(Manifest.permission.READ_SMS,{
+                        send()
+                    },{
+                        send()
+                    })
+                },{
+                    send()
+                })
             }
 
             viewLifecycleOwner.lifecycleScope.launchWhenCreated {
@@ -114,6 +106,20 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
         }
 
 
+    }
+
+    private fun send() {
+        Utils.closeKeyboard(requireActivity())
+        number = bn.inputPhoneNumber.text.toString().replace(" ","")
+
+        val password = bn.inputPassword.text.toString().trim()
+        val confirmPassword = bn.inputConfirmPassword.text.toString().trim()
+
+        if (number.length == 13 && (password.isNotEmpty() && password == confirmPassword)) {
+            viewModel.register(Register(number, password))
+        } else {
+            showMessage(getString(R.string.enter_fields))
+        }
     }
 
     private val textWatcherName = object : TextWatcher {

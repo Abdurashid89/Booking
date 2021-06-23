@@ -71,7 +71,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentHomeBinding.bind(view)
-
+        Utils.closeKeyboard(requireActivity())
         bn.swipeRefresh.setOnRefreshListener(this)
 
         bn.homeRv.adapter = adapter

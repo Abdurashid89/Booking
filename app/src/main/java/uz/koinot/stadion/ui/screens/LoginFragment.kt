@@ -45,7 +45,6 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentLoginBinding.bind(view)
 
-
         val slots = PhoneNumberUnderscoreSlotsParser().parseSlots("+998 __ ___ __ __")
         val format = MaskFormatWatcher(MaskImpl.createTerminated(slots))
         format.installOn(bn.inputPhoneNumber)
@@ -58,6 +57,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
         bn.inputPhoneNumber.addTextChangedListener(textWatcherName)
         bn.apply {
             btnLogin.setOnClickListener {
+                Utils.closeKeyboard(requireActivity())
                 number = inputPhoneNumber.text.toString().replace(" ","")
                 val password = inputPassword.text.toString().trim()
                 if(number.length == 13 && password.length > 2){

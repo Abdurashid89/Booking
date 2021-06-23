@@ -30,7 +30,7 @@
         android:gravity="center"
         android:textStyle="bold"
         android:text="@string/welcome"
-        android:textColor="#00BCD4"
+        android:textColor="#05FD00"
         android:textSize="24sp" />
 
     <com.google.android.material.textfield.TextInputLayout

@@ -111,6 +111,7 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
             }
 
             btnAddStadium.setOnClickListener {
+                Utils.closeKeyboard(requireActivity())
                 val number = inputPhoneNumber.text.toString().trim()
                 val location = location.text.toString().trim()
                 val nameStadium = nameStadium.text.toString().trim()
@@ -125,10 +126,10 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                     && priceNight.isNotEmpty() && timeNight.isNotEmpty() && widht.isNotEmpty() && height.isNotEmpty())
                     { if (type) {
                         viewModel.createStadium(
-                            CreateStadium(null, nameStadium, lan_lat.latitude, number, lan_lat.longitude, location, timeOpen.getTimeStamp(), timeClose.getTimeStamp(), timeNight.getTimeStamp(), priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt()))
+                            CreateStadium(null, nameStadium, lan_lat.latitude, number, lan_lat.longitude, location, timeOpen, timeClose, timeNight, priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt()))
                         Log.d("AAA","data:")
                     } else{
-                       val data = CreateStadium(stadium.id, nameStadium, stadium.latitude, number, stadium.longitude, location, timeOpen.getTimeStamp(), timeClose.getTimeStamp(), timeNight.getTimeStamp(), priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt())
+                       val data = CreateStadium(stadium.id, nameStadium, stadium.latitude, number, stadium.longitude, location, timeOpen, timeClose, timeNight, priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt())
                         viewModel.createStadium(data)
                         Log.d("AAA","data:$data")
                     }

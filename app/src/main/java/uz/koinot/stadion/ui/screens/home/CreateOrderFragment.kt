@@ -109,6 +109,7 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
                 }
             }
             btnCreateOrder.setOnClickListener {
+                Utils.closeKeyboard(requireActivity())
                 val number = inputPhoneNumber.text.toString().trim()
                 val day = inputDay.text.toString().trim()
                 val startTime = inputStartDate.text.toString().trim()
