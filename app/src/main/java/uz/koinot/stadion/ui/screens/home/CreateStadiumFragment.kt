@@ -72,6 +72,7 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                     lan_lat = latLng
                     adress = s
                     location.setText(s)
+                    dialog.dismiss()
                 }
                 dialog.show(childFragmentManager,"nfjdbf")
             }

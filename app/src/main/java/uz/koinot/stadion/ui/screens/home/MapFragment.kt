@@ -132,7 +132,6 @@ class MapFragment : DialogFragment() {
         bn.btnChooseLocation.setOnClickListener {
             if(location != null){
                 listener?.invoke(location!!,adress)
-                dismiss()
             }else{
                 Toast.makeText(requireContext(), getString(R.string.please_choose_location), Toast.LENGTH_SHORT).show()
             }
@@ -188,8 +187,8 @@ class MapFragment : DialogFragment() {
     }
 
     override fun onDestroy() {
-        super.onDestroy()
         listener?.invoke(location!!,adress)
         _bn = null
+        super.onDestroy()
     }
 }
