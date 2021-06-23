@@ -117,9 +117,22 @@ class MapFragment : DialogFragment() {
         bn.btnBack.setOnClickListener {
             dismiss()
         }
+
+        bn.btnMyLocation.setOnClickListener {
+            marker?.apply {
+                location = LatLng(tracker.getLatitude(),tracker.getLongitude())
+                position = location
+                isVisible = true
+                adress = getCompleteAddressString(location!!.latitude,location!!.longitude).toString()
+                bn.button.text = adress
+            }
+            mMap?.animateCamera(CameraUpdateFactory.newLatLng(LatLng(tracker.getLatitude(),tracker.getLongitude())))
+        }
+
         bn.btnChooseLocation.setOnClickListener {
             if(location != null){
                 listener?.invoke(location!!,adress)
+                dismiss()
             }else{
                 Toast.makeText(requireContext(), getString(R.string.please_choose_location), Toast.LENGTH_SHORT).show()
             }
@@ -176,6 +189,7 @@ class MapFragment : DialogFragment() {
 
     override fun onDestroy() {
         super.onDestroy()
+        listener?.invoke(location!!,adress)
         _bn = null
     }
 }
