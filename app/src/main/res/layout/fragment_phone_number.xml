@@ -30,10 +30,22 @@
         android:progressBackgroundTintMode="multiply"
         android:visibility="gone" />
 
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:id="@+id/brbt"
+        android:textSize="24sp"
+        android:background="@drawable/ripple"
+        android:textColor="#05FD00"
+        android:textStyle="bold"
+        android:padding="48dp"
+        android:text="BRBT" />
+
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center"
+        android:layout_marginTop="24dp"
         android:orientation="vertical"
         android:padding="24dp">
 

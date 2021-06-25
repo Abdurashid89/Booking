@@ -1,6 +1,8 @@
 package uz.koinot.stadion.ui.screens
 
 import android.Manifest
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
@@ -25,6 +27,7 @@ import uz.koinot.stadion.data.api.AuthService
 import uz.koinot.stadion.data.model.Register
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.FragmentPhoneNumberBinding
+import uz.koinot.stadion.ui.screens.home.GoToTelegramDialog
 import uz.koinot.stadion.ui.screens.home.HomeViewModel
 import uz.koinot.stadion.utils.*
 import javax.inject.Inject
@@ -57,12 +60,25 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
             val format = MaskFormatWatcher(MaskImpl.createTerminated(slots))
             format.installOn(bn.inputPhoneNumber)
 
+            val dialog = GoToTelegramDialog()
+
+            dialog.setOnDeleteListener {
+
+            }
+            dialog.show(childFragmentManager,"ggg")
+
             bn.inputPhoneNumber.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
                 if(hasFocus){
                     bn.inputPhoneNumber.setText("+998")
                 }
             }
             bn.inputPhoneNumber.addTextChangedListener(textWatcherName)
+
+            brbt.setOnClickListener {
+                val intent = Intent(Intent.ACTION_VIEW)
+                intent.data = Uri.parse("https://t.me/brbtbot")
+                requireContext().startActivity(intent)
+            }
 
             btnPhoneNumber.setOnClickListener {
                 checkPermissionState(Manifest.permission.RECEIVE_SMS,{
