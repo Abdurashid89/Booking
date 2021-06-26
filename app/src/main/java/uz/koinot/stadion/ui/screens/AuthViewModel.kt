@@ -40,21 +40,24 @@ class AuthViewModel @Inject constructor(
     fun reRegister(){
         _registerFlow.value = UiStateObject.EMPTY
     }
+    fun reBot(){
+        _isBotStartedFlow.value = UiStateObject.EMPTY
+    }
 
-    private var _acceptFlow = MutableStateFlow<UiStateObject<String>>(UiStateObject.EMPTY)
-    val acceptFlow: StateFlow<UiStateObject<String>> get() = _acceptFlow
+    private var _isBotStartedFlow = MutableStateFlow<UiStateObject<Boolean>>(UiStateObject.EMPTY)
+    val isBotStartedFlow: StateFlow<UiStateObject<Boolean>> get() = _isBotStartedFlow
 
-    fun acceptOrder(orderId:Long) = viewModelScope.launch {
-        _acceptFlow.value = UiStateObject.LOADING
+    fun isBotStarted(number:String) = viewModelScope.launch {
+        _isBotStartedFlow.value = UiStateObject.LOADING
         try {
-            val res = repository.accept(orderId)
-            if(res.success == 200){
-                _acceptFlow.value = UiStateObject.SUCCESS("Success")
+            val res = repository.isBotStarted(number)
+            if(res.objectKoinot != null && res.objectKoinot!!){
+                _isBotStartedFlow.value = UiStateObject.SUCCESS(true)
             }else{
-                _acceptFlow.value = UiStateObject.ERROR(res.message)
+                _isBotStartedFlow.value = UiStateObject.ERROR(res.message,true)
             }
         }catch (e:Exception){
-            _acceptFlow.value = UiStateObject.ERROR(e.userMessage()?:"not found")
+            _isBotStartedFlow.value = UiStateObject.ERROR(e.userMessage()?:"not found")
             e.printStackTrace()
         }
     }

@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.DigitsKeyListener
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -19,6 +20,7 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import dagger.hilt.android.AndroidEntryPoint
+import ic0der.justtaxi.utils.AmountFormat
 import kotlinx.coroutines.flow.collect
 import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.R
@@ -106,6 +108,18 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                     timeClose.setText("${hourOfDay.getString()}:${minute.getString()}")
                 }, true).show(childFragmentManager, "zzz")
             }
+
+            priceDay.keyListener = DigitsKeyListener.getInstance("1234567890 ")
+            priceDay.addTextChangedListener(AmountFormat{ valid, amount->
+                priceDay.requestFocus()
+
+            })
+            priceNight.keyListener = DigitsKeyListener.getInstance("1234567890 ")
+            priceNight.addTextChangedListener(AmountFormat{ valid, amount->
+                priceNight.requestFocus()
+
+            })
+
             whenStartNightTime.setOnClickListener {
                 TimePickerDialog.newInstance({ _, hourOfDay, minute, _ ->
                     whenStartNightTime.setText("${hourOfDay.getString()}:${minute.getString()}")
@@ -119,8 +133,8 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                 val nameStadium = nameStadium.text.toString().trim()
                 val timeOpen = timeOpen.text.toString().trim()
                 val timeClose = timeClose.text.toString().trim()
-                val priceDay = priceDay.text.toString().trim()
-                val priceNight = priceNight.text.toString().trim()
+                val priceDay = priceDay.text.toString().replace(" ","")
+                val priceNight = priceNight.text.toString().replace(" ","")
                 val timeNight = whenStartNightTime.text.toString().trim()
                 val widht = widthStadium.text.toString().trim()
                 val height = heightStadium.text.toString().trim()

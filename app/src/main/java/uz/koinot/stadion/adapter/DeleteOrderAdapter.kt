@@ -34,8 +34,7 @@ class DeleteOrderAdapter: RecyclerView.Adapter<DeleteOrderAdapter.VHolder>() {
                 endDate.text = d.endDate
                 day.text = d.time
                 sum.text = d.sum.toMoneyFormat()
-                phone1.text = d.phoneNumber
-                phone2.text = d.originalPhoneNumber
+                phone1.text = if(d.phoneNumber != null) d.phoneNumber else d.originalPhoneNumber
                 btnDelete.setOnClickListener {
                     listener?.invoke(d)
                 }

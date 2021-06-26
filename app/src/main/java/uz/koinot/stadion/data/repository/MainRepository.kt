@@ -1,6 +1,8 @@
 package uz.koinot.stadion.data.repository
 
 import okhttp3.MultipartBody
+import retrofit2.http.GET
+import retrofit2.http.Path
 import uz.koinot.stadion.data.api.ApiService
 import uz.koinot.stadion.data.api.AuthService
 import uz.koinot.stadion.data.model.*
@@ -38,6 +40,8 @@ class MainRepository @Inject constructor(
     suspend fun deleteImage(id:Long) = api.deleteImage(id)
     suspend fun getCancel(id:Long) = api.getCancel(id)
     suspend fun deleteCancel(id:Long) = api.deleteCancel(id)
+
+    suspend fun isBotStarted(number:String) = authApi.isBotStarted(number)
 
     suspend fun register(data:Register) = authApi.auth(data)
 

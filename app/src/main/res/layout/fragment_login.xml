@@ -93,8 +93,9 @@
         android:layout_gravity="center"
         android:clickable="true"
         android:focusable="true"
+        android:layout_marginTop="12dp"
         android:background="?selectableItemBackground"
-        android:layout_marginTop="24sp"
+        android:padding="10sp"
         android:text="@string/create_account"
         android:textColor="#F44336" />
 

@@ -8,10 +8,11 @@ import androidx.fragment.app.DialogFragment
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.ImageAdapter
 import uz.koinot.stadion.databinding.BaseDialogLayoutBinding
+import uz.koinot.stadion.databinding.LayoutToTelegramBinding
 import uz.koinot.stadion.utils.SingleBlock
 
-class GoToTelegramDialog(): DialogFragment() {
-    private var _bn: BaseDialogLayoutBinding? = null
+class GoToTelegramDialog: DialogFragment() {
+    private var _bn: LayoutToTelegramBinding? = null
     private val bn get() = _bn!!
     val adapter = ImageAdapter()
     private var listener:SingleBlock<Boolean>? = null
@@ -26,7 +27,7 @@ class GoToTelegramDialog(): DialogFragment() {
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        _bn = BaseDialogLayoutBinding.inflate(inflater,container,false)
+        _bn = LayoutToTelegramBinding.inflate(inflater,container,false)
         return bn.root
     }
 

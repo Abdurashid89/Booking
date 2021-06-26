@@ -41,6 +41,7 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
     @Inject
     lateinit var storage: LocalStorage
     private var number = ""
+    private var password = ""
 
     private var _bn: FragmentPhoneNumberBinding? = null
     val bn get() = _bn!!
@@ -60,13 +61,6 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
             val format = MaskFormatWatcher(MaskImpl.createTerminated(slots))
             format.installOn(bn.inputPhoneNumber)
 
-            val dialog = GoToTelegramDialog()
-
-            dialog.setOnDeleteListener {
-
-            }
-            dialog.show(childFragmentManager,"ggg")
-
             bn.inputPhoneNumber.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
                 if(hasFocus){
                     bn.inputPhoneNumber.setText("+998")
@@ -81,6 +75,9 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
             }
 
             btnPhoneNumber.setOnClickListener {
+                number = bn.inputPhoneNumber.text.toString().replace(" ","")
+
+
                 checkPermissionState(Manifest.permission.RECEIVE_SMS,{
                     checkPermissionState(Manifest.permission.READ_SMS,{
                         send()
@@ -119,6 +116,38 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
                     }
                 }
             }
+            viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+                viewModel.isBotStartedFlow.collect {
+                    when(it){
+                        is UiStateObject.SUCCESS->{
+                            showProgress(false)
+                            viewModel.register(Register(number, password))
+                            viewModel.reBot()
+                        }
+
+                        is UiStateObject.ERROR->{
+                            showProgress(false)
+                            if(it.fromServer){
+                                val dialog = GoToTelegramDialog()
+                                dialog.setOnDeleteListener {
+                                    dialog.dismiss()
+                                    val intent = Intent(Intent.ACTION_VIEW)
+                                    intent.data = Uri.parse("https://t.me/brbtbot")
+                                    requireContext().startActivity(intent)
+                                }
+                                dialog.show(childFragmentManager,"ggg")
+                            }else{
+                                showMessage(it.message)
+                            }
+                        }
+
+                        is UiStateObject.LOADING->{
+                            showProgress(true)
+                        }
+                        else -> Unit
+                    }
+                }
+            }
         }
 
 
@@ -128,11 +157,11 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
         Utils.closeKeyboard(requireActivity())
         number = bn.inputPhoneNumber.text.toString().replace(" ","")
 
-        val password = bn.inputPassword.text.toString().trim()
+        password = bn.inputPassword.text.toString().trim()
         val confirmPassword = bn.inputConfirmPassword.text.toString().trim()
 
         if (number.length == 13 && (password.isNotEmpty() && password == confirmPassword)) {
-            viewModel.register(Register(number, password))
+            viewModel.isBotStarted(number)
         } else {
             showMessage(getString(R.string.enter_fields))
         }
