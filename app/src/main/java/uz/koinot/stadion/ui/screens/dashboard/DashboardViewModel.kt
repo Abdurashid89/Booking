@@ -11,6 +11,7 @@ import uz.koinot.stadion.data.model.Order
 import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.repository.MainRepository
 import uz.koinot.stadion.utils.UiStateList
+import uz.koinot.stadion.utils.userMessage
 import javax.inject.Inject
 
 
@@ -32,7 +33,7 @@ class DashboardViewModel @Inject constructor(
                 _dashboardFlow.value = UiStateList.ERROR(res.message)
             }
         }catch (e:Exception){
-            _dashboardFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
+            _dashboardFlow.value = UiStateList.ERROR(e.userMessage()?:"not found")
 //            e.printStackTrace()
         }
     }
@@ -50,7 +51,7 @@ class DashboardViewModel @Inject constructor(
                 _archiveAllFlow.value = UiStateList.ERROR(res.message)
             }
         }catch (e:Exception){
-            _archiveAllFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
+            _archiveAllFlow.value = UiStateList.ERROR(e.userMessage()?:"not found")
 //            e.printStackTrace()
         }
     }
@@ -68,7 +69,7 @@ class DashboardViewModel @Inject constructor(
                 _afterCreateFlow.value = UiStateList.ERROR(res.message)
             }
         }catch (e:Exception){
-            _afterCreateFlow.value = UiStateList.ERROR(e.localizedMessage?:"not found")
+            _afterCreateFlow.value = UiStateList.ERROR(e.userMessage()?:"not found")
 //            e.printStackTrace()
         }
     }

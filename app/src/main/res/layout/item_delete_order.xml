@@ -1,0 +1,149 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="12dp"
+    app:cardCornerRadius="16dp">
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:padding="16dp">
+
+        <TextView
+            android:id="@+id/userName"
+            android:layout_width="220dp"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="12dp"
+            android:maxWidth="220dp"
+            android:text="hbfhsdfhkvsdfhkdbfkf rggregregregrjksdb"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/day" />
+
+        <TextView
+            android:id="@+id/phone1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/phone_1"
+            android:background="?selectableItemBackground"
+            android:clickable="true"
+            android:focusable="true"
+            android:layout_marginTop="12dp"
+            android:textColor="@color/red"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/endDate" />
+
+
+
+        <ImageView
+            android:id="@+id/dropUp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_point_green"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/startDate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginBottom="0dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="12:00"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/dropUp"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <View
+            android:layout_width="3dp"
+            android:layout_height="0dp"
+            android:layout_marginStart="4dp"
+            android:layout_marginTop="4dp"
+            android:layout_marginBottom="4dp"
+            android:background="#7A000000"
+            app:layout_constraintBottom_toTopOf="@id/dropDown"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/dropUp" />
+
+
+        <ImageView
+            android:id="@+id/dropDown"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="16dp"
+            android:src="@drawable/ic_point_red"
+            app:layout_constraintBottom_toBottomOf="@id/endDate"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/startDate" />
+
+
+        <TextView
+            android:id="@+id/endDate"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:ellipsize="end"
+            android:lines="1"
+            android:text="13:00"
+            android:textSize="14sp"
+            app:layout_constraintStart_toEndOf="@id/dropDown"
+            app:layout_constraintTop_toBottomOf="@id/startDate" />
+
+        <TextView
+            android:id="@+id/day"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="12dp"
+            android:gravity="center"
+            android:text="2021.02.21"
+            android:layout_marginTop="12dp"
+            android:textAlignment="center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/endDate" />
+
+        <TextView
+            android:id="@+id/sum"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="12dp"
+            android:gravity="center"
+            android:layout_marginTop="8dp"
+            android:text="200 000"
+            android:textColor="@color/teal_700"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toStartOf="@id/sum_tool"
+            app:layout_constraintTop_toBottomOf="@id/btn_delete" />
+
+        <TextView
+            android:id="@+id/sum_tool"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="24dp"
+            android:layout_marginEnd="12dp"
+            android:gravity="center"
+            android:text="@string/so_m"
+            android:textColor="@color/teal_200"
+            android:textAlignment="center"
+            app:layout_constraintEnd_toEndOf="parent"
+           app:layout_constraintTop_toTopOf="@id/sum" />
+
+        <ImageButton
+            android:layout_width="wrap_content"
+            android:src="@drawable/ic_baseline_delete"
+            app:layout_constraintTop_toTopOf="parent"
+            android:layout_marginEnd="16dp"
+            android:id="@+id/btn_delete"
+            android:background="?selectableItemBackground"
+           app:layout_constraintEnd_toEndOf="parent"
+            android:layout_height="wrap_content"/>
+
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+</com.google.android.material.card.MaterialCardView>

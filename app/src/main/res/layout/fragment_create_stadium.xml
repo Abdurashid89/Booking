@@ -5,6 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="@color/white"
     tools:context=".ui.screens.home.CreateStadiumFragment">
 
     <LinearLayout
@@ -62,6 +63,7 @@
             <com.google.android.material.textfield.TextInputLayout
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense"
                 android:layout_width="match_parent"
+                android:id="@+id/layout_location"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="12dp">
 
@@ -172,6 +174,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/price_day"
+                    android:maxLength="7"
                     android:imeOptions="actionNext"
                     android:inputType="number">
 
@@ -192,6 +195,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:hint="@string/price_night"
+                    android:maxLength="7"
                     android:imeOptions="actionNext"
                     android:inputType="number">
 
@@ -239,6 +243,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="@string/width_stadium"
+                        android:maxLength="3"
                         android:imeOptions="actionNext"
                         android:inputType="number">
 
@@ -259,6 +264,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
                         android:hint="@string/height_stadium"
+                        android:maxLength="3"
                         android:imeOptions="actionDone"
                         android:inputType="number">
 
@@ -268,11 +274,14 @@
             </LinearLayout>
 
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btn_add_stadium"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_marginTop="24dp"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_bgn"
+                android:padding="12dp"
                 android:text="@string/add_stadium"
                 android:textAllCaps="false" />
 

@@ -32,22 +32,18 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
         @SuppressLint("SetTextI18n")
         fun bind(d: Order){
             view.apply {
-               userName.text = "${if(d.firstName != null) d.firstName else ""} ${if(d.lastName != null) d.lastName else ""}"
+               userName.text = "${if(d.firstName != "null") d.firstName else ""} ${if(d.lastName != "null") d.lastName else ""}"
                startDate.text = d.startDate
                endDate.text = d.endDate
                day.text = d.time
                sum.text = d.sum.toMoneyFormat()
-               phone1.text = d.phoneNumber
-               phone2.text = d.originalPhoneNumber
+               phone1.text = if(d.phoneNumber != null) d.phoneNumber else d.originalPhoneNumber
 
                 phone1.setOnClickListener {
                     if(d.phoneNumber != null)
                     phoneNumberListener1?.invoke(d.phoneNumber!!)
                 }
-                phone2.setOnClickListener {
-                    if(d.originalPhoneNumber != null)
-                    phoneNumberListener2?.invoke(d.originalPhoneNumber!!)
-                }
+
                 btnAccept.setOnClickListener {
                     acceptListener?.invoke(d)
                 }

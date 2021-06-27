@@ -2,6 +2,8 @@ package uz.koinot.stadion.ui.screens
 
 import android.content.Intent
 import android.os.Bundle
+import android.text.Editable
+import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
@@ -13,6 +15,9 @@ import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
+import ru.tinkoff.decoro.MaskImpl
+import ru.tinkoff.decoro.parser.PhoneNumberUnderscoreSlotsParser
+import ru.tinkoff.decoro.watchers.MaskFormatWatcher
 import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.MainActivity
 import uz.koinot.stadion.R
@@ -23,6 +28,7 @@ import uz.koinot.stadion.ui.screens.home.HomeViewModel
 import uz.koinot.stadion.utils.UiStateObject
 import uz.koinot.stadion.utils.Utils
 import uz.koinot.stadion.utils.showMessage
+import uz.koinot.stadion.utils.toMoneyFormat
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -39,9 +45,20 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentLoginBinding.bind(view)
 
+        val slots = PhoneNumberUnderscoreSlotsParser().parseSlots("+998 __ ___ __ __")
+        val format = MaskFormatWatcher(MaskImpl.createTerminated(slots))
+        format.installOn(bn.inputPhoneNumber)
+
+        bn.inputPhoneNumber.onFocusChangeListener = View.OnFocusChangeListener { v, hasFocus ->
+            if(hasFocus){
+                bn.inputPhoneNumber.setText("+998")
+            }
+        }
+        bn.inputPhoneNumber.addTextChangedListener(textWatcherName)
         bn.apply {
             btnLogin.setOnClickListener {
-                number = inputPhoneNumber.text.toString().trim()
+                Utils.closeKeyboard(requireActivity())
+                number = inputPhoneNumber.text.toString().replace(" ","")
                 val password = inputPassword.text.toString().trim()
                 if(number.length == 13 && password.length > 2){
                     viewModel.login(Login(number,password))
@@ -67,6 +84,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                         storage.firebaseToken = ""
                         requireActivity().startActivity(Intent(requireContext(),MainActivity::class.java))
                         requireActivity().finish()
+                        viewModel.reLogin()
                     }
                     is UiStateObject.ERROR ->{
                         storage.hasAccount = false
@@ -83,6 +101,15 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
             }
         }
 
+    }
+    private val textWatcherName = object : TextWatcher {
+        override fun afterTextChanged(s: Editable?) {}
+        override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
+        override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+            if (bn.inputPhoneNumber.text.toString().length == 17) {
+                bn.inputPassword.requestFocus()
+            }
+        }
     }
     private fun showProgress(status:Boolean){
         bn.progressBar.isVisible = status

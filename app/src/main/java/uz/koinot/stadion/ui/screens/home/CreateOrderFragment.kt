@@ -76,7 +76,7 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
             }
             inputDay.setOnClickListener {
                 val dialog = DatePickerDialog.newInstance{ _, year, monthOfYear, dayOfMonth ->
-                    inputDay.setText("${year.getString()}-${monthOfYear.getString()}-${dayOfMonth.getString()}")
+                    inputDay.setText("${year.getString()}-${(monthOfYear + 1).getString()}-${dayOfMonth.getString()}")
                 }
                 dialog.minDate = Calendar.getInstance()
                     dialog.show(parentFragmentManager,"BBB")
@@ -109,14 +109,14 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
                 }
             }
             btnCreateOrder.setOnClickListener {
+                Utils.closeKeyboard(requireActivity())
                 val number = inputPhoneNumber.text.toString().trim()
                 val day = inputDay.text.toString().trim()
                 val startTime = inputStartDate.text.toString().trim()
                 val endTime = inputEndDate.text.toString().trim()
-                if(number.isNotEmpty() && day.isNotEmpty() && startTime.isNotEmpty()
+                if(number.length == 13 && day.isNotEmpty() && startTime.isNotEmpty()
                     && endTime.isNotEmpty()){
-                    viewModel.createOrder(
-                        CreateOrder(null,stadiumId,day+"T$startTime:00.000000",day+"T$endTime:00.000000",day+"T$startTime:00.000000",number))
+                    viewModel.createOrder(CreateOrder(null,stadiumId,day,startTime,endTime,number))
                 }else{
                     showMessage("Iltimos qatorlarni to'ldiring")
                 }
@@ -139,8 +139,9 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
                 when(it){
                     is UiStateObject.SUCCESS ->{
                         showProgress(false)
-                        clearData()
                         showMessage("Successfully created order")
+                        findNavController().navigateUp()
+//                        clearData()
                     }
                     is UiStateObject.ERROR ->{
                         showProgress(false)

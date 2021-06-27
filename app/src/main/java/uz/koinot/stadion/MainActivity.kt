@@ -20,10 +20,14 @@ import com.google.firebase.messaging.FirebaseMessaging
 import com.google.firebase.messaging.ktx.messaging
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
+import kotlinx.coroutines.GlobalScope
+import kotlinx.coroutines.launch
+import uz.koinot.stadion.data.INotification
 import uz.koinot.stadion.data.api.ApiService
 import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.ActivityMainBinding
+import uz.koinot.stadion.ui.screens.dashboard.CancelOrderDialog
 import uz.koinot.stadion.utils.CONSTANTS
 import uz.koinot.stadion.utils.Utils
 import uz.koinot.stadion.utils.showMessage
@@ -32,6 +36,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class MainActivity : AppCompatActivity() {
 
+    private var iNotification: INotification? = null
 
     @Inject
     lateinit var api:ApiService
@@ -51,8 +56,6 @@ class MainActivity : AppCompatActivity() {
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
         navController = findNavController(R.id.nav_host_fragment_container)
 
-        window.navigationBarColor = Color.WHITE
-
         mFirebaseAnalytics = FirebaseAnalytics.getInstance(this)
             mFirebaseAnalytics.setAnalyticsCollectionEnabled(true)
 
@@ -64,16 +67,15 @@ class MainActivity : AppCompatActivity() {
 
         if(storage.firebaseToken.isEmpty()){
             FirebaseMessaging.getInstance().token.addOnCompleteListener(OnCompleteListener{task ->
-                if(!task.isSuccessful) return@OnCompleteListener
+//                if(!task.isSuccessful) return@OnCompleteListener
 
-                storage.firebaseToken = task.result.toString()
-
-                lifecycleScope.launchWhenCreated {
+                GlobalScope.launch {
                     try {
                        api.token(task.result.toString())
+                        storage.firebaseToken = task.result.toString()
                     }catch (e:Exception){
-                        showMessage(e.localizedMessage?: "not found")
-                        e.printStackTrace()
+//                        showMessage(e.localizedMessage?: "not found")
+//                        e.printStackTrace()
                     }
                 }
                 Log.e("AAA","token is: "+task.result.toString())
@@ -81,26 +83,45 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        val text = intent.getStringExtra("koinot")
-        val stadium = intent.getStringExtra("stadium")
-        if(text == "main"){
-            navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to stadium),
-                Utils.navOptions())
+        createDialog(intent)
+    }
+    private fun createDialog(intent: Intent?){
+        if(intent != null){
+            val text = intent.getStringExtra("koinot")
+            val stadium = intent.getStringExtra("stadium")
+            val natificationType = intent.getStringExtra("natificationType")
+            val status = intent.getBooleanExtra("status",false)
+            val title = intent.getStringExtra("title")
+            val message = intent.getStringExtra("message")
+            if(text == "main"){
+                if(natificationType == CONSTANTS.ALL){
+                 title?.let {
+                     if (message != null) {
+                         CancelOrderDialog(it,message,status).show(supportFragmentManager,"hdbch")
+                     }
+                 }
+                }else{
+                    navController.popBackStack()
+                    navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to stadium),
+                        Utils.navOptions())
+                }
+            }
+
         }
 
     }
 
     override fun onNewIntent(intent: Intent?) {
         super.onNewIntent(intent)
-        val text = intent?.getStringExtra("koinot")
-        val stadium = intent?.getStringExtra("stadium")
-        if(text == "main"){
-            navController.navigate(R.id.pagerFragment, bundleOf(CONSTANTS.STADION to stadium), Utils.navOptions())
-        }
+        createDialog(intent)
     }
+
     override fun onDestroy() {
         super.onDestroy()
         _bn = null
+    }
+    fun setInterface(inter:INotification){
+        iNotification = inter
     }
     
 }

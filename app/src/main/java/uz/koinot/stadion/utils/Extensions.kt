@@ -22,6 +22,11 @@ fun String.toNeedDate():String{
     return  this.replace("T"," ").substring(0,this.length-6)
 }
 
+fun String.toNeedTime():String{
+    return  this.substring(this.indexOf("T")+1,this.indexOf("T")+6)
+//    return  this.replace("T"," ").substring(0,this.length-6)
+}
+
 fun Int.getString():String{
     return if (this.toString().length == 1) "0$this" else this.toString()
 }
@@ -40,7 +45,7 @@ fun Throwable.userMessage() = when (this) {
         405 -> "Method Not Allowed"
         409 -> "Драйвер не найден"
         422 -> "Unprocessable"
-        500 -> "Server Error"
+        in 500..600 -> "Server Error"
         else -> "Something went wrong"
     }
     is IOException -> "Network error"

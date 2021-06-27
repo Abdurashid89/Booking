@@ -6,6 +6,8 @@ import android.view.ViewGroup
 import android.widget.PopupMenu
 import androidx.annotation.RequiresApi
 import androidx.recyclerview.widget.RecyclerView
+import com.google.gson.Gson
+import com.google.gson.reflect.TypeToken
 import uz.koinot.stadion.R
 import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.databinding.ItemStadiumBinding
@@ -19,8 +21,8 @@ class StadiumAdapter : RecyclerView.Adapter<StadiumAdapter.VHolder>() {
     private var listenerAddImage: SingleBlock<Stadium>? = null
     private var updateListener: SingleBlock<Stadium>? = null
     private var deleteListener: SingleBlock<Stadium>? = null
-    private var deleteImageListener: SingleBlock<Long>? = null
-    private var imageListener: ((Stadium, Int) -> Unit)? = null
+    private var deleteImageListener: SingleBlock<String>? = null
+    private var imageListener: ((List<String>, Int) -> Unit)? = null
     private val list = ArrayList<Stadium>()
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int) = VHolder(
@@ -40,7 +42,8 @@ class StadiumAdapter : RecyclerView.Adapter<StadiumAdapter.VHolder>() {
                 likeCount.text = d.stadium_like.toMoneyFormat()
                 verifyCount.text = d.countVerify.toString()
                 notVerifyCount.text = d.countNotVerify.toString()
-                val imageAdapter = RvImageAdapter(d)
+                val ls = Gson().fromJson<List<String>>(d.photos,object : TypeToken<List<String>>(){}.type)
+                val imageAdapter = RvImageAdapter(d,ls)
                 rvImages.adapter = imageAdapter
 
                 imageAdapter.setOnClickListener { stadium, pos ->
@@ -96,11 +99,11 @@ class StadiumAdapter : RecyclerView.Adapter<StadiumAdapter.VHolder>() {
         deleteListener = block
     }
 
-    fun setOnImageClickListener(block: (Stadium, Int) -> Unit) {
+    fun setOnImageClickListener(block: (List<String>, Int) -> Unit) {
         imageListener = block
     }
 
-    fun setOnImageDeleteListener(block:  SingleBlock<Long>) {
+    fun setOnImageDeleteListener(block:  SingleBlock<String>) {
         deleteImageListener = block
     }
 

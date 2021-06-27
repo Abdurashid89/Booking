@@ -26,6 +26,7 @@ android {
     buildTypes {
         release {
             minifyEnabled false
+            shrinkResources false
             proguardFiles getDefaultProguardFile('proguard-android-optimize.txt'), 'proguard-rules.pro'
         }
     }
@@ -67,7 +68,8 @@ dependencies {
     implementation 'com.squareup.retrofit2:converter-gson:2.9.0'
     implementation 'com.squareup.okhttp3:logging-interceptor:4.9.0'
     implementation 'com.squareup.retrofit2:adapter-rxjava3:2.9.0'
-
+    debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
+    releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
 
     // Coroutine
     implementation 'org.jetbrains.kotlinx:kotlinx-coroutines-android:1.4.3'
@@ -90,15 +92,6 @@ dependencies {
 
     debugImplementation 'com.readystatesoftware.chuck:library:1.1.0'
     releaseImplementation 'com.readystatesoftware.chuck:library-no-op:1.1.0'
-
-
-//    implementation "com.google.dagger:hilt-android:$hilt_version"
-//    kapt "com.google.dagger:hilt-android-compiler:$hilt_version"
-//    implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_jetpack_version"
-//    kapt "androidx.hilt:hilt-compiler:1.0.0-beta01"
-//
-//    implementation 'androidx.hilt:hilt-navigation-fragment:1.0.0'
-
 
     //noinspection GradleDependency
     implementation "androidx.hilt:hilt-lifecycle-viewmodel:$hilt_jetpack_version"
@@ -132,14 +125,21 @@ dependencies {
      * */
     implementation 'com.wdullaer:materialdatetimepicker:4.2.3'
 
-    implementation "com.github.PhilJay:MPAndroidChart:3.0.3"
     implementation 'com.poovam:pin-edittext-field:1.2.3'
     implementation 'im.dacer:AndroidCharts:1.0.4'
 
     // ImagePicker
-//    implementation 'com.github.dhaval2404:imagepicker:2.0'
+    implementation "com.github.dhaval2404:imagepicker:2.1"
 //    implementation 'com.github.dhaval2404:imagepicker-support:1.7.1'
 
-//    implementation 'com.github.dhaval2404:imagepicker-support:1.7.1'
-//    implementation 'com.github.florent37:inline-activity-result-kotlin:1.0.4'
+
+    implementation "com.github.iwgang:countdownview:2.1.6"
+//    implementation 'ru.egslava:MaskedEditText:1.0.5'
+
+    implementation "ru.tinkoff.decoro:decoro:1.1.1"
+
+
+
+
+
 }

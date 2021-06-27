@@ -16,6 +16,7 @@ import uz.koinot.stadion.data.repository.MainRepository
 import uz.koinot.stadion.utils.PathUtil
 import uz.koinot.stadion.utils.UiStateList
 import uz.koinot.stadion.utils.UiStateObject
+import uz.koinot.stadion.utils.userMessage
 import java.io.File
 import javax.inject.Inject
 import kotlin.random.Random
@@ -25,23 +26,43 @@ class CreateStadiumViewModel @Inject constructor(
     private val repository: MainRepository
 ): ViewModel() {
 
-    private var _createStadiumFlow = MutableStateFlow<UiStateObject<Int>>(UiStateObject.EMPTY)
-    val createStadiumFlow: StateFlow<UiStateObject<Int>> get() = _createStadiumFlow
+    private var _createStadiumFlow = MutableStateFlow<UiStateObject<String>>(UiStateObject.EMPTY)
+    val createStadiumFlow: StateFlow<UiStateObject<String>> get() = _createStadiumFlow
 
     fun createStadium(data: CreateStadium) = viewModelScope.launch {
         _createStadiumFlow.value = UiStateObject.LOADING
         try {
             val res = repository.createStadium(data)
 
-            if(res.success == 200 && res.objectKoinot != null){
-                _createStadiumFlow.value = UiStateObject.SUCCESS(res.objectKoinot!!)
+            if(res.success == 200){
+                _createStadiumFlow.value = UiStateObject.SUCCESS(res.message)
             }else{
                 _createStadiumFlow.value = UiStateObject.ERROR(res.message,true)
             }
         }catch (e:Exception){
-            _createStadiumFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
+            _createStadiumFlow.value = UiStateObject.ERROR(e.userMessage()?:"not found")
             e.printStackTrace()
         }
     }
+
+    private var _stadiumFlow = MutableStateFlow<UiStateList<Stadium>>(UiStateList.EMPTY)
+    val stadiumFlow: StateFlow<UiStateList<Stadium>> get() = _stadiumFlow
+
+    fun getAllStadium() = viewModelScope.launch {
+        _stadiumFlow.value = UiStateList.LOADING
+        try {
+            val res = repository.getStadium()
+            if (res.success == 200) {
+                _stadiumFlow.value = UiStateList.SUCCESS(res.objectKoinot)
+            } else {
+                _stadiumFlow.value = UiStateList.ERROR(res.message, true, res.success)
+            }
+        } catch (e: Exception) {
+            _stadiumFlow.value = UiStateList.ERROR(e.userMessage() ?: "not found")
+        }
+    }
+
+    suspend fun setAllStadium(list: List<Stadium>) = repository.setAllStadium(list)
+    suspend fun removeAllStadium() = repository.removeAllStadium()
 
 }

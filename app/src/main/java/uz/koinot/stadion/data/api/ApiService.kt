@@ -31,7 +31,7 @@ interface ApiService {
     ): ResponseList<Dashboard>
 
     @POST("koinot/auth/firebase/{token}")
-    suspend fun token(@Path("token") token: String): ResponseList<Any>
+    suspend fun token(@Path("token") token: String): ResponseObject<Any>
 
     @GET("koinot/stadiumDash/archiveAll/{number}")
     suspend fun archiveAll(@Path("number") number: Long): ResponseList<Order>
@@ -59,9 +59,6 @@ interface ApiService {
     @GET("koinot/order/searchNumber/{number}")
     suspend fun search(@Path("number") number: String): ResponseList<SearchUser>
 
-    @GET("koinot/order/searchNumber")
-    suspend fun getNewStadiumId(): ResponseObject<Int>
-
     @GET("koinot/order/{id}/{startDate}/{endDate}")
     suspend fun orderPrice(
         @Path("id") id: Long,
@@ -77,4 +74,13 @@ interface ApiService {
 
     @POST("koinot/auth/recode")
     suspend fun recode(): ResponseObject<Any>
+
+
+    @POST("koinot/stadium/getCancel/{id}")
+    suspend fun getCancel(@Path("id") id: Long): ResponseList<Order>
+
+    @POST("koinot/stadium/deleteCancel/{id}")
+    suspend fun deleteCancel(@Path("id") id: Long): ResponseObject<Any>
+
+
 }

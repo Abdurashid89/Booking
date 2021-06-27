@@ -6,6 +6,7 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.text.method.DigitsKeyListener
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
@@ -19,11 +20,13 @@ import com.google.gson.Gson
 import com.google.gson.reflect.TypeToken
 import com.wdullaer.materialdatetimepicker.time.TimePickerDialog
 import dagger.hilt.android.AndroidEntryPoint
+import ic0der.justtaxi.utils.AmountFormat
 import kotlinx.coroutines.flow.collect
 import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.AttachmentAdapter
 import uz.koinot.stadion.data.model.CreateStadium
+import uz.koinot.stadion.data.model.Photos
 import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.FragmentCreateStadiumBinding
@@ -38,11 +41,10 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
     val bn get() = _bn!!
     private var adress = ""
     private var stadiumId = 0
-    private var type = false
+    private var type = true
     private lateinit var lan_lat: LatLng
     private lateinit var stadium: Stadium
     private val viewModel: CreateStadiumViewModel by viewModels()
-    private val adapter = AttachmentAdapter()
 
     @Inject
     lateinit var storage: LocalStorage
@@ -50,20 +52,13 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         if (arguments != null) {
-            if (arguments?.getString(CONSTANTS.STADIUM_TYPE) == CONSTANTS.NEW_STADIUM) {
-                type = true
-                val arg = arguments?.getString(CONSTANTS.LOCATION)
-                lan_lat = Gson().fromJson(arg, LatLng::class.java)
-                adress = arguments?.getString(CONSTANTS.ADRESS, "Unknown adress").toString()
-                Log.d("AAA", "log:${lan_lat.latitude} ${lan_lat.longitude} $adress")
-            } else {
+            if (arguments?.getString(CONSTANTS.STADIUM_TYPE) != CONSTANTS.NEW_STADIUM) {
                 type = false
                 val arg = arguments?.getString(CONSTANTS.STADIUM_DATA)
                 stadium = Gson().fromJson(arg, Stadium::class.java)
+                lan_lat = LatLng(stadium.latitude,stadium.longitude)
             }
         }
-
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -71,20 +66,31 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
         _bn = FragmentCreateStadiumBinding.bind(view)
 
         bn.apply {
+            location.setOnClickListener {
+                showProgress(true)
+                val dialog = MapFragment()
+                dialog.setOnClickListener { latLng, s ->
+                    showProgress(false)
+                    lan_lat = latLng
+                    adress = s
+                    location.setText(s)
+                    dialog.dismiss()
+                }
+                dialog.show(childFragmentManager,"nfjdbf")
+            }
             if (type) {
                 inputPhoneNumber.setText(storage.phoneNumber)
-                location.setText(adress)
             } else {
                 toolbar.title = getString(R.string.update_stadium)
                 btnAddStadium.text = getString(R.string.update_stadium)
                 inputPhoneNumber.setText(stadium.phone_number)
                 location.setText(stadium.address)
                 nameStadium.setText(stadium.name)
-                timeOpen.setText(stadium.opening_time)
-                timeClose.setText(stadium.closing_time)
+                if(stadium.opening_time != null) timeOpen.setText(stadium.opening_time!!.toNeedTime())
+                if(stadium.closing_time != null) timeClose.setText(stadium.closing_time!!.toNeedTime())
                 priceDay.setText(stadium.price_day_time.toString())
                 priceNight.setText(stadium.price_night_time.toString())
-                whenStartNightTime.setText(stadium.change_price_time)
+                whenStartNightTime.setText(stadium.change_price_time.toNeedTime())
                 widthStadium.setText(stadium.width.toString())
                 heightStadium.setText(stadium.height.toString())
             }
@@ -102,6 +108,18 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                     timeClose.setText("${hourOfDay.getString()}:${minute.getString()}")
                 }, true).show(childFragmentManager, "zzz")
             }
+
+            priceDay.keyListener = DigitsKeyListener.getInstance("1234567890 ")
+            priceDay.addTextChangedListener(AmountFormat{ valid, amount->
+                priceDay.requestFocus()
+
+            })
+            priceNight.keyListener = DigitsKeyListener.getInstance("1234567890 ")
+            priceNight.addTextChangedListener(AmountFormat{ valid, amount->
+                priceNight.requestFocus()
+
+            })
+
             whenStartNightTime.setOnClickListener {
                 TimePickerDialog.newInstance({ _, hourOfDay, minute, _ ->
                     whenStartNightTime.setText("${hourOfDay.getString()}:${minute.getString()}")
@@ -109,25 +127,29 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
             }
 
             btnAddStadium.setOnClickListener {
+                Utils.closeKeyboard(requireActivity())
                 val number = inputPhoneNumber.text.toString().trim()
                 val location = location.text.toString().trim()
                 val nameStadium = nameStadium.text.toString().trim()
                 val timeOpen = timeOpen.text.toString().trim()
                 val timeClose = timeClose.text.toString().trim()
-                val priceDay = priceDay.text.toString().trim()
-                val priceNight = priceNight.text.toString().trim()
+                val priceDay = priceDay.text.toString().replace(" ","")
+                val priceNight = priceNight.text.toString().replace(" ","")
                 val timeNight = whenStartNightTime.text.toString().trim()
                 val widht = widthStadium.text.toString().trim()
                 val height = heightStadium.text.toString().trim()
-                if (number.isNotEmpty() && location.isNotEmpty() && nameStadium.isNotEmpty()
-                    && timeOpen.isNotEmpty() && timeClose.isNotEmpty() && priceDay.isNotEmpty()
+                if (number.isNotEmpty() && location.isNotEmpty() && nameStadium.isNotEmpty() && priceDay.isNotEmpty()
                     && priceNight.isNotEmpty() && timeNight.isNotEmpty() && widht.isNotEmpty() && height.isNotEmpty())
                     { if (type) {
                         viewModel.createStadium(
-                            CreateStadium(null, nameStadium, lan_lat.latitude, number, lan_lat.longitude, location, timeOpen.getTimeStamp(), timeClose.getTimeStamp(), timeNight.getTimeStamp(), priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt()))
-                    } else
-                        viewModel.createStadium(
-                            CreateStadium(stadium.id, nameStadium, stadium.latitude, number, stadium.longitude, location, timeOpen, timeClose, timeNight, priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt()))
+                            CreateStadium(null, nameStadium, lan_lat.latitude, number, lan_lat.longitude, location, timeOpen, timeClose, timeNight, priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt()))
+                        Log.d("AAA","data:")
+                    } else{
+                       val data = CreateStadium(stadium.id, nameStadium, stadium.latitude, number, stadium.longitude, location, timeOpen, timeClose, timeNight, priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt())
+                        viewModel.createStadium(data)
+                        Log.d("AAA","data:$data")
+                    }
+
                 }else{
                     showMessage(getString(R.string.wrong))
                 }
@@ -140,7 +162,7 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                     is UiStateObject.SUCCESS -> {
                         showProgress(false)
                         showMessage(getString(R.string.success))
-                        findNavController().popBackStack(R.id.homeFragment, false)
+                        viewModel.getAllStadium()
                     }
                     is UiStateObject.ERROR -> {
                         showProgress(false)
@@ -153,6 +175,36 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                 }
             }
         }
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.stadiumFlow.collect {
+                when (it) {
+                    is UiStateList.SUCCESS -> {
+                        showProgress(false)
+                        setToDb(it.data)
+                        findNavController().popBackStack(R.id.homeFragment, false)
+                    }
+                    is UiStateList.ERROR -> {
+                        showProgress(false)
+                        showMessage(it.message)
+                    }
+                    is UiStateList.LOADING -> {
+                        showProgress(true)
+                    }
+                    else -> Unit
+                }
+            }
+        }
+
+    }
+
+    private fun setToDb(data: List<Stadium>?) {
+            if(data != null && data.isNotEmpty()){
+                lifecycleScope.launchWhenCreated {
+                    viewModel.removeAllStadium()
+                    viewModel.setAllStadium(data)
+                }
+            }
+
 
     }
 

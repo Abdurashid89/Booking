@@ -34,7 +34,9 @@ class LoginViewModel @Inject constructor(
             }
         } catch (e: Exception) {
             _loginFlow.value = UiStateObject.ERROR(e.userMessage())
-//            e.printStackTrace()
         }
+    }
+    fun reLogin(){
+        _loginFlow.value = UiStateObject.EMPTY
     }
 }

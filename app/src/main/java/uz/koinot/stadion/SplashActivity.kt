@@ -6,6 +6,7 @@ import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.MainScope
 import kotlinx.coroutines.delay
@@ -30,24 +31,21 @@ class SplashActivity : AppCompatActivity() {
     @SuppressLint("SimpleDateFormat")
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-//        window.statusBarColor = resources.getColor(R.color.teal_200)
-//        window.navigationBarColor = resources.getColor(R.color.teal_200)
         _bn = ActivitySplashBinding.inflate(layoutInflater)
         setContentView(bn.root)
 
-//        val startDate = Timestamp(System.currentTimeMillis() - 2592000)
-//        val endDate = Timestamp(System.currentTimeMillis())
-
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO)
 
-        MainScope().launch {
+        lifecycleScope.launchWhenCreated {
             delay(1500)
             if (!storage.hasAccount) {
                 startActivity(Intent(this@SplashActivity, AuthActivity::class.java))
+                finish()
             } else {
                 startActivity(Intent(this@SplashActivity, MainActivity::class.java))
+                finish()
             }
-            finish()
+
         }
     }
 

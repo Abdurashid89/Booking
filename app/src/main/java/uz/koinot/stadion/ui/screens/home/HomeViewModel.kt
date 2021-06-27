@@ -13,6 +13,7 @@ import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.repository.MainRepository
 import uz.koinot.stadion.utils.UiStateList
 import uz.koinot.stadion.utils.UiStateObject
+import uz.koinot.stadion.utils.userMessage
 import java.io.File
 import javax.inject.Inject
 import kotlin.random.Random
@@ -36,7 +37,7 @@ class HomeViewModel @Inject constructor(
                 _stadiumFlow.value = UiStateList.ERROR(res.message, true, res.success)
             }
         } catch (e: Exception) {
-            _stadiumFlow.value = UiStateList.ERROR(e.localizedMessage ?: "not found")
+            _stadiumFlow.value = UiStateList.ERROR(e.userMessage() ?: "not found")
 //            e.printStackTrace()
         }
     }
@@ -58,7 +59,7 @@ class HomeViewModel @Inject constructor(
                 _imageFlow.value = UiStateObject.ERROR(res.message, true)
             }
         } catch (e: Exception) {
-            _imageFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
+            _imageFlow.value = UiStateObject.ERROR(e.userMessage()?:"not found")
         }
     }
 
@@ -75,7 +76,7 @@ class HomeViewModel @Inject constructor(
                 _deleteStadiumFlow.value = UiStateObject.ERROR(res.message, true)
             }
         } catch (e: Exception) {
-            _deleteStadiumFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
+            _deleteStadiumFlow.value = UiStateObject.ERROR(e.userMessage()?:"not found")
 //            e.printStackTrace()
         }
     }
@@ -93,8 +94,12 @@ class HomeViewModel @Inject constructor(
                 _deleteImageFlow.value = UiStateObject.ERROR(res.message, true)
             }
         } catch (e: Exception) {
-            _deleteImageFlow.value = UiStateObject.ERROR(e.localizedMessage?:"not found")
+            _deleteImageFlow.value = UiStateObject.ERROR(e.userMessage()?:"not found")
 //            e.printStackTrace()
         }
     }
+
+    suspend fun setAllStadium(list: List<Stadium>) = repository.setAllStadium(list)
+    suspend fun getAllStadiumDb() = repository.getAllStadium()
+    suspend fun removeAllStadium() = repository.removeAllStadium()
 }

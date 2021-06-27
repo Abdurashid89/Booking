@@ -96,7 +96,7 @@
                     android:drawableStart="@drawable/ic_baseline_phone_android"
                     android:drawablePadding="12dp"
                     android:hint="@string/phone_number"
-                    android:imeOptions="actionNext"
+                    android:imeOptions="actionDone"
                     android:inputType="phone"
                     android:maxLength="13"
                     android:text="+998">
@@ -190,10 +190,12 @@
 
             </androidx.appcompat.widget.LinearLayoutCompat>
 
-            <com.google.android.material.button.MaterialButton
+            <Button
                 android:id="@+id/btn_create_order"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:textColor="@color/white"
+                android:background="@drawable/btn_bgn"
                 android:layout_marginTop="24dp"
                 android:text="@string/createOrder"
                 android:textAllCaps="false" />

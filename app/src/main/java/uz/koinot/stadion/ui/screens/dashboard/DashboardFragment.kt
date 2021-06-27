@@ -7,16 +7,11 @@ import android.graphics.Shader
 import android.os.Bundle
 import android.util.Log
 import android.view.View
+import android.widget.HorizontalScrollView
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import com.github.mikephil.charting.components.Legend
-import com.github.mikephil.charting.components.XAxis
-import com.github.mikephil.charting.components.YAxis
-import com.github.mikephil.charting.data.Entry
-import com.github.mikephil.charting.data.LineData
-import com.github.mikephil.charting.data.LineDataSet
 import dagger.hilt.android.AndroidEntryPoint
 import im.dacer.androidcharts.LineView
 import ir.farshid_roohi.linegraph.ChartEntity
@@ -45,11 +40,30 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
     private val viewModel: DashboardViewModel by viewModels()
     private var stadiumId = 0L
     private val adapter = DashboardOrderAdapter()
+    private val list = ArrayList<Dashboard>()
     var type = false
+    var startDate = ""
+    var endDate = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        stadiumId = arguments?.getLong(CONSTANTS.STADION_ID,0L) ?: 0L
+        stadiumId = arguments?.getLong(CONSTANTS.STADION_ID, 0L) ?: 0L
+
+        startDate = Timestamp(System.currentTimeMillis() - 2592000000).toString()
+        endDate = Timestamp(System.currentTimeMillis()).toString()
+        viewModel.getDashboard(stadiumId, startDate, endDate)
+
+        lifecycleScope.launchWhenCreated {
+            viewModel.dashboardFlow.collect {
+                when (it) {
+                    is UiStateList.SUCCESS -> {
+                        list.clear()
+                        it.data?.let { it1 -> list.addAll(it1) }
+                    }
+                    else -> Unit
+                }
+            }
+        }
     }
 
 
@@ -59,23 +73,21 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         bn.rvOrders.adapter = adapter
         collects()
 
-        try {
-            val startDate = Timestamp(System.currentTimeMillis() - 2592000000)
-            val endDate = Timestamp(System.currentTimeMillis())
-            viewModel.getDashboard(stadiumId, startDate.toString(), endDate.toString())
-        }catch (e:Exception){
+        bn.swipeRefresh.setOnRefreshListener {
+            viewModel.getDashboard(stadiumId, startDate, endDate)
         }
+
 
     }
 
     private fun collects() {
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.getAllOrder(stadiumId).collect {
-                if(it.isEmpty()){
+                if (it.isEmpty()) {
                     viewModel.archiveAll(stadiumId)
-                }else{
+                } else {
                     adapter.submitList(it)
-                    if (!type) viewModel.afterCreateFlow(stadiumId,it[0].createdAt.toNeedDate())
+                    if (!type) viewModel.afterCreateFlow(stadiumId, it[0].createdAt.toNeedDate())
                 }
             }
         }
@@ -85,7 +97,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 when (it) {
                     is UiStateList.SUCCESS -> {
                         showProgress(false)
-                        if (it.data != null && it.data.isNotEmpty()){
+                        if (it.data != null && it.data.isNotEmpty()) {
                             addToDb(it.data)
                         }
                     }
@@ -106,7 +118,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                 when (it) {
                     is UiStateList.SUCCESS -> {
                         showProgress(false)
-                        if (it.data != null && it.data.isNotEmpty()){
+                        if (it.data != null && it.data.isNotEmpty()) {
                             addToDb(it.data)
                         }
                     }
@@ -125,23 +137,23 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
             viewModel.dashboardFlow.collect {
                 when (it) {
                     is UiStateList.SUCCESS -> {
-                        Log.d("AAAA","SUCCESS")
                         showProgress(false)
-
-                        if (it.data != null && it.data.isNotEmpty()){
-                            createChart(it.data)
-                        }
-
+                            if(list.isNotEmpty()) {
+                                createChart(list)
+                                bn.lineHorizontal.isVisible = true
+                                bn.chartScroll.isVisible = true
+                            } else {
+                                bn.lineHorizontal.isVisible = false
+                                bn.chartScroll.isVisible = false
+                            }
                     }
                     is UiStateList.ERROR -> {
-//                        bn.lineChart.isVisible = false
-                        Log.d("AAAA","ERROR ${it.message}")
                         showProgress(false)
+                        bn.lineHorizontal.isVisible = false
+                        bn.chartScroll.isVisible = false
                         showMessage(getString(R.string.error))
                     }
                     is UiStateList.LOADING -> {
-//                        bn.lineChart.isVisible = false
-                        Log.d("AAAA","LOADING")
                         showProgress(true)
                     }
                     else -> Unit
@@ -160,91 +172,38 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
         }
     }
 
-    private fun lineGraph(entry: ArrayList<Entry>) {
 
-        bn.lineChart.setNoDataText("No Balance yet!")
-
-        bn.lineChart.isAutoScaleMinMaxEnabled = true
-        bn.lineChart.legend.isEnabled = true
-        bn.lineChart.animateX(1500)
-
-        val vl = LineDataSet(entry, "Ежедневные деньги")
-        vl.setDrawFilled(true)
-
-        vl.setDrawValues(false)
-        vl.mode = LineDataSet.Mode.HORIZONTAL_BEZIER
-
-        vl.lineWidth = 5f
-        vl.setDrawCircles(true)
-
-        val paint = bn.lineChart.renderer.paintRender
-        val height = bn.lineChart.height.toFloat()
-        val width = bn.lineChart.width.toFloat()
-
-        val lindGrad = LinearGradient(
-            0f,
-            0f,
-            width,
-            height,
-            Color.BLUE,
-            Color.parseColor("#E45CF4"),
-            Shader.TileMode.REPEAT
-        )
-        paint.shader = lindGrad
-        vl.fillColor = R.color.green
-        vl.fillAlpha = R.color.red
-
-
-
-        bn.lineChart.axisRight.isEnabled = false
-        bn.lineChart.axisRight.setDrawAxisLine(false)
-        bn.lineChart.axisRight.setDrawLabels(false)
-        bn.lineChart.axisRight.setDrawGridLines(false)
-        bn.lineChart.description.isEnabled = false
-        bn.lineChart.xAxis.position = XAxis.XAxisPosition.BOTTOM
-
-
-        bn.lineChart.setTouchEnabled(true)
-        bn.lineChart.setPinchZoom(true)
-
-        bn.lineChart.data = LineData(vl)
-        bn.lineChart.invalidate()
-        bn.lineChart.resetZoom()
-
-
-    }
-
-    @SuppressLint("WrongViewCast")
     private fun createChart(list: List<Dashboard>) {
+        try {
+            if(list.isNotEmpty()) {
+                val day = java.util.ArrayList<String>()
+                val benefit = java.util.ArrayList<Float>()
+                list.forEach {
+                    day.add(it.day)
+                    benefit.add(it.benefit.toFloat())
+                }
+                val view = bn.root.findViewById(R.id.line_view) as LineView
+                view.apply {
+                    setDrawDotLine(false)
+                    setShowPopup(LineView.SHOW_POPUPS_MAXMIN_ONLY)
+                    setColorArray(intArrayOf(Color.parseColor("#0038FF")))
 
-        val day = java.util.ArrayList<String>()
-        val benefit = java.util.ArrayList<Float>()
-
-        list.forEach {
-            day.add(it.day)
-            benefit.add(it.benefit)
+                    setBottomTextList(day)
+                    setFloatDataList(arrayListOf(benefit))
+                }
+                bn.chartScroll.post {
+                    bn.chartScroll.fullScroll(HorizontalScrollView.FOCUS_RIGHT)
+                }
+            }
+        } catch (e: Exception) {
+            e.printStackTrace()
+            Log.d("AAA", "exeption:$e")
         }
-        val view = bn.lineView as LineView
-        view.apply {
-            setDrawDotLine(false)
-            setShowPopup(LineView.SHOW_POPUPS_MAXMIN_ONLY)
-            setColorArray(intArrayOf(Color.parseColor("#0E8C30")))
 
-            setFloatDataList(arrayListOf(benefit))
-            setBottomTextList(day)
-        }
-
-
-
-        bn.lineChart.isVisible = true
-        val ls = ArrayList<Entry>()
-        for (i in list.indices){
-            ls.add(Entry(list[i].day.toFloat(), list[i].benefit.toFloat()))
-        }
-        lineGraph(ls)
     }
 
-    private fun showProgress(status:Boolean){
+    private fun showProgress(status: Boolean) {
+        bn.swipeRefresh.isRefreshing = false
         bn.progressBar.isVisible = status
     }
 
