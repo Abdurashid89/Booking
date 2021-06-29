@@ -9,7 +9,7 @@
     <string name="stadiums">Стадионы</string>
     <string name="mapKey" translatable="false">AIzaSyBGxa1BZRvZeCA00GNeFE2CIIY-QJqr04c</string>
     <string name="welcome">Добро пожаловать</string>
-    <string name="request_code_again">Запросить код ещё раз через</string>
+    <string name="request_code_again">Eщё раз через</string>
     <string name="timer">00:59</string>
     <string name="confirm_code_again">Отправить код еще раз</string>
     <string name="password">Пароль</string>
@@ -40,7 +40,7 @@
     <string name="phone_number">Телефонный номер</string>
     <string name="confirm_password">Подтвердить Пароль</string>
     <string name="we_have_sent_verification_code_nto_998">We have sent verification code \nto:*998 ** ***</string>
-    <string name="please_enter_verification_code">Пожалуйста, введите проверочный код!</string>
+    <string name="please_enter_verification_code">Введите проверочный код!</string>
     <string name="verification_code">Проверяющий код</string>
     <string name="sent_again">Отправлено снова</string>
     <string name="send">Отправить</string>
