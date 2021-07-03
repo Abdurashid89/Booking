@@ -75,22 +75,14 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
 
         bn.swipeRefresh.setOnRefreshListener {
             viewModel.getDashboard(stadiumId, startDate, endDate)
+            loadData()
         }
 
 
     }
 
     private fun collects() {
-        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
-            viewModel.getAllOrder(stadiumId).collect {
-                if (it.isEmpty()) {
-                    viewModel.archiveAll(stadiumId)
-                } else {
-                    adapter.submitList(it)
-                    if (!type) viewModel.afterCreateFlow(stadiumId, it[0].createdAt.toNeedDate())
-                }
-            }
-        }
+        loadData()
 
         viewLifecycleOwner.lifecycleScope.launchWhenCreated {
             viewModel.archiveAllFlow.collect {
@@ -157,6 +149,19 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                         showProgress(true)
                     }
                     else -> Unit
+                }
+            }
+        }
+    }
+
+    private fun loadData() {
+        viewLifecycleOwner.lifecycleScope.launchWhenCreated {
+            viewModel.getAllOrder(stadiumId).collect {
+                if (it.isEmpty()) {
+                    viewModel.archiveAll(stadiumId)
+                } else {
+                    adapter.submitList(it)
+                    if (!type) viewModel.afterCreateFlow(stadiumId, it[0].createdAt.toNeedDate())
                 }
             }
         }
