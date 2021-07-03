@@ -35,17 +35,18 @@
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:id="@+id/brbt"
+        android:layout_marginTop="24dp"
         android:textSize="24sp"
-        android:background="@drawable/ripple"
+        android:background="?selectableItemBackgroundBorderless"
         android:textColor="#05FD00"
         android:textStyle="bold"
-        android:padding="48dp"
+        android:padding="18dp"
         android:text="BRBT" />
 
     <androidx.appcompat.widget.LinearLayoutCompat
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="24dp"
+        android:layout_marginTop="34dp"
         android:orientation="vertical"
         android:padding="24dp">
 
@@ -110,6 +111,16 @@
             </com.google.android.material.textfield.TextInputEditText>
 
         </com.google.android.material.textfield.TextInputLayout>
+        <TextView
+            android:id="@+id/error_confirm"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/red"
+            android:layout_marginTop="10dp"
+            android:text="@string/password_should_same"
+            android:textSize="14sp"
+            android:visibility="gone" />
 
         <Button
             android:id="@+id/btn_phone_number"

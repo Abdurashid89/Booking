@@ -1,5 +1,7 @@
 package uz.koinot.stadion.utils
 
+import android.content.Context
+import android.os.Vibrator
 import android.util.Log
 import android.widget.Toast
 import androidx.fragment.app.Fragment
@@ -25,6 +27,11 @@ fun String.toNeedDate():String{
 fun String.toNeedTime():String{
     return  this.substring(this.indexOf("T")+1,this.indexOf("T")+6)
 //    return  this.replace("T"," ").substring(0,this.length-6)
+}
+
+fun vibrate(context: Context) {
+    val vibrate = context.getSystemService(Context.VIBRATOR_SERVICE) as Vibrator
+    vibrate.vibrate(100)
 }
 
 fun Int.getString():String{

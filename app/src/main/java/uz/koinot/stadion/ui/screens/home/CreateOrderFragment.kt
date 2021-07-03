@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.core.widget.addTextChangedListener
 import androidx.fragment.app.viewModels
@@ -114,11 +115,33 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
                 val day = inputDay.text.toString().trim()
                 val startTime = inputStartDate.text.toString().trim()
                 val endTime = inputEndDate.text.toString().trim()
-                if(number.length == 13 && day.isNotEmpty() && startTime.isNotEmpty()
-                    && endTime.isNotEmpty()){
-                    viewModel.createOrder(CreateOrder(null,stadiumId,day,startTime,endTime,number))
-                }else{
-                    showMessage("Iltimos qatorlarni to'ldiring")
+
+                when{
+                    number.length != 13 ->{
+                        bn.inputPhoneNumber.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                        vibrate(requireContext())
+                    }
+
+                    day.isEmpty() ->{
+                        bn.inputDay.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                        vibrate(requireContext())
+                    }
+
+                    startTime.isEmpty() ->{
+                        bn.inputStartDate.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                        vibrate(requireContext())
+
+                    }
+
+                    endTime.isEmpty() ->{
+                        bn.inputEndDate.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                        vibrate(requireContext())
+
+                    }
+
+                    else ->{
+                        viewModel.createOrder(CreateOrder(null,stadiumId,day,startTime,endTime,number))
+                    }
                 }
             }
         }
@@ -189,13 +212,11 @@ class CreateOrderFragment : Fragment(R.layout.fragment_create_order) {
                         bn.loadingPrice.isVisible = false
                         bn.textOrderPrice.isVisible = true
                         showProgress(false)
-//                        showMessage("Error Please Try again")
                     }
                     is UiStateObject.LOADING ->{
                         bn.loadingPrice.isVisible = true
                         bn.textOrderPrice.isVisible = false
                         showProgress(true)
-//                        showMessage("Loading")
                     }
                     else -> Unit
                 }

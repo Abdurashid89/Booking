@@ -8,6 +8,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -74,6 +75,12 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
                 requireContext().startActivity(intent)
             }
 
+            bn.inputConfirmPassword.addTextChangedListener(object : TextWatcherWrapper(){
+                override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                    super.onTextChanged(s, start, before, count)
+                    bn.errorConfirm.isVisible = false
+                }
+            })
             btnPhoneNumber.setOnClickListener {
                 number = bn.inputPhoneNumber.text.toString().replace(" ","")
 
@@ -160,10 +167,30 @@ class PhoneNumberFragment : Fragment(R.layout.fragment_phone_number) {
         password = bn.inputPassword.text.toString().trim()
         val confirmPassword = bn.inputConfirmPassword.text.toString().trim()
 
-        if (number.length == 13 && (password.isNotEmpty() && password == confirmPassword)) {
-            viewModel.isBotStarted(number)
-        } else {
-            showMessage(getString(R.string.enter_fields))
+        when{
+            number.length != 13 ->{
+               bn.inputPhoneNumber.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                vibrate(requireContext())
+            }
+
+            password.length < 4 ->{
+                bn.inputPassword.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                vibrate(requireContext())
+            }
+
+            confirmPassword.isEmpty() ->{
+                bn.inputConfirmPassword.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                vibrate(requireContext())
+            }
+            password != confirmPassword ->{
+                vibrate(requireContext())
+                bn.inputConfirmPassword.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                bn.errorConfirm.isVisible = true
+            }
+
+            else ->{
+                viewModel.isBotStarted(number)
+            }
         }
     }
 

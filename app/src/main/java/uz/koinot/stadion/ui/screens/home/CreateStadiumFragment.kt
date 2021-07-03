@@ -10,6 +10,7 @@ import android.text.method.DigitsKeyListener
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -25,6 +26,7 @@ import kotlinx.coroutines.flow.collect
 import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.AttachmentAdapter
+import uz.koinot.stadion.data.model.CreateOrder
 import uz.koinot.stadion.data.model.CreateStadium
 import uz.koinot.stadion.data.model.Photos
 import uz.koinot.stadion.data.model.Stadium
@@ -138,20 +140,58 @@ class CreateStadiumFragment : Fragment(R.layout.fragment_create_stadium) {
                 val timeNight = whenStartNightTime.text.toString().trim()
                 val widht = widthStadium.text.toString().trim()
                 val height = heightStadium.text.toString().trim()
-                if (number.isNotEmpty() && location.isNotEmpty() && nameStadium.isNotEmpty() && priceDay.isNotEmpty()
-                    && priceNight.isNotEmpty() && timeNight.isNotEmpty() && widht.isNotEmpty() && height.isNotEmpty())
-                    { if (type) {
-                        viewModel.createStadium(
-                            CreateStadium(null, nameStadium, lan_lat.latitude, number, lan_lat.longitude, location, timeOpen, timeClose, timeNight, priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt()))
-                        Log.d("AAA","data:")
-                    } else{
-                       val data = CreateStadium(stadium.id, nameStadium, stadium.latitude, number, stadium.longitude, location, timeOpen, timeClose, timeNight, priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt())
-                        viewModel.createStadium(data)
-                        Log.d("AAA","data:$data")
+
+                when{
+                    number.length != 13 ->{
+                        bn.inputPhoneNumber.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                        vibrate(requireContext())
                     }
 
-                }else{
-                    showMessage(getString(R.string.wrong))
+                    location.isEmpty() ->{
+                        bn.location.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                        vibrate(requireContext())
+                    }
+
+                    nameStadium.isEmpty() ->{
+                        bn.nameStadium.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                        vibrate(requireContext())
+
+                    }
+
+                    priceDay.isEmpty() ->{
+                        bn.priceDay.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                        vibrate(requireContext())
+
+                    }
+
+                    priceNight.isEmpty() ->{
+                        bn.priceNight.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                        vibrate(requireContext())
+
+                    }
+
+                    widht.isEmpty() ->{
+                        bn.widthStadium.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                        vibrate(requireContext())
+
+                    }
+
+                    height.isEmpty() ->{
+                        bn.heightStadium.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                        vibrate(requireContext())
+
+                    }
+                    else ->{
+                        if (type) {
+                            viewModel.createStadium(
+                                CreateStadium(null, nameStadium, lan_lat.latitude, number, lan_lat.longitude, location, timeOpen, timeClose, timeNight, priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt()))
+                            Log.d("AAA","data:")
+                        } else{
+                            val data = CreateStadium(stadium.id, nameStadium, stadium.latitude, number, stadium.longitude, location, timeOpen, timeClose, timeNight, priceDay.toDouble(), priceNight.toDouble(), true, widht.toInt(), height.toInt())
+                            viewModel.createStadium(data)
+                            Log.d("AAA","data:$data")
+                        }
+                    }
                 }
             }
         }

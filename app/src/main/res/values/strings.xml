@@ -52,6 +52,7 @@
     <string name="rad_etish">Отклонение</string>
     <string name="stadion_name">Стадион Наме</string>
     <string name="update">Обновлять</string>
+    <string name="password_should_same">Пароль должен быть таким же</string>
     <string name="add_image">Добавить изображение</string>
     <string name="error">Ошибка</string>
     <string name="pease_try_again">Ошибка, пожалуйста, попробуйте еще раз</string>

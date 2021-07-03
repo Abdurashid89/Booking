@@ -8,6 +8,7 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
@@ -25,10 +26,7 @@ import uz.koinot.stadion.data.model.Login
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.FragmentLoginBinding
 import uz.koinot.stadion.ui.screens.home.HomeViewModel
-import uz.koinot.stadion.utils.UiStateObject
-import uz.koinot.stadion.utils.Utils
-import uz.koinot.stadion.utils.showMessage
-import uz.koinot.stadion.utils.toMoneyFormat
+import uz.koinot.stadion.utils.*
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -60,10 +58,21 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 Utils.closeKeyboard(requireActivity())
                 number = inputPhoneNumber.text.toString().replace(" ","")
                 val password = inputPassword.text.toString().trim()
-                if(number.length == 13 && password.length > 2){
-                    viewModel.login(Login(number,password))
-                }else{
-                    showMessage(getString(R.string.enter_fields))
+
+                when{
+                    number.length != 13 ->{
+                        bn.inputPhoneNumber.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                        vibrate(requireContext())
+                    }
+
+                    password.length < 4 ->{
+                        bn.inputPassword.startAnimation(AnimationUtils.loadAnimation(requireContext(),R.anim.shake))
+                        vibrate(requireContext())
+                    }
+
+                    else ->{
+                        viewModel.login(Login(number,password))
+                    }
                 }
 
             }

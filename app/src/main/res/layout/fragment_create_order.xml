@@ -108,7 +108,7 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_users"
                 android:layout_width="match_parent"
-                tools:itemCount="2"
+                tools:itemCount="1"
                 tools:listitem="@layout/item_users"
                 android:layout_height="wrap_content"
                 app:layoutManager="androidx.recyclerview.widget.LinearLayoutManager" />
