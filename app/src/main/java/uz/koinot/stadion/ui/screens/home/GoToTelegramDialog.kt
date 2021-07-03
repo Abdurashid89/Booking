@@ -32,9 +32,6 @@ class GoToTelegramDialog: DialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         bn.apply {
-            btnNo.setOnClickListener {
-                dismiss()
-            }
             btnYes.setOnClickListener {
                 listener?.invoke(true)
             }
