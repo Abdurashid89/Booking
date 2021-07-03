@@ -27,8 +27,52 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_height="match_parent" />
 
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center|end"
+            android:layout_marginEnd="12dp"
+            android:orientation="vertical">
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/btn_zoom_increment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center|end"
+                android:backgroundTint="@color/white"
+                app:icon="@drawable/ic_baseline_add" />
+
+            <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
+                android:id="@+id/btn_zoom_decriment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginVertical="12dp"
+                android:backgroundTint="@color/white"
+                app:icon="@drawable/ic_baseline_remove" />
+
+        </LinearLayout>
+
+
+        <ImageView
+            android:id="@+id/image_marker"
+            android:layout_width="wrap_content"
+            android:visibility="visible"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:src="@drawable/ic_dest" />
+
+        <ImageView
+            android:id="@+id/shadow"
+            android:layout_width="14dp"
+            android:layout_height="14dp"
+            android:rotationX="60"
+            android:layout_gravity="center"
+            android:layout_marginTop="28dp"
+            android:background="@drawable/shadow"
+            android:visibility="gone" />
+
         <TextView
-            android:id="@+id/button"
+            android:id="@+id/textManzil"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center|top"
@@ -58,7 +102,7 @@
             android:layout_gravity="bottom|end"
             android:id="@+id/btn_my_location"
             android:layout_marginBottom="100dp"
-            android:layout_marginEnd="24dp"
+            android:layout_marginEnd="12dp"
             android:backgroundTint="@color/white"
             app:icon="@drawable/ic_location" />
     </FrameLayout>

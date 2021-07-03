@@ -42,7 +42,6 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
     private var _bn: FragmentHomeBinding? = null
     private val bn get() = _bn!!
     private val adapter = StadiumAdapter()
-    private var file: File = File("")
     private var stadiumId = 0L
     private lateinit var navController: NavController
 

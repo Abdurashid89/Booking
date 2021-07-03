@@ -7,7 +7,6 @@ import android.view.ViewGroup
 import androidx.fragment.app.DialogFragment
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.ImageAdapter
-import uz.koinot.stadion.databinding.BaseDialogLayoutBinding
 import uz.koinot.stadion.databinding.LayoutToTelegramBinding
 import uz.koinot.stadion.utils.SingleBlock
 

@@ -8,8 +8,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.core.os.bundleOf
+import androidx.core.view.isVisible
 import androidx.fragment.app.DialogFragment
 import androidx.navigation.fragment.findNavController
 import com.google.android.gms.common.api.ApiException
@@ -58,53 +60,39 @@ class MapFragment : DialogFragment() {
             checkPermission(Manifest.permission.ACCESS_FINE_LOCATION) {
                 mMap = it
                 tracker = GPSTracker(requireContext())
-                if(tracker.canGetLocation()){
-                    tracker.getLocation()
-                    marker?.remove()
-                    marker = mMap?.addMarker(
-                        MarkerOptions().title("My Location")
-                            .position(LatLng(tracker.getLatitude(),tracker.getLongitude()))
-                            .draggable(true)
-                            .icon(BitmapDescriptorFactory.defaultMarker())
-                    )
-                    adress = getCompleteAddressString(tracker.getLatitude(),tracker.getLongitude()).toString()
-                    bn.button.text = adress
-                    location =  LatLng(
-                        tracker.getLatitude(),
-                        tracker.getLongitude()
-                    )
-                    mMap?.animateCamera(
-                        CameraUpdateFactory.newLatLngZoom(
-                           location, 13f
-                        )
-                    )
 
+                if(tracker.canGetLocation()) {
+                    location = LatLng(tracker.getLatitude(),tracker.getLongitude())
+                    adress = getCompleteAddressString(location!!.latitude, location!!.longitude).toString()
+                    bn.textManzil.text = adress
+                    mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(location!!, 13f))
 
-                    mMap?.setOnMapClickListener { latLng ->
-                        location = latLng
-                        adress = getCompleteAddressString(latLng.latitude,latLng.longitude).toString()
-                        bn.button.text = adress
-                        marker?.apply {
-                            position = location
-                            title = adress
-                        }
-//                        marker = mMap?.addMarker(MarkerOptions().position(latLng).title(adress).icon(BitmapDescriptorFactory.defaultMarker()))
+                    mMap?.setOnCameraMoveStartedListener {
+                        bn.shadow.isVisible = true
+                        bn.imageMarker.animate()
+                            .translationY( -75f)
+                            .setInterpolator(OvershootInterpolator())
+                            .setDuration(250)
+                            .start()
                     }
-                    mMap?.setOnMarkerDragListener(object : GoogleMap.OnMarkerDragListener{
-                        override fun onMarkerDragStart(p0: Marker) {}
-                        override fun onMarkerDrag(p0: Marker) {}
-                        override fun onMarkerDragEnd(marker: Marker) {
-                            adress = getCompleteAddressString(marker.position.latitude,marker.position.longitude).toString()
-                            location = LatLng(marker.position.latitude,marker.position.longitude)
-                            bn.button.text = adress
-                        }
-                    })
 
+
+                    mMap?.setOnCameraIdleListener {
+                        bn.shadow.isVisible = false
+                        bn.imageMarker.animate()
+                            .translationY( 0f)
+                            .setInterpolator(OvershootInterpolator())
+                            .setDuration(250)
+                            .start()
+
+                        location = mMap?.cameraPosition?.target
+                        adress = getCompleteAddressString(location!!.latitude, location!!.longitude).toString()
+                        bn.textManzil.text = adress
+                    }
 
                 }else{
                     createLocationRequest()
                 }
-
             }
         }
 
@@ -118,15 +106,25 @@ class MapFragment : DialogFragment() {
             dismiss()
         }
 
+        bn.btnZoomIncrement.setOnClickListener {
+            var zoom = mMap?.cameraPosition?.zoom!!
+            mMap?.animateCamera(CameraUpdateFactory.zoomTo(++zoom))
+        }
+
+        bn.btnZoomDecriment.setOnClickListener {
+            var zoom = mMap?.cameraPosition?.zoom!!
+            mMap?.animateCamera(CameraUpdateFactory.zoomTo(--zoom))
+        }
+
         bn.btnMyLocation.setOnClickListener {
+            location = LatLng(tracker.getLatitude(),tracker.getLongitude())
             marker?.apply {
-                location = LatLng(tracker.getLatitude(),tracker.getLongitude())
-                position = location
+                position = location!!
                 isVisible = true
-                adress = getCompleteAddressString(location!!.latitude,location!!.longitude).toString()
-                bn.button.text = adress
             }
-            mMap?.animateCamera(CameraUpdateFactory.newLatLng(LatLng(tracker.getLatitude(),tracker.getLongitude())))
+            adress = getCompleteAddressString(location!!.latitude, location!!.longitude).toString()
+            bn.textManzil.text = adress
+            mMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(LatLng(tracker.getLatitude(),tracker.getLongitude()),13f))
         }
 
         bn.btnChooseLocation.setOnClickListener {
