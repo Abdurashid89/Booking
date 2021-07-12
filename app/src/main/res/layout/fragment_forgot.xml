@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:id="@+id/container_btn"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+    <ProgressBar
+        android:id="@+id/progress_bar"
+        app:layout_constraintTop_toTopOf="parent"
+        style="?android:progressBarStyleHorizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="11dp"
+        android:indeterminateBehavior="repeat"
+        android:indeterminateDuration="10"
+        android:indeterminateOnly="true"
+        android:maxHeight="24dip"
+        android:minHeight="24dip"
+        android:visibility="gone"
+        android:progressBackgroundTint="#208afa"
+        android:progressBackgroundTintMode="multiply"
+        />
+
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/enter_phone_number"
+        android:textColor="@color/black"
+        android:textSize="22sp"
+        android:layout_marginTop="64dp"
+        android:layout_gravity="top|center"
+        android:textStyle="bold" />
+
+
+    <br.com.sapereaude.maskedEditText.MaskedEditText
+        android:layout_marginBottom="10dp"
+        android:id="@+id/inputPhoneNumber"
+        android:layout_gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="?actionBarSize"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:background="@drawable/edit_text_back"
+        android:hint="000000000"
+        android:inputType="phone"
+        android:paddingStart="10dp"
+        android:typeface="monospace"
+        app:allowed_chars="0123456789"
+        app:keep_hint="true"
+        app:mask="+998 ## ###-##-##"
+        tools:ignore="RtlSymmetry" />
+
+    <Button
+        android:id="@+id/forgot_btn"
+        android:background="@drawable/btn_bgn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="16dp"
+        android:layout_marginBottom="32dp"
+        android:layout_gravity="bottom"
+        android:text="@string/confirmation"
+        android:enabled="false"
+        android:textColor="@color/white"
+        android:textAllCaps="false" />
+
+
+</FrameLayout>

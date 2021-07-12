@@ -46,6 +46,9 @@ class MainRepository @Inject constructor(
     suspend fun register(data:Register) = authApi.auth(data)
 
 
+    suspend fun forgotPhone(number: String) = authApi.forgotPhone(number)
+    suspend fun createPassword(code: String, password: String, number: String) = authApi.createPassword(code, password, number)
+
 
 
 }

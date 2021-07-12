@@ -9,6 +9,7 @@ import kotlinx.coroutines.launch
 import uz.koinot.stadion.data.model.Login
 import uz.koinot.stadion.data.repository.MainRepository
 import uz.koinot.stadion.data.storage.LocalStorage
+import uz.koinot.stadion.utils.UiStateList
 import uz.koinot.stadion.utils.UiStateObject
 import uz.koinot.stadion.utils.userMessage
 import javax.inject.Inject
@@ -39,4 +40,41 @@ class LoginViewModel @Inject constructor(
     fun reLogin(){
         _loginFlow.value = UiStateObject.EMPTY
     }
+
+
+    private val _forgotPhoneFlow = MutableStateFlow<UiStateObject<String>>(UiStateObject.EMPTY)
+    val forgotPhoneFlow: StateFlow<UiStateObject<String>> get() = _forgotPhoneFlow
+
+    fun getVerificationCode(sendNumber: String) = viewModelScope.launch {
+        _forgotPhoneFlow.value = UiStateObject.LOADING
+        try {
+            val verification = repository.forgotPhone(sendNumber)
+            if (verification.success == 200) {
+                _forgotPhoneFlow.value = UiStateObject.SUCCESS(verification.message)
+            } else {
+                _forgotPhoneFlow.value = UiStateObject.ERROR(verification.message)
+            }
+        } catch (e: Exception) {
+            _forgotPhoneFlow.value = UiStateObject.ERROR(e.userMessage())
+        }
+    }
+
+    private val _createPasswordFlow = MutableStateFlow<UiStateObject<String>>(UiStateObject.EMPTY)
+    val createPasswordFlow: StateFlow<UiStateObject<String>> get() = _createPasswordFlow
+
+    fun sendForgotPassword(code:String,password:String,phone:String) = viewModelScope.launch {
+        _createPasswordFlow.value = UiStateObject.LOADING
+        try {
+            val res = repository.createPassword(code,password,phone)
+            if (res.success == 200) {
+                _createPasswordFlow.value = UiStateObject.SUCCESS(res.objectKoinot!!)
+            } else {
+                _createPasswordFlow.value = UiStateObject.ERROR("xatolik")
+            }
+        } catch (e: Exception) {
+            _createPasswordFlow.value = UiStateObject.ERROR(e.userMessage())
+        }
+    }
+
+
 }

@@ -27,5 +27,20 @@
         <action
             android:id="@+id/action_loginFragment_to_phoneNumberFragment"
             app:destination="@id/phoneNumberFragment" />
+        <action
+            android:id="@+id/action_loginFragment_to_passwordFragment"
+            app:destination="@id/passwordFragment" />
+    </fragment>
+    <fragment
+        android:id="@+id/forgotFragment"
+        android:name="uz.koinot.stadion.ui.screens.home.ForgotFragment"
+        android:label="ForgotFragment" />
+    <fragment
+        android:id="@+id/passwordFragment"
+        android:name="uz.koinot.stadion.ui.screens.home.PasswordFragment"
+        android:label="PasswordFragment" >
+        <action
+            android:id="@+id/action_passwordFragment_to_forgotFragment"
+            app:destination="@id/forgotFragment" />
     </fragment>
 </navigation>

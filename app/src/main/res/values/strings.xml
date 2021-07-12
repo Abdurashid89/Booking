@@ -75,4 +75,7 @@
     <string name="cancel_order">Вы хотите отменить этот заказ?</string>
     <string name="warning">Предупреждение</string>
     <string name="to_brbt">по соображениям безопасности вы будь первым, кто откроет для себя стадион через:</string>
+    <string name="enter_phone_number">Enter phone number</string>
+    <string name="confirmation">Confirm</string>
+    <string name="create_password">Create Password</string>
 </resources>

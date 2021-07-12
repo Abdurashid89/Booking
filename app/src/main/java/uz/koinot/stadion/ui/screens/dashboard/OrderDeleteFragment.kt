@@ -44,8 +44,7 @@ class OrderDeleteFragment : Fragment(R.layout.fragment_order_delete) {
                 when(it){
                     is UiStateList.SUCCESS -> {
                         if (it.data != null && it.data.isNotEmpty()) {
-
-                                adapter.submitList(it.data)
+                            adapter.submitList(it.data)
                         }
                     }
 

@@ -144,6 +144,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
                 bundleOf(CONSTANTS.STADIUM_TYPE to CONSTANTS.NEW_STADIUM), Utils.navOptions()
             )
         }
+
     }
 
     private fun addImage(it: Stadium) {

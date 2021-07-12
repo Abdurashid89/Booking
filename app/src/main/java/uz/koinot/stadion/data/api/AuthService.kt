@@ -16,4 +16,14 @@ interface AuthService {
 
     @GET("koinot/auth/isBrbtStart/{number}")
     suspend fun isBotStarted(@Path("number") number: String): ResponseObject<Boolean>
+
+    @GET("koinot/forgotPassword/{number}")
+    suspend fun forgotPhone(@Path("number") number: String): ResponseObject<Any>
+
+    @GET("koinot/newPassword/{code}/{password}/{number}")
+    suspend fun createPassword(
+        @Path("code") code: String,
+        @Path("password") password: String,
+        @Path("number") number: String,
+    ): ResponseObject<String>
 }

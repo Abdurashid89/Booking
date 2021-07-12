@@ -12,6 +12,7 @@ import android.view.animation.AnimationUtils
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.NavController
 import androidx.navigation.NavOptions
 import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
@@ -39,9 +40,11 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
     private var _bn: FragmentLoginBinding? = null
     val bn get() = _bn!!
     private val viewModel: LoginViewModel by viewModels()
+    private lateinit var navController: NavController
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bn = FragmentLoginBinding.bind(view)
+        navController = findNavController()
 
         val slots = PhoneNumberUnderscoreSlotsParser().parseSlots("+998 __ ___ __ __")
         val format = MaskFormatWatcher(MaskImpl.createTerminated(slots))
@@ -52,7 +55,12 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
                 bn.inputPhoneNumber.setText("+998")
             }
         }
+
         bn.inputPhoneNumber.addTextChangedListener(textWatcherName)
+
+        bn.txForgotPassword.setOnClickListener {
+            navController.navigate(R.id.forgotFragment,null,Utils.navOptions())
+        }
         bn.apply {
             btnLogin.setOnClickListener {
                 Utils.closeKeyboard(requireActivity())
@@ -77,7 +85,7 @@ class LoginFragment : Fragment(R.layout.fragment_login) {
 
             }
             createAccount.setOnClickListener {
-                findNavController().navigate(R.id.phoneNumberFragment,null,Utils.navOptions())
+                navController.navigate(R.id.phoneNumberFragment,null,Utils.navOptions())
             }
 
 

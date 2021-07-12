@@ -134,7 +134,7 @@ dependencies {
 
 
     implementation "com.github.iwgang:countdownview:2.1.6"
-//    implementation 'ru.egslava:MaskedEditText:1.0.5'
+    implementation 'ru.egslava:MaskedEditText:1.0.5'
 
     implementation "ru.tinkoff.decoro:decoro:1.1.1"
 
