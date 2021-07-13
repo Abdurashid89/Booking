@@ -30,6 +30,10 @@ class ForgotFragment : Fragment(R.layout.fragment_forgot){
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         _bind = FragmentForgotBinding.bind(view)
 
+        bind.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
+        }
+
         bind.forgotBtn.setOnClickListener {
             checkPermissionState(Manifest.permission.RECEIVE_SMS,{
                 checkPermissionState(Manifest.permission.READ_SMS,{
@@ -59,6 +63,7 @@ class ForgotFragment : Fragment(R.layout.fragment_forgot){
                 when (it) {
                     is UiStateObject.SUCCESS -> {
                         showProgress(false)
+                        viewmodel.reCode()
                         findNavController().navigate(
                             R.id.passwordFragment,
                             bundleOf("number" to number),
@@ -67,6 +72,7 @@ class ForgotFragment : Fragment(R.layout.fragment_forgot){
                     }
                     is UiStateObject.ERROR -> {
                         showProgress(false)
+                        viewmodel.reCode()
                         showMessage(it.message)
                     }
                     is UiStateObject.LOADING -> {

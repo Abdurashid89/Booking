@@ -7,6 +7,7 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import uz.koinot.stadion.data.model.Login
+import uz.koinot.stadion.data.model.ResponseRegister
 import uz.koinot.stadion.data.repository.MainRepository
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.utils.UiStateList
@@ -59,8 +60,12 @@ class LoginViewModel @Inject constructor(
         }
     }
 
-    private val _createPasswordFlow = MutableStateFlow<UiStateObject<String>>(UiStateObject.EMPTY)
-    val createPasswordFlow: StateFlow<UiStateObject<String>> get() = _createPasswordFlow
+    fun reCode(){
+        _forgotPhoneFlow.value = UiStateObject.EMPTY
+    }
+
+    private val _createPasswordFlow = MutableStateFlow<UiStateObject<ResponseRegister>>(UiStateObject.EMPTY)
+    val createPasswordFlow: StateFlow<UiStateObject<ResponseRegister>> get() = _createPasswordFlow
 
     fun sendForgotPassword(code:String,password:String,phone:String) = viewModelScope.launch {
         _createPasswordFlow.value = UiStateObject.LOADING

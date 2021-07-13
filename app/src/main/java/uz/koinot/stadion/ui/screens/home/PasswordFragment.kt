@@ -11,6 +11,7 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
+import androidx.navigation.fragment.findNavController
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import uz.koinot.stadion.MainActivity
@@ -52,6 +53,10 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
 
         SmsReceiver.setReceiveCodeListener {
             bind.inputVerificationNumber.setText(it)
+        }
+
+        bind.toolbar.setNavigationOnClickListener {
+            findNavController().navigateUp()
         }
 
         bind.inputVerificationNumber.addTextChangedListener(object : TextWatcherWrapper(){
@@ -101,7 +106,7 @@ class PasswordFragment : Fragment(R.layout.fragment_password) {
             viewmodel.createPasswordFlow.collect{
                 when(it){
                     is UiStateObject.SUCCESS ->{
-                        pref.accessToken = it.data
+                        pref.accessToken = it.data.body.accessToken
                         pref.hasAccount = true
                         pref.phoneNumber = phoneNumber.toString()
                         pref.firebaseToken = ""

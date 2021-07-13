@@ -7,6 +7,13 @@
     android:id="@+id/container_btn"
     xmlns:app="http://schemas.android.com/apk/res-auto">
 
+    <com.google.android.material.appbar.MaterialToolbar
+        android:layout_width="match_parent"
+        app:title="@string/enter_phone_number"
+        android:id="@+id/toolbar"
+        app:navigationIcon="@drawable/ic_baseline_arrow_back"
+        android:layout_height="wrap_content"/>
+
     <ProgressBar
         android:id="@+id/progress_bar"
         app:layout_constraintTop_toTopOf="parent"
@@ -23,18 +30,6 @@
         android:progressBackgroundTint="#208afa"
         android:progressBackgroundTintMode="multiply"
         />
-
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="@string/enter_phone_number"
-        android:textColor="@color/black"
-        android:textSize="22sp"
-        android:layout_marginTop="64dp"
-        android:layout_gravity="top|center"
-        android:textStyle="bold" />
-
 
     <br.com.sapereaude.maskedEditText.MaskedEditText
         android:layout_marginBottom="10dp"
