@@ -6,7 +6,7 @@ import android.content.Intent
 import android.provider.Telephony
 import android.telephony.SmsMessage
 import android.util.Log
-import uz.koinot.stadion.utils.SingleBlock
+import uz.koinot.stadion.utils.extensions.SingleBlock
 import java.util.regex.Matcher
 import java.util.regex.Pattern
 

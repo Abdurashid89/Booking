@@ -4,14 +4,16 @@ buildscript {
         kotlin_version = "1.4.32"
         nav_version = "2.3.4"
         room_version = "2.3.0"
-        hilt_jetpack_version = "1.0.0-alpha03"
+      //  hilt_jetpack_version = "1.0.0-alpha03"
         hilt_version = "2.35.1"
     }
+
     repositories {
         google()
         jcenter()
-        maven { url 'http://repo1.maven.org/maven2' }
+//        maven { url 'http://repo1.maven.org/maven2' }
         maven { url 'https://jitpack.io' }
+
     }
     dependencies {
         classpath 'com.android.tools.build:gradle:4.2.1'
@@ -30,7 +32,7 @@ allprojects {
     repositories {
         google()
         jcenter()
-        maven { url 'http://repo1.maven.org/maven2' }
+//        maven { url 'http://repo1.maven.org/maven2' }
         maven { url "https://jitpack.io" }
     }
 }

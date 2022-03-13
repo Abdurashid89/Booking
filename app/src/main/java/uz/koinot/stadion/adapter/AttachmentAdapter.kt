@@ -11,7 +11,7 @@ import uz.koinot.stadion.data.model.Photos
 import uz.koinot.stadion.databinding.ItemAttachmentBinding
 import uz.koinot.stadion.databinding.ItemImageBinding
 import uz.koinot.stadion.utils.CONSTANTS
-import uz.koinot.stadion.utils.SingleBlock
+import uz.koinot.stadion.utils.extensions.SingleBlock
 
 class AttachmentAdapter: RecyclerView.Adapter<AttachmentAdapter.VHolder>() {
 

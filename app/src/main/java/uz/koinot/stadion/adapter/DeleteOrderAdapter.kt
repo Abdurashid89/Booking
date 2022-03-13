@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.RecyclerView
 import uz.koinot.stadion.data.model.Order
 import uz.koinot.stadion.databinding.ItemDeleteOrderBinding
 import uz.koinot.stadion.databinding.ItemOrderBinding
-import uz.koinot.stadion.utils.SingleBlock
+import uz.koinot.stadion.utils.extensions.SingleBlock
 import uz.koinot.stadion.utils.toMoneyFormat
 
 class DeleteOrderAdapter: RecyclerView.Adapter<DeleteOrderAdapter.VHolder>() {
@@ -49,7 +49,7 @@ class DeleteOrderAdapter: RecyclerView.Adapter<DeleteOrderAdapter.VHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setOnDeleteListener(block:SingleBlock<Order>){
+    fun setOnDeleteListener(block: SingleBlock<Order>){
         listener = block
     }
 

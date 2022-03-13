@@ -8,10 +8,9 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.launch
 import uz.koinot.stadion.data.model.Dashboard
 import uz.koinot.stadion.data.model.Order
-import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.repository.MainRepository
-import uz.koinot.stadion.utils.UiStateList
-import uz.koinot.stadion.utils.userMessage
+import uz.koinot.stadion.utils.sealed.UiStateList
+import uz.koinot.stadion.utils.extensions.userMessage
 import javax.inject.Inject
 
 

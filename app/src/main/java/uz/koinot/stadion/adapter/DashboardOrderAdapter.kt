@@ -7,7 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import uz.koinot.stadion.data.model.Order
 import uz.koinot.stadion.databinding.ItemOrderBinding
-import uz.koinot.stadion.utils.SingleBlock
+import uz.koinot.stadion.utils.extensions.SingleBlock
 import uz.koinot.stadion.utils.toMoneyFormat
 
 class DashboardOrderAdapter: RecyclerView.Adapter<DashboardOrderAdapter.VHolder>() {
@@ -58,15 +58,15 @@ class DashboardOrderAdapter: RecyclerView.Adapter<DashboardOrderAdapter.VHolder>
         notifyDataSetChanged()
     }
 
-    fun setOnClickListener(block:SingleBlock<Order>){
+    fun setOnClickListener(block: SingleBlock<Order>){
         listener = block
     }
 
-    fun setOnAcceptListener(block:SingleBlock<Order>){
+    fun setOnAcceptListener(block: SingleBlock<Order>){
         acceptListener = block
     }
 
-    fun setOnRejectListener(block:SingleBlock<Order>){
+    fun setOnRejectListener(block: SingleBlock<Order>){
         rejectListener = block
     }
 }

@@ -27,16 +27,16 @@ class PagerFragment : Fragment(R.layout.fragment_pager) {
 
     private var _bn: FragmentPagerBinding? = null
     val bn get() = _bn!!
-    private lateinit var adapter : PagerAdapter
-    private lateinit var stadium:Stadium
-    private lateinit var navController:NavController
+    private lateinit var adapter: PagerAdapter
+    private lateinit var stadium: Stadium
+    private lateinit var navController: NavController
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        val arg = arguments?.getString(CONSTANTS.STADION,"")
+        val arg = arguments?.getString(CONSTANTS.STADION, "")
         stadium = Gson().fromJson(arg, Stadium::class.java)
-        Log.d("AAA","pager stadiumId: ${stadium.id}")
+        Log.d("AAA", "pager stadiumId: ${stadium.id}")
         navController = findNavController()
     }
 
@@ -49,19 +49,24 @@ class PagerFragment : Fragment(R.layout.fragment_pager) {
                 navController.navigateUp()
             }
         }
-        adapter = PagerAdapter(this,stadium.id)
+        adapter = PagerAdapter(this, stadium.id)
         bn.viewPager.adapter = adapter
-        bn.tabLayout.setTabTextColors(resources.getColor(R.color.lightGray), resources.getColor(R.color.colorPrimaryDarkE))
-        TabLayoutMediator(bn.tabLayout,bn.viewPager){tab, position->
-            if(position == 0){
+        bn.tabLayout.setTabTextColors(
+            resources.getColor(R.color.lightGray),
+            resources.getColor(R.color.colorPrimaryDarkE)
+        )
+        TabLayoutMediator(bn.tabLayout, bn.viewPager) { tab, position ->
+            if (position == 0) {
                 tab.text = getString(R.string.orders)
-            }else if(position == 1){
+            } else if (position == 1) {
                 tab.text = getString(R.string.dashboard)
-            }else{
+            } else {
                 tab.text = getString(R.string.cancel)
             }
         }.attach()
+        bn.ivCompetition.setOnClickListener {
 
+        }
     }
 
     override fun onDestroy() {

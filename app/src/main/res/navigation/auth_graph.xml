@@ -7,7 +7,7 @@
 
     <fragment
         android:id="@+id/phoneNumberFragment"
-        android:name="uz.koinot.stadion.ui.screens.PhoneNumberFragment"
+        android:name="uz.koinot.stadion.ui.screens.phone.PhoneNumberFragment"
         android:label="fragment_phone_number"
         tools:layout="@layout/fragment_phone_number" >
         <action
@@ -16,13 +16,13 @@
     </fragment>
     <fragment
         android:id="@+id/verificationFragment"
-        android:name="uz.koinot.stadion.ui.screens.VerificationFragment"
+        android:name="uz.koinot.stadion.ui.screens.auth.verify.VerificationFragment"
         android:label="fragment_verification"
         tools:layout="@layout/fragment_verification" />
     <fragment
         android:id="@+id/loginFragment"
         tools:layout="@layout/fragment_login"
-        android:name="uz.koinot.stadion.ui.screens.LoginFragment"
+        android:name="uz.koinot.stadion.ui.screens.auth.login.LoginFragment"
         android:label="LoginFragment" >
         <action
             android:id="@+id/action_loginFragment_to_phoneNumberFragment"
@@ -33,11 +33,11 @@
     </fragment>
     <fragment
         android:id="@+id/forgotFragment"
-        android:name="uz.koinot.stadion.ui.screens.home.ForgotFragment"
+        android:name="uz.koinot.stadion.ui.screens.auth.forgot.ForgotFragment"
         android:label="ForgotFragment" />
     <fragment
         android:id="@+id/passwordFragment"
-        android:name="uz.koinot.stadion.ui.screens.home.PasswordFragment"
+        android:name="uz.koinot.stadion.ui.screens.auth.password.PasswordFragment"
         android:label="PasswordFragment" >
         <action
             android:id="@+id/action_passwordFragment_to_forgotFragment"

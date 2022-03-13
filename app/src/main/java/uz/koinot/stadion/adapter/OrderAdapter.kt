@@ -7,7 +7,7 @@ import androidx.core.view.isVisible
 import androidx.recyclerview.widget.RecyclerView
 import uz.koinot.stadion.data.model.Order
 import uz.koinot.stadion.databinding.ItemOrderBinding
-import uz.koinot.stadion.utils.SingleBlock
+import uz.koinot.stadion.utils.extensions.SingleBlock
 import uz.koinot.stadion.utils.toMoneyFormat
 
 class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
@@ -68,21 +68,21 @@ class OrderAdapter: RecyclerView.Adapter<OrderAdapter.VHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setOnCancelListener(block:SingleBlock<Long>){
+    fun setOnCancelListener(block: SingleBlock<Long>){
         cancelOrderListener = block
     }
 
-    fun setOnAcceptListener(block:SingleBlock<Order>){
+    fun setOnAcceptListener(block: SingleBlock<Order>){
         acceptListener = block
     }
 
-    fun setOnRejectListener(block:SingleBlock<Order>){
+    fun setOnRejectListener(block: SingleBlock<Order>){
         rejectListener = block
     }
-    fun setOnPhoneNumber1Listener(block:SingleBlock<String>){
+    fun setOnPhoneNumber1Listener(block: SingleBlock<String>){
         phoneNumberListener1 = block
     }
-    fun setOnPhoneNumber2Listener(block:SingleBlock<String>){
+    fun setOnPhoneNumber2Listener(block: SingleBlock<String>){
         phoneNumberListener2 = block
     }
 }

@@ -2,7 +2,6 @@ package uz.koinot.stadion.ui.screens.home
 
 import android.Manifest
 import android.app.Activity
-import android.app.AlertDialog
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -14,25 +13,25 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import androidx.navigation.NavController
 import androidx.navigation.fragment.findNavController
-import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.gson.Gson
 import dagger.hilt.android.AndroidEntryPoint
-import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.collect
-import kotlinx.coroutines.launch
-import kotlinx.coroutines.runBlocking
 import uz.koinot.stadion.AuthActivity
-import uz.koinot.stadion.BaseFragment
 import uz.koinot.stadion.R
+import uz.koinot.stadion.utils.CONSTANTS
 import uz.koinot.stadion.adapter.StadiumAdapter
 import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.data.storage.LocalStorage
 import uz.koinot.stadion.databinding.FragmentHomeBinding
+import uz.koinot.stadion.utils.dialogs.BaseDialog
 import uz.koinot.stadion.utils.*
-import java.io.File
+import uz.koinot.stadion.utils.dialogs.ImageDialog
+import uz.koinot.stadion.utils.extensions.showMessage
+import uz.koinot.stadion.utils.sealed.UiStateList
+import uz.koinot.stadion.utils.sealed.UiStateObject
 import javax.inject.Inject
 
 @AndroidEntryPoint
@@ -89,7 +88,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
                 R.id.createStadiumFragment,
                 bundleOf(
                     CONSTANTS.STADIUM_TYPE to CONSTANTS.EDIT_STADIUM,
-                    CONSTANTS.STADIUM_DATA to Gson().toJson(it)
+                    CONSTANTS.STADIUM_DATA to Gson() .toJson(it)
                 ),
                 Utils.navOptions()
             )
@@ -131,7 +130,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
                 storage.hasAccount = false
                 dialog.dismiss()
                 storage.firebaseToken = ""
-                requireActivity().startActivity(Intent(requireContext(), AuthActivity::class.java))
+                requireActivity().startActivity(Intent(requireContext(), uz.koinot.stadion.AuthActivity::class.java))
                 requireActivity().finish()
             }
             dialog.show(childFragmentManager, "fsdf")
@@ -206,12 +205,7 @@ class HomeFragment : Fragment(R.layout.fragment_home), SwipeRefreshLayout.OnRefr
 
                             if (it.code == 401) {
                                 storage.hasAccount = false
-                                requireActivity().startActivity(
-                                    Intent(
-                                        requireContext(),
-                                        AuthActivity::class.java
-                                    )
-                                )
+                                requireActivity().startActivity(Intent(requireContext(), AuthActivity::class.java))
                                 requireActivity().finish()
                             }
 

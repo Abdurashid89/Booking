@@ -60,7 +60,7 @@
 
 
         <service
-            android:name=".utils.FirebaseService"
+            android:name=".utils.firebase.FirebaseService"
             android:permission="com.google.android.c2dm.permission.SEND">
             <intent-filter>
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
@@ -68,7 +68,7 @@
             </intent-filter>
         </service>
 
-        <activity android:name=".MainActivity" />
+        <activity android:name=".MainActivity2" />
         <activity android:name=".AuthActivity">
 
         </activity>

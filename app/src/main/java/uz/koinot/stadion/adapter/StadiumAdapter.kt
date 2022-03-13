@@ -11,7 +11,7 @@ import com.google.gson.reflect.TypeToken
 import uz.koinot.stadion.R
 import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.databinding.ItemStadiumBinding
-import uz.koinot.stadion.utils.SingleBlock
+import uz.koinot.stadion.utils.extensions.SingleBlock
 import uz.koinot.stadion.utils.setForceShowIcon
 import uz.koinot.stadion.utils.toMoneyFormat
 
@@ -103,7 +103,7 @@ class StadiumAdapter : RecyclerView.Adapter<StadiumAdapter.VHolder>() {
         imageListener = block
     }
 
-    fun setOnImageDeleteListener(block:  SingleBlock<String>) {
+    fun setOnImageDeleteListener(block: SingleBlock<String>) {
         deleteImageListener = block
     }
 

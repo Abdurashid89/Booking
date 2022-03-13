@@ -10,7 +10,7 @@ import uz.koinot.stadion.R
 import uz.koinot.stadion.data.model.Photos
 import uz.koinot.stadion.databinding.ItemImageBinding
 import uz.koinot.stadion.utils.CONSTANTS
-import uz.koinot.stadion.utils.SingleBlock
+import uz.koinot.stadion.utils.extensions.SingleBlock
 import uz.koinot.stadion.utils.toMoneyFormat
 
 class ImageAdapter: RecyclerView.Adapter<ImageAdapter.VHolder>() {

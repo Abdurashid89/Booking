@@ -11,7 +11,7 @@ import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.databinding.ItemImageBinding
 import uz.koinot.stadion.databinding.RvImageBinding
 import uz.koinot.stadion.utils.CONSTANTS
-import uz.koinot.stadion.utils.SingleBlock
+import uz.koinot.stadion.utils.extensions.SingleBlock
 
 class RvImageAdapter(val stadium: Stadium,val list: List<String>): RecyclerView.Adapter<RvImageAdapter.VHolder>() {
 

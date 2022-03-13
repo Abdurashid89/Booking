@@ -30,11 +30,11 @@ import uz.koinot.stadion.databinding.ActivityMainBinding
 import uz.koinot.stadion.ui.screens.dashboard.CancelOrderDialog
 import uz.koinot.stadion.utils.CONSTANTS
 import uz.koinot.stadion.utils.Utils
-import uz.koinot.stadion.utils.showMessage
+import uz.koinot.stadion.utils.extensions.showMessage
 import javax.inject.Inject
 
 @AndroidEntryPoint
-class MainActivity : AppCompatActivity() {
+class MainActivity2 : AppCompatActivity() {
 
     private var iNotification: INotification? = null
 
@@ -47,6 +47,7 @@ class MainActivity : AppCompatActivity() {
     private lateinit var mFirebaseAnalytics: FirebaseAnalytics
     private var _bn: ActivityMainBinding? = null
     private val bn get() = _bn!!
+
     private lateinit var navController : NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {

@@ -6,7 +6,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/white"
     android:orientation="vertical"
-    tools:context=".ui.screens.PhoneNumberFragment">
+    tools:context=".ui.screens.phone.PhoneNumberFragment">
 
     <com.google.android.material.appbar.MaterialToolbar
         android:layout_width="match_parent"

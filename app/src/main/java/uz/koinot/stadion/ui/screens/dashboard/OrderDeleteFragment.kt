@@ -1,27 +1,21 @@
 package uz.koinot.stadion.ui.screens.dashboard
 
-import android.content.Intent
-import android.net.Uri
 import android.os.Bundle
 import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.View
-import androidx.core.os.bundleOf
 import androidx.core.view.isVisible
 import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
 import dagger.hilt.android.AndroidEntryPoint
 import kotlinx.coroutines.flow.collect
 import uz.koinot.stadion.R
 import uz.koinot.stadion.adapter.DeleteOrderAdapter
-import uz.koinot.stadion.adapter.OrderAdapter
-import uz.koinot.stadion.databinding.FragmentOderBinding
 import uz.koinot.stadion.databinding.FragmentOrderDeleteBinding
-import uz.koinot.stadion.ui.screens.home.BaseDialog
-import uz.koinot.stadion.ui.screens.home.OrderViewModel
 import uz.koinot.stadion.utils.*
+import uz.koinot.stadion.utils.sealed.UiStateList
+import uz.koinot.stadion.utils.sealed.UiStateObject
 
 @AndroidEntryPoint
 class OrderDeleteFragment : Fragment(R.layout.fragment_order_delete) {
@@ -113,7 +107,7 @@ class OrderDeleteFragment : Fragment(R.layout.fragment_order_delete) {
 
     private fun showProgress(status:Boolean){
         bn.swipeRefresh.isRefreshing = false
-        bn.progressBar.isVisible = status
+       bn.progressBar.isVisible = status
     }
 
     override fun onDestroy() {

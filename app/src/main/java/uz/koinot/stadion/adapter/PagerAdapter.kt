@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 import androidx.viewpager2.adapter.FragmentStateAdapter
 import uz.koinot.stadion.ui.screens.dashboard.OrderDeleteFragment
 import uz.koinot.stadion.ui.screens.dashboard.DashboardFragment
-import uz.koinot.stadion.ui.screens.home.OderFragment
+import uz.koinot.stadion.ui.screens.home.order.OderFragment
 import uz.koinot.stadion.utils.CONSTANTS
 
 class PagerAdapter(fragment: Fragment,val stadiumId:Long) : FragmentStateAdapter(fragment) {

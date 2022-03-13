@@ -12,7 +12,7 @@ import uz.koinot.stadion.data.model.Stadium
 import uz.koinot.stadion.databinding.ItemImageBinding
 import uz.koinot.stadion.databinding.ItemUsersBinding
 import uz.koinot.stadion.utils.CONSTANTS
-import uz.koinot.stadion.utils.SingleBlock
+import uz.koinot.stadion.utils.extensions.SingleBlock
 
 class UserAdapter: RecyclerView.Adapter<UserAdapter.VHolder>() {
 
@@ -47,7 +47,7 @@ class UserAdapter: RecyclerView.Adapter<UserAdapter.VHolder>() {
         notifyDataSetChanged()
     }
 
-    fun setOnClickListener(block:SingleBlock<SearchUser>){
+    fun setOnClickListener(block: SingleBlock<SearchUser>){
         listener = block
     }
     fun clear(){

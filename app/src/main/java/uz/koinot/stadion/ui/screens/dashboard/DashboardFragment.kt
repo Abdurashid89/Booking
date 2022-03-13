@@ -1,9 +1,6 @@
 package uz.koinot.stadion.ui.screens.dashboard
 
-import android.annotation.SuppressLint
 import android.graphics.Color
-import android.graphics.LinearGradient
-import android.graphics.Shader
 import android.os.Bundle
 import android.util.Log
 import android.view.View
@@ -14,7 +11,6 @@ import androidx.fragment.app.viewModels
 import androidx.lifecycle.lifecycleScope
 import dagger.hilt.android.AndroidEntryPoint
 import im.dacer.androidcharts.LineView
-import ir.farshid_roohi.linegraph.ChartEntity
 import kotlinx.coroutines.GlobalScope
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch
@@ -24,12 +20,10 @@ import uz.koinot.stadion.data.model.Dashboard
 import uz.koinot.stadion.data.model.Order
 import uz.koinot.stadion.databinding.FragmentDashboardBinding
 import uz.koinot.stadion.utils.CONSTANTS
-import uz.koinot.stadion.utils.UiStateList
-import uz.koinot.stadion.utils.showMessage
-import uz.koinot.stadion.utils.toNeedDate
+import uz.koinot.stadion.utils.sealed.UiStateList
+import uz.koinot.stadion.utils.extensions.showMessage
 import java.sql.Timestamp
 import java.util.*
-import kotlin.collections.ArrayList
 
 
 @AndroidEntryPoint
@@ -161,7 +155,7 @@ class DashboardFragment : Fragment(R.layout.fragment_dashboard) {
                     viewModel.archiveAll(stadiumId)
                 } else {
                     adapter.submitList(it)
-                    if (!type) viewModel.afterCreateFlow(stadiumId, it[0].createdAt.toNeedDate())
+                   // if (!type) viewModel.afterCreateFlow(stadiumId, it[0].createdAt.toNeedDate())
                 }
             }
         }
